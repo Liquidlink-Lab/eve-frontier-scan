@@ -89,6 +89,7 @@ describe("eve ownership domain helpers", () => {
         name: "Rhea Ancru",
         tribeName: "Caldari",
         walletAddress: "0xwallet-1",
+        walletSource: "sui-address",
         walletSourceLabel: "SUI address",
         networkNodeCount: 1,
         currentShipName: null,

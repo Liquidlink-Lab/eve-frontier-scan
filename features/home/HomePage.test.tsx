@@ -6,15 +6,17 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import HomePage from "@/app/page";
 import { renderWithProviders } from "@/test/renderWithProviders";
 
-const push = vi.fn();
-const replace = vi.fn();
+const { push, redirect } = vi.hoisted(() => ({
+  push: vi.fn(),
+  redirect: vi.fn(),
+}));
 const mockedUseWalletSession = vi.fn();
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
     push,
-    replace,
   }),
+  redirect,
 }));
 
 vi.mock("@/features/wallet/useWalletSession", () => ({
@@ -24,7 +26,7 @@ vi.mock("@/features/wallet/useWalletSession", () => ({
 describe("HomePage", () => {
   beforeEach(() => {
     push.mockReset();
-    replace.mockReset();
+    redirect.mockReset();
     mockedUseWalletSession.mockReturnValue({
       connect: vi.fn(),
       disconnect: vi.fn(),
@@ -79,7 +81,7 @@ describe("HomePage", () => {
     renderWithProviders(<HomePage />);
 
     await waitFor(() => {
-      expect(replace).toHaveBeenCalledWith("/me");
+      expect(redirect).toHaveBeenCalledWith("/me");
     });
   });
 });

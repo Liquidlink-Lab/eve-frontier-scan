@@ -4,13 +4,17 @@ import { beforeEach, expect, it, vi } from "vitest";
 import { renderWithProviders } from "@/test/renderWithProviders";
 import HomePage from "./page";
 
-const push = vi.fn();
+const { push, redirect } = vi.hoisted(() => ({
+  push: vi.fn(),
+  redirect: vi.fn(),
+}));
 const mockedUseWalletSession = vi.fn();
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
     push,
   }),
+  redirect,
 }));
 
 vi.mock("@/features/wallet/useWalletSession", () => ({
@@ -19,6 +23,7 @@ vi.mock("@/features/wallet/useWalletSession", () => ({
 
 beforeEach(() => {
   push.mockReset();
+  redirect.mockReset();
   mockedUseWalletSession.mockReturnValue({
     connect: vi.fn(),
     disconnect: vi.fn(),

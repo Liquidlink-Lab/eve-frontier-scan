@@ -73,7 +73,7 @@ describe("resolveCharacterLookupState", () => {
     expect(state).toEqual({
       kind: "single",
       characterId: "0xchar-1",
-      redirectTo: "/dashboard/0xchar-1/network-nodes?wallet=0xwallet-1",
+      redirectTo: "/dashboard/0xchar-1/network-nodes?wallet=0xwallet-1&source=sui-address",
     });
   });
 
@@ -139,7 +139,7 @@ describe("resolveCharacterLookupState", () => {
     expect(screen.getAllByText("Ship data unavailable")).toHaveLength(2);
     expect(screen.getAllByRole("link", { name: /open dashboard/i })[0]).toHaveAttribute(
       "href",
-      "/dashboard/0xchar-1/network-nodes?wallet=0xwallet-1",
+      "/dashboard/0xchar-1/network-nodes?wallet=0xwallet-1&source=sui-address",
     );
   });
 });

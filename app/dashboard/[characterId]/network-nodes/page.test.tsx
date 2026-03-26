@@ -63,7 +63,10 @@ describe("DashboardNetworkNodesPage", () => {
   it("renders network nodes for the selected character when wallet context is present", async () => {
     const page = await DashboardNetworkNodesPage({
       params: Promise.resolve({ characterId: "0xchar-1" }),
-      searchParams: Promise.resolve({ wallet: "0xwallet-1" }),
+      searchParams: Promise.resolve({
+        wallet: "0xwallet-1",
+        source: "sui-address",
+      }),
     });
 
     renderWithProviders(page);

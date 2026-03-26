@@ -46,10 +46,7 @@ export function resolveCharacterLookupState(
     return {
       kind: "single",
       characterId: characters[0].id,
-      redirectTo: buildDashboardNetworkNodesHref(
-        characters[0].id,
-        access.walletAddress,
-      ),
+      redirectTo: buildDashboardNetworkNodesHref(characters[0].id, access),
     };
   }
 

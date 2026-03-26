@@ -48,10 +48,10 @@ export default function CharacterSelectionCard({
         </Typography>
         <Button
           component={Link}
-          href={buildDashboardNetworkNodesHref(
-            character.id,
-            character.walletAddress,
-          )}
+          href={buildDashboardNetworkNodesHref(character.id, {
+            walletAddress: character.walletAddress,
+            source: character.walletSource,
+          })}
           variant="contained"
         >
           Open dashboard

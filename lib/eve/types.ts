@@ -49,6 +49,7 @@ export interface CharacterSummary {
   name: string;
   tribeName: string;
   walletAddress: string;
+  walletSource: WalletSource;
   walletSourceLabel: string;
   networkNodeCount: number;
   currentShipName: string | null;

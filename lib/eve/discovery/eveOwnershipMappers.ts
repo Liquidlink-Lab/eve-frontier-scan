@@ -6,6 +6,7 @@ import type {
   WalletAccessContext,
   WalletStructureDiscovery,
 } from "../types";
+import { getWalletSourceLabel } from "../routes";
 
 export function mapDiscoveryToCharacterSummaries(
   discovery: WalletStructureDiscovery,
@@ -26,8 +27,8 @@ export function mapDiscoveryToCharacterSummaries(
         name: character.name,
         tribeName: getTribeName(character.tribeId, lookups),
         walletAddress: access.walletAddress,
-        walletSourceLabel:
-          access.source === "eve-vault" ? "Connected EVE Vault" : "SUI address",
+        walletSource: access.source,
+        walletSourceLabel: getWalletSourceLabel(access.source),
         networkNodeCount: entry.ownedStructures.filter((structure) =>
           isNetworkNodeType(structure.typeRepr),
         ).length,

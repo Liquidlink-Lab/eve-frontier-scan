@@ -19,6 +19,7 @@ interface DashboardNetworkNodesPageProps {
   }>;
   searchParams: Promise<{
     wallet?: string;
+    source?: string;
   }>;
 }
 
