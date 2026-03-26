@@ -1,9 +1,13 @@
 "use client";
 
 import { PropsWithChildren, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { DAppKitProvider } from "@mysten/dapp-kit-react";
+import { QueryClient } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 
+import WalletSessionProvider from "@/features/wallet/WalletSessionProvider";
+import { dAppKit } from "@/lib/eve/wallet/dappKit";
 import { lookupTheme } from "@/theme/theme";
 
 export default function Providers({ children }: PropsWithChildren) {
@@ -23,7 +27,9 @@ export default function Providers({ children }: PropsWithChildren) {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={lookupTheme}>
         <CssBaseline />
-        {children}
+        <DAppKitProvider dAppKit={dAppKit}>
+          <WalletSessionProvider>{children}</WalletSessionProvider>
+        </DAppKitProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

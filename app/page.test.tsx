@@ -1,10 +1,36 @@
-import { render, screen } from "@testing-library/react";
-import { expect, it } from "vitest";
+import { screen } from "@testing-library/react";
+import { beforeEach, expect, it, vi } from "vitest";
 
+import { renderWithProviders } from "@/test/renderWithProviders";
 import HomePage from "./page";
 
+const push = vi.fn();
+const mockedUseWalletSession = vi.fn();
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push,
+  }),
+}));
+
+vi.mock("@/features/wallet/useWalletSession", () => ({
+  useWalletSession: () => mockedUseWalletSession(),
+}));
+
+beforeEach(() => {
+  push.mockReset();
+  mockedUseWalletSession.mockReturnValue({
+    connect: vi.fn(),
+    disconnect: vi.fn(),
+    hasEveVault: true,
+    isConnected: false,
+    shortAddress: null,
+    walletAddress: null,
+  });
+});
+
 it("renders a lookup-first homepage", () => {
-  render(<HomePage />);
+  renderWithProviders(<HomePage />);
 
   expect(screen.getByRole("textbox")).toBeInTheDocument();
   expect(

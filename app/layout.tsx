@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import WalletMenu from "@/features/wallet/WalletMenu";
 import Providers from "./providers";
 
 export const metadata: Metadata = {
@@ -15,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className="min-h-full flex flex-col">
-        <Providers>{children}</Providers>
+        <Providers>
+          <WalletMenu />
+          {children}
+        </Providers>
       </body>
     </html>
   );

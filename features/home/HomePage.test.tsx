@@ -1,10 +1,12 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import HomePage from "@/app/page";
+import { renderWithProviders } from "@/test/renderWithProviders";
 
 const push = vi.fn();
+const mockedUseWalletSession = vi.fn();
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
@@ -12,13 +14,25 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
+vi.mock("@/features/wallet/useWalletSession", () => ({
+  useWalletSession: () => mockedUseWalletSession(),
+}));
+
 describe("HomePage", () => {
   beforeEach(() => {
     push.mockReset();
+    mockedUseWalletSession.mockReturnValue({
+      connect: vi.fn(),
+      disconnect: vi.fn(),
+      hasEveVault: true,
+      isConnected: false,
+      shortAddress: null,
+      walletAddress: null,
+    });
   });
 
   it("renders a lookup-first homepage without dashboard navigation or marketing copy", () => {
-    render(<HomePage />);
+    renderWithProviders(<HomePage />);
 
     expect(screen.getByText("EVE Frontier Scan")).toBeInTheDocument();
     expect(
@@ -37,7 +51,7 @@ describe("HomePage", () => {
   it("normalizes the entered address and routes to lookup on submit", async () => {
     const user = userEvent.setup();
 
-    render(<HomePage />);
+    renderWithProviders(<HomePage />);
 
     await user.type(
       screen.getByRole("textbox", { name: /sui address/i }),
