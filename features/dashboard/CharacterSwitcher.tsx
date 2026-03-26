@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent } from "react";
-import { FormControl, InputLabel, NativeSelect } from "@mui/material";
+import { FormControl, FormLabel, NativeSelect } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 import { buildDashboardNetworkNodesHref } from "@/lib/eve/routes";
@@ -41,9 +41,18 @@ export default function CharacterSwitcher({
 
   return (
     <FormControl fullWidth size="small" disabled={!access || characters.length === 0}>
-      <InputLabel variant="standard" htmlFor="dashboard-character-switcher">
+      <FormLabel
+        htmlFor="dashboard-character-switcher"
+        sx={{
+          mb: 0.75,
+          color: "text.secondary",
+          fontSize: "0.8rem",
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+        }}
+      >
         Character
-      </InputLabel>
+      </FormLabel>
       <NativeSelect
         value={selectedCharacterId}
         inputProps={{
