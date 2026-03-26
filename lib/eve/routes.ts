@@ -17,6 +17,19 @@ export function buildDashboardNetworkNodesHref(
   return `/dashboard/${characterId}/network-nodes?${searchParams.toString()}`;
 }
 
+export function buildDashboardNetworkNodeDetailHref(
+  characterId: string,
+  nodeId: string,
+  access: WalletAccessContext,
+) {
+  const searchParams = new URLSearchParams({
+    wallet: access.walletAddress,
+    source: access.source,
+  });
+
+  return `/dashboard/${characterId}/network-nodes/${nodeId}?${searchParams.toString()}`;
+}
+
 export function parseWalletAccessSearchParams(
   searchParams: SearchParamReader,
 ): WalletAccessContext | null {
