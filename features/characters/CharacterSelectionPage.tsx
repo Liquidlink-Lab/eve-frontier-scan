@@ -7,6 +7,7 @@ import type {
   WalletStructureDiscovery,
 } from "@/lib/eve/types";
 import { mapDiscoveryToCharacterSummaries } from "@/lib/eve/discovery/eveOwnershipMappers";
+import { buildDashboardNetworkNodesHref } from "@/lib/eve/routes";
 import CharacterSelectionCard from "./CharacterSelectionCard";
 
 export type CharacterLookupState =
@@ -45,7 +46,10 @@ export function resolveCharacterLookupState(
     return {
       kind: "single",
       characterId: characters[0].id,
-      redirectTo: `/dashboard/${characters[0].id}/network-nodes`,
+      redirectTo: buildDashboardNetworkNodesHref(
+        characters[0].id,
+        access.walletAddress,
+      ),
     };
   }
 

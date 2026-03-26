@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/react";
+import { waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -6,11 +7,13 @@ import HomePage from "@/app/page";
 import { renderWithProviders } from "@/test/renderWithProviders";
 
 const push = vi.fn();
+const replace = vi.fn();
 const mockedUseWalletSession = vi.fn();
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
     push,
+    replace,
   }),
 }));
 
@@ -21,6 +24,7 @@ vi.mock("@/features/wallet/useWalletSession", () => ({
 describe("HomePage", () => {
   beforeEach(() => {
     push.mockReset();
+    replace.mockReset();
     mockedUseWalletSession.mockReturnValue({
       connect: vi.fn(),
       disconnect: vi.fn(),
@@ -60,5 +64,22 @@ describe("HomePage", () => {
     await user.click(screen.getByRole("button", { name: /inspect wallet/i }));
 
     expect(push).toHaveBeenCalledWith("/lookup/0xabcdef1234");
+  });
+
+  it("redirects connected wallet users into their dashboard entry flow", async () => {
+    mockedUseWalletSession.mockReturnValue({
+      connect: vi.fn(),
+      disconnect: vi.fn(),
+      hasEveVault: true,
+      isConnected: true,
+      shortAddress: "0x43ac…d186",
+      walletAddress: "0x43acdc9cb9e379d5fab90effbaaa08896d943d9958a96d9df6f07c39025cd186",
+    });
+
+    renderWithProviders(<HomePage />);
+
+    await waitFor(() => {
+      expect(replace).toHaveBeenCalledWith("/me");
+    });
   });
 });

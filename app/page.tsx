@@ -1,6 +1,7 @@
 import { Box, Paper, Stack, Typography } from "@mui/material";
 
 import ConnectWalletButton from "@/features/home/ConnectWalletButton";
+import HomeWalletRedirect from "@/features/home/HomeWalletRedirect";
 import LookupEntryForm from "@/features/home/LookupEntryForm";
 
 export default function HomePage() {
@@ -15,6 +16,7 @@ export default function HomePage() {
         py: { xs: 6, md: 10 },
       }}
     >
+      <HomeWalletRedirect />
       <Paper
         elevation={0}
         sx={{

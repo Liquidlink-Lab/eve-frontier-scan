@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button, Chip, Paper, Stack, Typography } from "@mui/material";
 
 import { formatShortAddress } from "@/lib/eve/address";
+import { buildDashboardNetworkNodesHref } from "@/lib/eve/routes";
 import type { CharacterSummary } from "@/lib/eve/types";
 
 interface CharacterSelectionCardProps {
@@ -47,7 +48,10 @@ export default function CharacterSelectionCard({
         </Typography>
         <Button
           component={Link}
-          href={`/dashboard/${character.id}/network-nodes`}
+          href={buildDashboardNetworkNodesHref(
+            character.id,
+            character.walletAddress,
+          )}
           variant="contained"
         >
           Open dashboard
