@@ -1,8 +1,6 @@
 import { redirect } from "next/navigation";
 
-import CharacterSelectionPage, {
-  resolveCharacterLookupState,
-} from "@/features/characters/CharacterSelectionPage";
+import { resolveCharacterLookupState } from "@/features/characters/CharacterSelectionPage";
 import LookupEmptyState from "@/features/lookup/LookupEmptyState";
 import { normalizeSuiAddress } from "@/lib/eve/address";
 import { fetchWalletStructureDiscovery } from "@/lib/eve/discovery/eveOwnershipClient";
@@ -40,5 +38,5 @@ export default async function LookupPage({ params }: LookupPageProps) {
     redirect(`/lookup/${normalizedAddress}/characters`);
   }
 
-  return <CharacterSelectionPage address={normalizedAddress} characters={[]} />;
+  return <LookupEmptyState />;
 }

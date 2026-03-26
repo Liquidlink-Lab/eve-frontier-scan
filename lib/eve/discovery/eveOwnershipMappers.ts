@@ -12,15 +12,16 @@ export function mapDiscoveryToCharacterSummaries(
   access: WalletAccessContext,
   lookups: LabelLookups,
 ): CharacterSummary[] {
-  return discovery.characters
-    .map((entry) => {
-      const character = entry.character;
+  const summaries: CharacterSummary[] = [];
 
-      if (!character) {
-        return null;
-      }
+  for (const entry of discovery.characters) {
+    const character = entry.character;
 
-      return {
+    if (!character) {
+      continue;
+    }
+
+    summaries.push({
         id: character.id,
         name: character.name,
         tribeName: getTribeName(character.tribeId, lookups),
@@ -31,10 +32,10 @@ export function mapDiscoveryToCharacterSummaries(
           isNetworkNodeType(structure.typeRepr),
         ).length,
         currentShipName: null,
-      };
-    })
-    .filter((entry): entry is CharacterSummary => entry !== null)
-    .sort((left, right) => left.name.localeCompare(right.name));
+      });
+  }
+
+  return summaries.sort((left, right) => left.name.localeCompare(right.name));
 }
 
 export function mapDiscoveryToNetworkNodes(
