@@ -11,7 +11,7 @@ import { formatShortAddress } from "@/lib/eve/address";
 import { WalletSessionContext } from "./useWalletSession";
 
 const CONNECTED_STORAGE_KEY = "eve-dapp-connected";
-const EVE_VAULT_NAMES = ["EVE Frontier Client Wallet", "EVE Vault"];
+const EVE_VAULT_NAMES = ["EVE Frontier Client Wallet", "Eve Vault"];
 
 let globalAutoConnectAttempted = false;
 
@@ -23,7 +23,9 @@ export default function WalletSessionProvider({ children }: PropsWithChildren) {
 
   const eveVaultWallet =
     wallets.find((wallet) =>
-      EVE_VAULT_NAMES.some((name) => wallet.name.includes(name)),
+      EVE_VAULT_NAMES.some((name) =>
+        wallet.name.toLowerCase().includes(name.toLowerCase()),
+      ),
     ) ?? null;
 
   const connect = () => {
