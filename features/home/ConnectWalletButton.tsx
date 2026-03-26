@@ -25,7 +25,7 @@ export default function ConnectWalletButton({
       disabled={isDisabled}
       onClick={handleClick}
     >
-      {walletSession.hasEveVault ? "Connect EVE Vault" : "EVE Vault unavailable"}
+      Connect EVE Vault
     </Button>
   );
 }

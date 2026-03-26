@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v16-appRouter";
 import "./globals.css";
 import WalletMenu from "@/features/wallet/WalletMenu";
 import Providers from "./providers";
@@ -16,10 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className="min-h-full flex flex-col">
-        <Providers>
-          <WalletMenu />
-          {children}
-        </Providers>
+        <AppRouterCacheProvider>
+          <Providers>
+            <WalletMenu />
+            {children}
+          </Providers>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

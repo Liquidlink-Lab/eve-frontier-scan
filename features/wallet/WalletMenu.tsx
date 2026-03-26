@@ -78,7 +78,7 @@ export default function WalletMenu() {
           onClick={walletSession.connect}
           disabled={!walletSession.hasEveVault}
         >
-          {walletSession.hasEveVault ? "Connect EVE Vault" : "EVE Vault unavailable"}
+          Connect EVE Vault
         </Button>
       )}
     </Box>

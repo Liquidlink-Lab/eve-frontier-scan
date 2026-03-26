@@ -52,4 +52,21 @@ describe("WalletMenu", () => {
     await user.click(screen.getByRole("menuitem", { name: /disconnect/i }));
     expect(disconnect).toHaveBeenCalled();
   });
+
+  it("keeps the connect label when EVE Vault is unavailable", () => {
+    mockedUseWalletSession.mockReturnValue({
+      connect: vi.fn(),
+      disconnect: vi.fn(),
+      hasEveVault: false,
+      isConnected: false,
+      shortAddress: null,
+      walletAddress: null,
+    });
+
+    renderWithProviders(<WalletMenu />);
+
+    expect(
+      screen.getByRole("button", { name: /connect eve vault/i }),
+    ).toBeDisabled();
+  });
 });

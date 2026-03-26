@@ -1,14 +1,17 @@
 "use client";
 
-import { PropsWithChildren, useState } from "react";
-import { DAppKitProvider } from "@mysten/dapp-kit-react";
+import { PropsWithChildren, useState, useSyncExternalStore } from "react";
 import { QueryClient } from "@tanstack/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import dynamic from "next/dynamic";
 
-import WalletSessionProvider from "@/features/wallet/WalletSessionProvider";
-import { dAppKit } from "@/lib/eve/wallet/dappKit";
 import { lookupTheme } from "@/theme/theme";
+
+const WalletRuntimeProvider = dynamic(
+  () => import("@/features/wallet/WalletRuntimeProvider"),
+  { ssr: false },
+);
 
 export default function Providers({ children }: PropsWithChildren) {
   const [queryClient] = useState(
@@ -20,16 +23,23 @@ export default function Providers({ children }: PropsWithChildren) {
             refetchOnWindowFocus: false,
           },
         },
-      }),
+        }),
+  );
+  const walletRuntimeReady = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
   );
 
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={lookupTheme}>
         <CssBaseline />
-        <DAppKitProvider dAppKit={dAppKit}>
-          <WalletSessionProvider>{children}</WalletSessionProvider>
-        </DAppKitProvider>
+        {walletRuntimeReady ? (
+          <WalletRuntimeProvider>{children}</WalletRuntimeProvider>
+        ) : (
+          children
+        )}
       </ThemeProvider>
     </QueryClientProvider>
   );
