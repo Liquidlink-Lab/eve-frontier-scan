@@ -1,6 +1,7 @@
-"use client";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 
-import { Box, Button, Stack, TextField } from "@mui/material";
+import ConnectWalletButton from "@/features/home/ConnectWalletButton";
+import LookupEntryForm from "@/features/home/LookupEntryForm";
 
 export default function HomePage() {
   return (
@@ -14,18 +15,39 @@ export default function HomePage() {
         py: { xs: 6, md: 10 },
       }}
     >
-      <Stack
-        spacing={2}
+      <Paper
+        elevation={0}
         sx={{
           width: "100%",
-          maxWidth: 420,
+          maxWidth: 460,
+          px: { xs: 3, sm: 5 },
+          py: { xs: 4, sm: 5 },
+          borderRadius: 4,
+          backgroundColor: "rgba(12, 17, 25, 0.8)",
+          backdropFilter: "blur(18px)",
         }}
       >
-        <TextField label="SUI address" name="address" fullWidth />
-        <Button variant="outlined" size="large">
-          Connect EVE Vault
-        </Button>
-      </Stack>
+        <Stack spacing={3}>
+          <Stack spacing={0.5}>
+            <Typography
+              component="p"
+              sx={{
+                fontSize: "0.72rem",
+                letterSpacing: "0.32em",
+                textTransform: "uppercase",
+                color: "text.secondary",
+              }}
+            >
+              EVE Frontier
+            </Typography>
+            <Typography component="h1" variant="h1">
+              EVE Frontier Scan
+            </Typography>
+          </Stack>
+          <LookupEntryForm />
+          <ConnectWalletButton />
+        </Stack>
+      </Paper>
     </Box>
   );
 }
