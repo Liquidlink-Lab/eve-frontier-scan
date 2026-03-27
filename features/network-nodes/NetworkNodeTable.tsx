@@ -35,14 +35,16 @@ export default function NetworkNodeTable({
 }: NetworkNodeTableProps) {
   return (
     <TableContainer
+      data-testid="network-node-table-container"
       component={Paper}
       elevation={0}
       sx={{
         border: "1px solid rgba(148, 163, 184, 0.16)",
         backgroundColor: "rgba(8, 11, 17, 0.88)",
+        overflowX: "auto",
       }}
     >
-      <Table>
+      <Table sx={{ minWidth: 720 }}>
         <TableHead>
           <TableRow>
             {columns.map((column) => (

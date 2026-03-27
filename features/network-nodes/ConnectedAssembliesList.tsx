@@ -34,9 +34,14 @@ export default function ConnectedAssembliesList({
                   sx={{
                     py: 1,
                     display: "flex",
-                    alignItems: "center",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
                     justifyContent: "space-between",
                     gap: 2,
+                    "@media (min-width:600px)": {
+                      flexDirection: "row",
+                      alignItems: "center",
+                    },
                   }}
                 >
                   <Stack direction="row" spacing={1.25} alignItems="center" sx={{ minWidth: 0 }}>
@@ -51,7 +56,19 @@ export default function ConnectedAssembliesList({
                       sx={{ my: 0 }}
                     />
                   </Stack>
-                  <Stack direction="row" spacing={1} alignItems="center">
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    alignItems="center"
+                    sx={{
+                      width: "100%",
+                      justifyContent: "space-between",
+                      "@media (min-width:600px)": {
+                        width: "auto",
+                        justifyContent: "flex-start",
+                      },
+                    }}
+                  >
                     <Chip
                       label={assembly.status}
                       size="small"

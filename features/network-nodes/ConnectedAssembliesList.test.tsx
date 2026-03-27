@@ -41,6 +41,10 @@ describe("ConnectedAssembliesList", () => {
 
     expect(onlineAssembly).not.toBeNull();
     expect(offlineAssembly).not.toBeNull();
+    expect(onlineAssembly).toHaveStyle({
+      flexDirection: "column",
+      alignItems: "flex-start",
+    });
     expect(
       within(onlineAssembly!).getByRole("img", { name: "Heavy Gate icon" }),
     ).toHaveAttribute("src", "https://cdn.example/types/84955.png");

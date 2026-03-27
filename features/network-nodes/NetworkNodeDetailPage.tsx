@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import DetailField from "@/features/dashboard/DetailField";
 import DashboardRefreshButton from "@/features/dashboard/DashboardRefreshButton";
 import TypeIcon from "@/features/icons/TypeIcon";
 import LinkButton from "@/features/navigation/LinkButton";
@@ -31,7 +32,7 @@ export default function NetworkNodeDetailPage({
   networkNode,
 }: NetworkNodeDetailPageProps) {
   return (
-    <Box component="main" sx={{ flex: 1, px: 3, py: { xs: 4, md: 6 } }}>
+    <Box component="main" sx={{ flex: 1, px: { xs: 2, sm: 3 }, py: { xs: 4, md: 6 } }}>
       <Stack spacing={3} sx={{ maxWidth: 1040, mx: "auto" }}>
         <Stack
           direction={{ xs: "column", sm: "row" }}
@@ -61,7 +62,12 @@ export default function NetworkNodeDetailPage({
               </MuiLink>
             </div>
           </Stack>
-          <Stack direction="row" spacing={1.5} alignItems="center">
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={1.5}
+            alignItems={{ xs: "stretch", sm: "center" }}
+            sx={{ width: { xs: "100%", sm: "auto" } }}
+          >
             <DashboardRefreshButton />
             {characterId ? (
               <LinkButton
@@ -74,34 +80,31 @@ export default function NetworkNodeDetailPage({
           </Stack>
         </Stack>
 
-        <Paper elevation={0} sx={{ px: 3, py: 3 }}>
+        <Paper elevation={0} sx={{ px: { xs: 2.5, sm: 3 }, py: 3 }}>
           <Stack spacing={2.5}>
-            <Stack direction="row" justifyContent="space-between" spacing={2}>
-              <Typography color="text.secondary">Solar system</Typography>
+            <DetailField label="Solar system">
               <Typography>{networkNode.systemName ?? "Unknown"}</Typography>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between" spacing={2}>
-              <Typography color="text.secondary">Coordinates</Typography>
+            </DetailField>
+            <DetailField label="Coordinates">
               <Typography>
                 {networkNode.location
                   ? `${networkNode.location.x}, ${networkNode.location.y}, ${networkNode.location.z}`
                   : "Unavailable"}
               </Typography>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between" spacing={2}>
-              <Typography color="text.secondary">Status</Typography>
+            </DetailField>
+            <DetailField label="Status">
               <Chip
                 label={networkNode.status}
                 color={networkNode.status === "online" ? "success" : "default"}
                 size="small"
                 variant="outlined"
               />
-            </Stack>
+            </DetailField>
             <NetworkNodeFuelFields networkNode={networkNode} />
           </Stack>
         </Paper>
 
-        <Paper elevation={0} sx={{ px: 3, py: 3 }}>
+        <Paper elevation={0} sx={{ px: { xs: 2.5, sm: 3 }, py: 3 }}>
           <Typography variant="h4" sx={{ mb: 2 }}>
             Related assemblies
           </Typography>

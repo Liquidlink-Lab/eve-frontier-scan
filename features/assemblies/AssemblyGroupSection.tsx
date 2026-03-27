@@ -32,14 +32,16 @@ export default function AssemblyGroupSection({
       </Typography>
 
       <TableContainer
+        data-testid="assembly-group-table-container"
         component={Paper}
         elevation={0}
         sx={{
           border: "1px solid rgba(148, 163, 184, 0.16)",
           backgroundColor: "rgba(8, 11, 17, 0.88)",
+          overflowX: "auto",
         }}
       >
-        <Table>
+        <Table sx={{ minWidth: 640 }}>
           <TableHead>
             <TableRow>
               <TableCell>Status</TableCell>

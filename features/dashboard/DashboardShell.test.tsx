@@ -138,6 +138,10 @@ describe("DashboardShell", () => {
     ).not.toBeInTheDocument();
     const breadcrumbs = screen.getByRole("navigation", { name: /breadcrumbs/i });
     expect(breadcrumbs).toBeInTheDocument();
+    expect(breadcrumbs).toHaveStyle({
+      overflowX: "auto",
+      whiteSpace: "nowrap",
+    });
     expect(within(breadcrumbs).getByRole("link", { name: "Rhea Ancru" })).toHaveAttribute(
       "href",
       "/dashboard/0xchar-1/network-nodes?wallet=0x43acdc9cb9e379d5fab90effbaaa08896d943d9958a96d9df6f07c39025cd186&source=eve-vault",
@@ -158,6 +162,9 @@ describe("DashboardShell", () => {
 
     expect(screen.getByTestId("dashboard-shell-content")).toHaveStyle({
       marginLeft: "0px",
+    });
+    expect(screen.getByTestId("dashboard-header-bar")).toHaveStyle({
+      paddingRight: "64px",
     });
     expect(
       screen.queryByRole("navigation", { name: /dashboard navigation/i }),

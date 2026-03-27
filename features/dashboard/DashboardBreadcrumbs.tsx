@@ -57,6 +57,13 @@ export default function DashboardBreadcrumbs({
       separator="›"
       sx={{
         color: "text.secondary",
+        overflowX: "auto",
+        overflowY: "hidden",
+        whiteSpace: "nowrap",
+        scrollbarWidth: "thin",
+        "& .MuiBreadcrumbs-ol": {
+          flexWrap: "nowrap",
+        },
         "& .MuiBreadcrumbs-separator": {
           mx: 0.75,
         },
@@ -72,6 +79,7 @@ export default function DashboardBreadcrumbs({
             color="inherit"
             sx={{
               fontSize: "0.88rem",
+              whiteSpace: "nowrap",
             }}
           >
             {item.label}
@@ -83,6 +91,7 @@ export default function DashboardBreadcrumbs({
             sx={{
               fontSize: "0.88rem",
               fontWeight: index === items.length - 1 ? 600 : 400,
+              whiteSpace: "nowrap",
             }}
           >
             {item.label}

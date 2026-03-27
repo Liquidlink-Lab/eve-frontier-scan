@@ -9,9 +9,11 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TableContainer,
   Typography,
 } from "@mui/material";
 
+import DetailField from "@/features/dashboard/DetailField";
 import DashboardRefreshButton from "@/features/dashboard/DashboardRefreshButton";
 import TypeIcon from "@/features/icons/TypeIcon";
 import LinkText from "@/features/navigation/LinkText";
@@ -54,7 +56,10 @@ export default function AssemblyDetailPage({
 
   return (
     <main>
-      <Stack spacing={3} sx={{ maxWidth: 960, mx: "auto", px: 3, py: { xs: 4, md: 6 } }}>
+      <Stack
+        spacing={3}
+        sx={{ maxWidth: 960, mx: "auto", px: { xs: 2, sm: 3 }, py: { xs: 4, md: 6 } }}
+      >
         <Stack
           direction={{ xs: "column", sm: "row" }}
           justifyContent="space-between"
@@ -86,50 +91,43 @@ export default function AssemblyDetailPage({
           <DashboardRefreshButton />
         </Stack>
 
-        <Paper elevation={0} sx={{ px: 3, py: 3 }}>
+        <Paper elevation={0} sx={{ px: { xs: 2.5, sm: 3 }, py: 3 }}>
           <Stack spacing={2}>
-            <Stack direction="row" justifyContent="space-between" spacing={2}>
-              <Typography color="text.secondary">Type</Typography>
+            <DetailField label="Type">
               <Typography>{assembly.typeLabel}</Typography>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between" spacing={2}>
-              <Typography color="text.secondary">Solar system</Typography>
+            </DetailField>
+            <DetailField label="Solar system">
               <Typography>{assembly.systemName ?? "Unknown"}</Typography>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between" spacing={2}>
-              <Typography color="text.secondary">Coordinates</Typography>
+            </DetailField>
+            <DetailField label="Coordinates">
               <Typography>
                 {assembly.location
                   ? `${assembly.location.x}, ${assembly.location.y}, ${assembly.location.z}`
                   : "Unavailable"}
               </Typography>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between" spacing={2}>
-              <Typography color="text.secondary">Status</Typography>
+            </DetailField>
+            <DetailField label="Status">
               <Chip
                 label={assembly.status}
                 color={assembly.status === "online" ? "success" : "default"}
                 size="small"
                 variant="outlined"
               />
-            </Stack>
+            </DetailField>
             {assembly.description ? (
-              <Stack direction="row" justifyContent="space-between" spacing={2}>
-                <Typography color="text.secondary">Description</Typography>
+              <DetailField label="Description" alignTop>
                 <Typography>{assembly.description}</Typography>
-              </Stack>
+              </DetailField>
             ) : null}
             {assembly.url ? (
-              <Stack direction="row" justifyContent="space-between" spacing={2}>
-                <Typography color="text.secondary">Reference URL</Typography>
+              <DetailField label="Reference URL" alignTop>
                 <MuiLink href={assembly.url} underline="hover" target="_blank" rel="noreferrer">
                   {assembly.url}
                 </MuiLink>
-              </Stack>
+              </DetailField>
             ) : null}
             {assembly.energySourceId ? (
-              <Stack direction="row" justifyContent="space-between" spacing={2}>
-                <Typography color="text.secondary">Powered by</Typography>
+              <DetailField label="Powered by">
                 {energySourceHref ? (
                   <LinkText href={energySourceHref} underline="hover">
                     {assembly.energySourceName ?? formatShortAddress(assembly.energySourceId)}
@@ -139,12 +137,14 @@ export default function AssemblyDetailPage({
                     {assembly.energySourceName ?? formatShortAddress(assembly.energySourceId)}
                   </Typography>
                 )}
-              </Stack>
+              </DetailField>
             ) : null}
             {(assembly.extensionType || assembly.extensionLabel) ? (
-              <Stack direction="row" justifyContent="space-between" spacing={2}>
-                <Typography color="text.secondary">Extension</Typography>
-                <Stack spacing={0.5} sx={{ alignItems: "flex-end" }}>
+              <DetailField label="Extension" alignTop>
+                <Stack
+                  spacing={0.5}
+                  sx={{ alignItems: { xs: "flex-start", sm: "flex-end" } }}
+                >
                   <Typography>{assembly.extensionLabel}</Typography>
                   {assembly.extensionType ? (
                     <Typography
@@ -156,46 +156,42 @@ export default function AssemblyDetailPage({
                     </Typography>
                   ) : null}
                 </Stack>
-              </Stack>
+              </DetailField>
             ) : null}
             {assembly.extensionFrozen !== null ? (
-              <Stack direction="row" justifyContent="space-between" spacing={2}>
-                <Typography color="text.secondary">Extension frozen</Typography>
+              <DetailField label="Extension frozen">
                 <Typography>{assembly.extensionFrozen ? "Yes" : "No"}</Typography>
-              </Stack>
+              </DetailField>
             ) : null}
             {assembly.linkedGateId ? (
-              <Stack direction="row" justifyContent="space-between" spacing={2}>
-                <Typography color="text.secondary">Linked gate</Typography>
+              <DetailField label="Linked gate">
                 <Typography>
                   {assembly.linkedGateName ?? formatShortAddress(assembly.linkedGateId)}
                 </Typography>
-              </Stack>
+              </DetailField>
             ) : null}
             {assembly.gateAccessMode ? (
-              <Stack direction="row" justifyContent="space-between" spacing={2}>
-                <Typography color="text.secondary">Access mode</Typography>
+              <DetailField label="Access mode">
                 <Typography>{assembly.gateAccessMode}</Typography>
-              </Stack>
+              </DetailField>
             ) : null}
           </Stack>
         </Paper>
 
         {assembly.typeRepr.includes("::gate::Gate") ? (
-          <Paper elevation={0} sx={{ px: 3, py: 3 }}>
+          <Paper elevation={0} sx={{ px: { xs: 2.5, sm: 3 }, py: 3 }}>
             <Stack spacing={2}>
               <Typography component="h2" variant="h4">
                 Gate operations
               </Typography>
-              <Stack direction="row" justifyContent="space-between" spacing={2}>
-                <Typography color="text.secondary">Max link distance</Typography>
+              <DetailField label="Max link distance">
                 <Typography>
                   {assembly.gateMaxLinkDistance === null ||
                   assembly.gateMaxLinkDistance === undefined
                     ? "Unavailable"
                     : String(assembly.gateMaxLinkDistance)}
                 </Typography>
-              </Stack>
+              </DetailField>
               <Stack spacing={1}>
                 <Typography color="text.secondary">Recent jumps</Typography>
                 {(assembly.recentJumps ?? []).length === 0 ? (
@@ -245,53 +241,54 @@ export default function AssemblyDetailPage({
         ) : null}
 
         {assembly.typeRepr.includes("::turret::Turret") ? (
-          <Paper elevation={0} sx={{ px: 3, py: 3 }}>
+          <Paper elevation={0} sx={{ px: { xs: 2.5, sm: 3 }, py: 3 }}>
             <Stack spacing={2}>
               <Typography component="h2" variant="h4">
                 Latest target priority snapshot
               </Typography>
               {assembly.latestTurretPrioritySnapshot ? (
                 <>
-                  <Stack direction="row" justifyContent="space-between" spacing={2}>
-                    <Typography color="text.secondary">Updated at</Typography>
+                  <DetailField label="Updated at">
                     <Typography>
                       {formatTimestamp(assembly.latestTurretPrioritySnapshot.updatedAtMs)}
                     </Typography>
-                  </Stack>
-                  <Table size="small">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Item ID</TableCell>
-                        <TableCell align="right">Type ID</TableCell>
-                        <TableCell align="right">Group ID</TableCell>
-                        <TableCell align="right">Character</TableCell>
-                        <TableCell align="right">Tribe</TableCell>
-                        <TableCell align="right">HP</TableCell>
-                        <TableCell align="right">Shield</TableCell>
-                        <TableCell align="right">Armor</TableCell>
-                        <TableCell align="right">Priority</TableCell>
-                        <TableCell>Behaviour</TableCell>
-                        <TableCell>Aggressor</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {assembly.latestTurretPrioritySnapshot.targets.map((target) => (
-                        <TableRow key={`${target.itemId}:${target.priorityWeight}`}>
-                          <TableCell>{target.itemId}</TableCell>
-                          <TableCell align="right">{target.typeId}</TableCell>
-                          <TableCell align="right">{target.groupId}</TableCell>
-                          <TableCell align="right">{target.characterId}</TableCell>
-                          <TableCell align="right">{target.characterTribe}</TableCell>
-                          <TableCell align="right">{target.hpRatio}</TableCell>
-                          <TableCell align="right">{target.shieldRatio}</TableCell>
-                          <TableCell align="right">{target.armorRatio}</TableCell>
-                          <TableCell align="right">{target.priorityWeight}</TableCell>
-                          <TableCell>{target.behaviourChange}</TableCell>
-                          <TableCell>{target.isAggressor ? "Yes" : "No"}</TableCell>
+                  </DetailField>
+                  <TableContainer sx={{ overflowX: "auto" }}>
+                    <Table size="small" sx={{ minWidth: 960 }}>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Item ID</TableCell>
+                          <TableCell align="right">Type ID</TableCell>
+                          <TableCell align="right">Group ID</TableCell>
+                          <TableCell align="right">Character</TableCell>
+                          <TableCell align="right">Tribe</TableCell>
+                          <TableCell align="right">HP</TableCell>
+                          <TableCell align="right">Shield</TableCell>
+                          <TableCell align="right">Armor</TableCell>
+                          <TableCell align="right">Priority</TableCell>
+                          <TableCell>Behaviour</TableCell>
+                          <TableCell>Aggressor</TableCell>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHead>
+                      <TableBody>
+                        {assembly.latestTurretPrioritySnapshot.targets.map((target) => (
+                          <TableRow key={`${target.itemId}:${target.priorityWeight}`}>
+                            <TableCell>{target.itemId}</TableCell>
+                            <TableCell align="right">{target.typeId}</TableCell>
+                            <TableCell align="right">{target.groupId}</TableCell>
+                            <TableCell align="right">{target.characterId}</TableCell>
+                            <TableCell align="right">{target.characterTribe}</TableCell>
+                            <TableCell align="right">{target.hpRatio}</TableCell>
+                            <TableCell align="right">{target.shieldRatio}</TableCell>
+                            <TableCell align="right">{target.armorRatio}</TableCell>
+                            <TableCell align="right">{target.priorityWeight}</TableCell>
+                            <TableCell>{target.behaviourChange}</TableCell>
+                            <TableCell>{target.isAggressor ? "Yes" : "No"}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
                 </>
               ) : (
                 <Typography color="text.secondary">No target priority snapshot found.</Typography>
@@ -301,16 +298,15 @@ export default function AssemblyDetailPage({
         ) : null}
 
         {storageInventory ? (
-          <Paper elevation={0} sx={{ px: 3, py: 3 }}>
+          <Paper elevation={0} sx={{ px: { xs: 2.5, sm: 3 }, py: 3 }}>
             <Stack spacing={2}>
               <Typography component="h2" variant="h4">
                 Inventory
               </Typography>
               <Stack spacing={0.75}>
-                <Stack direction="row" justifyContent="space-between" spacing={2}>
-                  <Typography color="text.secondary">Capacity used</Typography>
+                <DetailField label="Capacity used">
                   <Typography>{formatPercentage(storageCapacityPercent)}</Typography>
-                </Stack>
+                </DetailField>
                 {storageCapacityPercent !== null ? (
                   <LinearProgress
                     aria-label="Storage capacity usage"
@@ -329,37 +325,39 @@ export default function AssemblyDetailPage({
               {storageInventory.items.length === 0 ? (
                 <Typography color="text.secondary">No inventory items found.</Typography>
               ) : (
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Item name</TableCell>
-                      <TableCell align="right">Quantity</TableCell>
-                      <TableCell align="right">Volume</TableCell>
-                      <TableCell align="right">Item ID</TableCell>
-                      <TableCell align="right">Type ID</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {storageInventory.items.map((item) => (
-                      <TableRow key={`${item.typeId}:${item.itemId}`}>
-                        <TableCell>
-                          <Stack direction="row" spacing={1.25} alignItems="center">
-                            <TypeIcon
-                              iconUrl={item.iconUrl}
-                              label={item.itemName}
-                              size={24}
-                            />
-                            <Typography component="span">{item.itemName}</Typography>
-                          </Stack>
-                        </TableCell>
-                        <TableCell align="right">{item.quantity}</TableCell>
-                        <TableCell align="right">{item.volume}</TableCell>
-                        <TableCell align="right">{item.itemId}</TableCell>
-                        <TableCell align="right">{item.typeId}</TableCell>
+                <TableContainer sx={{ overflowX: "auto" }}>
+                  <Table size="small" sx={{ minWidth: 760 }}>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Item name</TableCell>
+                        <TableCell align="right">Quantity</TableCell>
+                        <TableCell align="right">Volume</TableCell>
+                        <TableCell align="right">Item ID</TableCell>
+                        <TableCell align="right">Type ID</TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHead>
+                    <TableBody>
+                      {storageInventory.items.map((item) => (
+                        <TableRow key={`${item.typeId}:${item.itemId}`}>
+                          <TableCell>
+                            <Stack direction="row" spacing={1.25} alignItems="center">
+                              <TypeIcon
+                                iconUrl={item.iconUrl}
+                                label={item.itemName}
+                                size={24}
+                              />
+                              <Typography component="span">{item.itemName}</Typography>
+                            </Stack>
+                          </TableCell>
+                          <TableCell align="right">{item.quantity}</TableCell>
+                          <TableCell align="right">{item.volume}</TableCell>
+                          <TableCell align="right">{item.itemId}</TableCell>
+                          <TableCell align="right">{item.typeId}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               )}
             </Stack>
           </Paper>

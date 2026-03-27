@@ -1,5 +1,6 @@
 import { LinearProgress, Stack, Typography } from "@mui/material";
 
+import DetailField from "@/features/dashboard/DetailField";
 import { formatFuelEta } from "@/lib/eve/fuel";
 import { clampPercentage, formatPercentage } from "@/lib/eve/percent";
 import type { NetworkNodeDetailSummary } from "@/lib/eve/types";
@@ -16,10 +17,9 @@ export default function NetworkNodeFuelFields({
   return (
     <Stack spacing={1}>
       <Stack spacing={0.75}>
-        <Stack direction="row" justifyContent="space-between" spacing={2}>
-          <Typography color="text.secondary">Fuel percentage</Typography>
+        <DetailField label="Fuel percentage">
           <Typography>{formatPercentage(fuelPercent)}</Typography>
-        </Stack>
+        </DetailField>
         {fuelPercent !== null ? (
           <LinearProgress
             aria-label="Fuel level"
@@ -29,16 +29,14 @@ export default function NetworkNodeFuelFields({
           />
         ) : null}
       </Stack>
-      <Stack direction="row" justifyContent="space-between" spacing={2}>
-        <Typography color="text.secondary">Fuel quantity</Typography>
+      <DetailField label="Fuel quantity">
         <Typography>
           {networkNode.fuelQuantity === null ? "Unavailable" : networkNode.fuelQuantity}
         </Typography>
-      </Stack>
-      <Stack direction="row" justifyContent="space-between" spacing={2}>
-        <Typography color="text.secondary">Fuel ETA</Typography>
+      </DetailField>
+      <DetailField label="Fuel ETA">
         <Typography>{formatFuelEta(networkNode.fuelEtaMs)}</Typography>
-      </Stack>
+      </DetailField>
     </Stack>
   );
 }

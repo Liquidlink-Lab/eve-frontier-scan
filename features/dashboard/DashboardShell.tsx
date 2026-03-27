@@ -88,25 +88,32 @@ export default function DashboardShell({
             }}
           >
             <Box
+              data-testid="dashboard-header-bar"
+              style={!isDesktopNavigation ? { paddingRight: "64px" } : undefined}
               sx={{
-                px: 3,
-                py: 1.25,
+                paddingLeft: { xs: 1.5, sm: 3 },
+                paddingRight: { xs: "64px", md: 3 },
+                paddingTop: { xs: 1, sm: 1.25 },
+                paddingBottom: { xs: 1, sm: 1.25 },
               }}
             >
               <Box
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  gap: 1.5,
+                  gap: { xs: 1, sm: 1.5 },
                 }}
               >
                 <IconButton
                   aria-label="Open dashboard navigation"
                   onClick={() => setMobileSidebarOpen(true)}
+                  size="small"
                   sx={{
                     display: { xs: "inline-flex", md: "none" },
                     color: "text.primary",
                     flexShrink: 0,
+                    width: 40,
+                    height: 40,
                   }}
                 >
                   <MenuRoundedIcon />
@@ -136,7 +143,7 @@ export default function DashboardShell({
                 width: "100%",
                 maxWidth: 1200,
                 mx: "auto",
-                px: 3,
+                px: { xs: 2, sm: 3 },
                 py: 1.1,
               }}
             >

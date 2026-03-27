@@ -21,6 +21,7 @@ vi.mock("./useWalletSession", () => ({
 
 describe("WalletMenu", () => {
   beforeEach(() => {
+    setViewportWidth(1280);
     push.mockReset();
     disconnect.mockReset();
     mockedUseWalletSession.mockReturnValue({
@@ -69,4 +70,59 @@ describe("WalletMenu", () => {
       screen.getByRole("button", { name: /connect eve vault/i }),
     ).toBeDisabled();
   });
+
+  it("compacts the connect control on mobile", () => {
+    setViewportWidth(390);
+    mockedUseWalletSession.mockReturnValue({
+      connect: vi.fn(),
+      disconnect: vi.fn(),
+      hasEveVault: true,
+      isConnected: false,
+      shortAddress: null,
+      walletAddress: null,
+    });
+
+    renderWithProviders(<WalletMenu />);
+
+    const button = screen.getByRole("button", { name: /connect eve vault/i });
+
+    expect(button).toHaveStyle({
+      minWidth: "40px",
+    });
+    expect(button).not.toHaveTextContent(/connect eve vault/i);
+  });
 });
+
+function setViewportWidth(width: number) {
+  Object.defineProperty(window, "innerWidth", {
+    configurable: true,
+    writable: true,
+    value: width,
+  });
+
+  window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+    matches: evaluateMediaQuery(query, width),
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  }));
+}
+
+function evaluateMediaQuery(query: string, width: number) {
+  const minMatch = query.match(/\(min-width:\s*(\d+)px\)/);
+  const maxMatch = query.match(/\(max-width:\s*(\d+(?:\.\d+)?)px\)/);
+
+  if (minMatch) {
+    return width >= Number(minMatch[1]);
+  }
+
+  if (maxMatch) {
+    return width <= Number(maxMatch[1]);
+  }
+
+  return false;
+}

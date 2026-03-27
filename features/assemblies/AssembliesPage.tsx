@@ -20,7 +20,7 @@ export default function AssembliesPage({
   const populatedGroups = Object.entries(groups).filter(([, assemblies]) => assemblies.length > 0);
 
   return (
-    <Box component="main" sx={{ flex: 1, px: 3, py: { xs: 4, md: 6 } }}>
+    <Box component="main" sx={{ flex: 1, px: { xs: 2, sm: 3 }, py: { xs: 4, md: 6 } }}>
       <Stack spacing={3} sx={{ maxWidth: 1120, mx: "auto" }}>
         <Stack
           direction={{ xs: "column", sm: "row" }}
@@ -38,7 +38,7 @@ export default function AssembliesPage({
         </Stack>
 
         {populatedGroups.length === 0 ? (
-          <Paper elevation={0} sx={{ px: 4, py: 5 }}>
+          <Paper elevation={0} sx={{ px: { xs: 3, sm: 4 }, py: { xs: 4, sm: 5 } }}>
             <Stack spacing={1.5}>
               <Typography variant="h5">No assemblies found</Typography>
               <Typography color="text.secondary">
