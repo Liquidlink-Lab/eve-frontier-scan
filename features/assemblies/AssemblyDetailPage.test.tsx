@@ -197,6 +197,55 @@ describe("AssemblyDetailPage", () => {
     expect(screen.getByText("EU-90 Fuel")).toBeInTheDocument();
   });
 
+  it("renders recent inventory activity for storage units", () => {
+    renderWithProviders(
+      <AssemblyDetailPage
+        characterId="0xcharacter-1"
+        characterName="Rhea Ancru"
+        assembly={{
+          ...assembly,
+          recentInventoryActivity: [
+            {
+              txDigest: "tx-storage-1",
+              timestampMs: 1710000000000,
+              action: "deposited",
+              itemId: 1_000_000_015_002,
+              itemName: "Building Foam",
+              iconUrl: "https://cdn.example/items/89089.png",
+              quantity: 12,
+              typeId: 89_089,
+              characterId: "0xpilot-1",
+              characterItemId: 2_112_000_137,
+              characterName: "Hshiki",
+              characterWalletAddress: "0xpilot-wallet-1",
+            },
+          ],
+        }}
+      />,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "Recent inventory activity" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Mar 9, 2024, 16:00 UTC")).toBeInTheDocument();
+    expect(screen.getByText("Deposited 12x Building Foam")).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Building Foam icon" })).toHaveAttribute(
+      "src",
+      "https://cdn.example/items/89089.png",
+    );
+    expect(screen.getByRole("link", { name: "Pilot Hshiki" })).toHaveAttribute(
+      "href",
+      buildDashboardNetworkNodesHref("0xpilot-1", {
+        walletAddress: "0xpilot-wallet-1",
+        source: "sui-address",
+      }),
+    );
+    expect(screen.getByRole("link", { name: /view inventory event on suiscan/i })).toHaveAttribute(
+      "href",
+      "https://suiscan.xyz/testnet/tx/tx-storage-1",
+    );
+  });
+
   it("renders gate-specific direct detail fields when present", () => {
     renderWithProviders(
       <AssemblyDetailPage

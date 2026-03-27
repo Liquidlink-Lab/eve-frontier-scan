@@ -31,6 +31,7 @@ import type {
   AssemblyDetailSummary,
   GateJumpSummary,
   GatePermitSummary,
+  StorageInventoryActivitySummary,
   StorageInventoriesSummary,
   StorageInventorySummary,
   WalletAccessContext,
@@ -411,6 +412,40 @@ export default function AssemblyDetailPage({
             </Stack>
           </Paper>
         ) : null}
+
+        {assembly.typeRepr.includes("::storage_unit::StorageUnit") ? (
+          <Paper elevation={0} sx={{ px: { xs: 2.5, sm: 3 }, py: 3 }}>
+            <Stack spacing={2}>
+              <Typography component="h2" variant="h4">
+                Recent inventory activity
+              </Typography>
+              {(assembly.recentInventoryActivity ?? []).length === 0 ? (
+                <Typography color="text.secondary">
+                  No recent inventory activity found.
+                </Typography>
+              ) : (
+                (assembly.recentInventoryActivity ?? []).map((activity) => (
+                  <EventActivityCard
+                    key={`${activity.txDigest}:${activity.action}:${activity.itemId}`}
+                    href={getSuiscanTransactionUrl(activity.txDigest)}
+                    buttonAriaLabel="View inventory event on SuiScan"
+                    timestamp={formatTimestamp(activity.timestampMs)}
+                    route={<StorageInventoryActivityRoute activity={activity} />}
+                    metadata={
+                      activity.characterId ? (
+                        <PilotDashboardLink
+                          characterId={activity.characterId}
+                          characterName={activity.characterName}
+                          characterWalletAddress={activity.characterWalletAddress}
+                        />
+                      ) : undefined
+                    }
+                  />
+                ))
+              )}
+            </Stack>
+          </Paper>
+        ) : null}
       </Stack>
     </main>
   );
@@ -617,6 +652,25 @@ function GateEventRoute({
   );
 }
 
+function StorageInventoryActivityRoute({
+  activity,
+}: {
+  activity: StorageInventoryActivitySummary;
+}) {
+  return (
+    <Stack direction="row" spacing={1.25} alignItems="center">
+      <TypeIcon
+        iconUrl={activity.iconUrl}
+        label={activity.itemName}
+        size={24}
+      />
+      <Typography component="span" sx={{ fontWeight: 500 }}>
+        {formatStorageInventoryActivityLabel(activity)}
+      </Typography>
+    </Stack>
+  );
+}
+
 function AssemblyRouteLink({
   access,
   characterId,
@@ -646,6 +700,29 @@ function AssemblyRouteLink({
 
 function formatPilotLabel(characterId: string | null) {
   return `Pilot ${characterId ? formatShortAddress(characterId) : "Unavailable"}`;
+}
+
+function formatStorageInventoryActivityLabel(
+  activity: StorageInventoryActivitySummary,
+) {
+  return `${getStorageInventoryActionLabel(activity.action)} ${activity.quantity}x ${activity.itemName}`;
+}
+
+function getStorageInventoryActionLabel(action: StorageInventoryActivitySummary["action"]) {
+  switch (action) {
+    case "minted":
+      return "Minted";
+    case "burned":
+      return "Burned";
+    case "deposited":
+      return "Deposited";
+    case "withdrawn":
+      return "Withdrew";
+    case "destroyed":
+      return "Destroyed";
+    default:
+      return "Updated";
+  }
 }
 
 function PilotDashboardLink({

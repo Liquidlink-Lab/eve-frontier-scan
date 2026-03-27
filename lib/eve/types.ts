@@ -112,6 +112,7 @@ export interface AssemblyDetailSummary extends AssemblySummary {
   recentJumps?: GateJumpSummary[];
   recentPermits?: GatePermitSummary[];
   latestTurretPrioritySnapshot?: TurretPrioritySnapshotSummary | null;
+  recentInventoryActivity?: StorageInventoryActivitySummary[];
 }
 
 export interface GateJumpSummary {
@@ -185,6 +186,28 @@ export interface StorageInventorySummary {
 export interface StorageInventoriesSummary {
   ownerInventory: StorageInventorySummary;
   openStorageInventory: StorageInventorySummary;
+}
+
+export type StorageInventoryActivityAction =
+  | "minted"
+  | "burned"
+  | "deposited"
+  | "withdrawn"
+  | "destroyed";
+
+export interface StorageInventoryActivitySummary {
+  txDigest: string;
+  timestampMs: number;
+  action: StorageInventoryActivityAction;
+  itemId: number;
+  itemName: string;
+  iconUrl?: string | null;
+  quantity: number;
+  typeId: number;
+  characterId: string | null;
+  characterItemId: number | null;
+  characterName?: string | null;
+  characterWalletAddress?: string | null;
 }
 
 export interface ConnectedAssemblySummary {

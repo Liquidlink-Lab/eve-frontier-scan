@@ -11,6 +11,7 @@ import {
   discoverGateConfig,
 } from "@/lib/eve/discovery/gateConfigDiscovery";
 import { createSuiJsonRpcClient } from "@/lib/eve/discovery/suiRpcClient";
+import { discoverStorageInventoryActivity } from "@/lib/eve/discovery/storageInventoryActivityDiscovery";
 import { discoverStorageInventories } from "@/lib/eve/discovery/storageInventoryDiscovery";
 import { discoverTurretActivity } from "@/lib/eve/discovery/turretActivityDiscovery";
 import {
@@ -24,7 +25,8 @@ import { createLabelLookupsWithWorldTypes } from "@/lib/eve/lookups";
 import type { WalletSource } from "@/lib/eve/types";
 import { getWorldTypeLookup } from "@/lib/eve/worldTypes";
 
-const dashboardLabelLookups = createLabelLookupsWithWorldTypes(getWorldTypeLookup());
+const worldTypeLookup = getWorldTypeLookup();
+const dashboardLabelLookups = createLabelLookupsWithWorldTypes(worldTypeLookup);
 
 export const metadata: Metadata = {
   title: "Assembly Detail",
@@ -93,11 +95,20 @@ export default async function DashboardAssemblyDetailPage({
         ]),
       )
     : new Map<string, string>();
+  const isStorageAssembly = assembly.typeRepr.includes("::storage_unit::StorageUnit");
   const storageInventories = await discoverStorageInventories({
     assembly: assemblyStructure,
     graphQl,
-    worldTypes: getWorldTypeLookup(),
+    worldTypes: worldTypeLookup,
   });
+  const storageInventoryActivity = isStorageAssembly
+    ? await discoverStorageInventoryActivity({
+        storageUnitId: assembly.id,
+        packageId: eveEnv.eveWorldPackageId,
+        rpc,
+        worldTypes: worldTypeLookup,
+      })
+    : [];
   const isGateAssembly = assembly.typeRepr.includes("::gate::Gate");
   const isTurretAssembly = assembly.typeRepr.includes("::turret::Turret");
   const gateConfig = isGateAssembly
@@ -124,6 +135,14 @@ export default async function DashboardAssemblyDetailPage({
           ...gateActivity.recentJumps.map((jump) => jump.characterId),
           ...gateActivity.recentPermits.map((permit) => permit.characterId),
         ].filter((value): value is string => Boolean(value)),
+        rpc,
+      })
+    : new Map();
+  const storageActivityCharacterSummaries = isStorageAssembly
+    ? await discoverCharacterSummaries({
+        characterIds: storageInventoryActivity
+          .map((entry) => entry.characterId)
+          .filter((value): value is string => Boolean(value)),
         rpc,
       })
     : new Map();
@@ -168,6 +187,15 @@ export default async function DashboardAssemblyDetailPage({
         : null,
     })),
     latestTurretPrioritySnapshot: turretActivity,
+    recentInventoryActivity: storageInventoryActivity.map((entry) => ({
+      ...entry,
+      characterName: entry.characterId
+        ? storageActivityCharacterSummaries.get(entry.characterId)?.name ?? null
+        : null,
+      characterWalletAddress: entry.characterId
+        ? storageActivityCharacterSummaries.get(entry.characterId)?.walletAddress ?? null
+        : null,
+    })),
   };
 
   return (
