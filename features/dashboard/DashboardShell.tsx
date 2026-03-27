@@ -9,6 +9,7 @@ import { mapDiscoveryToCharacterSummaries } from "@/lib/eve/discovery/eveOwnersh
 import { fetchWalletStructureDiscovery } from "@/lib/eve/discovery/eveOwnershipClient";
 import { eveLabelLookups } from "@/lib/eve/lookups";
 import { parseWalletAccessSearchParams } from "@/lib/eve/routes";
+import DashboardBreadcrumbs from "./DashboardBreadcrumbs";
 import DashboardSearchForm from "./DashboardSearchForm";
 import Sidebar, { drawerWidth } from "./Sidebar";
 
@@ -61,25 +62,60 @@ export default function DashboardShell({
         }}
       >
         <Box
-          component="header"
           sx={{
             position: "sticky",
             top: 0,
             zIndex: 1200,
-            borderBottom: "1px solid rgba(148, 163, 184, 0.12)",
-            backgroundColor: "rgba(5, 7, 11, 0.84)",
-            backdropFilter: "blur(18px)",
           }}
         >
           <Box
+            component="header"
             sx={{
-              px: 3,
-              py: 1.5,
-              display: "flex",
-              justifyContent: "center",
+              borderBottom: "1px solid rgba(148, 163, 184, 0.12)",
+              backgroundColor: "rgba(5, 7, 11, 0.84)",
+              backdropFilter: "blur(18px)",
             }}
           >
-            <DashboardSearchForm />
+            <Box
+              sx={{
+                px: 3,
+                py: 1.25,
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <DashboardSearchForm />
+              </Box>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              borderBottom: "1px solid rgba(148, 163, 184, 0.12)",
+              backgroundColor: "rgba(8, 11, 17, 0.92)",
+              backdropFilter: "blur(18px)",
+            }}
+          >
+            <Box
+              sx={{
+                width: "100%",
+                maxWidth: 1200,
+                mx: "auto",
+                px: 3,
+                py: 1.1,
+              }}
+            >
+              <DashboardBreadcrumbs
+                access={access}
+                characterId={characterId}
+                characters={characters}
+                discovery={discoveryQuery.data}
+                pathname={pathname}
+              />
+            </Box>
           </Box>
         </Box>
         {children}

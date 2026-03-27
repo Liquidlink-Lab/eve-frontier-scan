@@ -1,4 +1,4 @@
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -126,7 +126,42 @@ describe("DashboardShell", () => {
     expect(
       screen.getByRole("textbox", { name: /inspect another address/i }),
     ).toBeInTheDocument();
+    const header = screen.getByRole("banner");
+    expect(
+      within(header).queryByRole("navigation", { name: /breadcrumbs/i }),
+    ).not.toBeInTheDocument();
+    const breadcrumbs = screen.getByRole("navigation", { name: /breadcrumbs/i });
+    expect(breadcrumbs).toBeInTheDocument();
+    expect(within(breadcrumbs).getByRole("link", { name: "Rhea Ancru" })).toHaveAttribute(
+      "href",
+      "/dashboard/0xchar-1/network-nodes?wallet=0x43acdc9cb9e379d5fab90effbaaa08896d943d9958a96d9df6f07c39025cd186&source=eve-vault",
+    );
+    expect(within(breadcrumbs).getByText("Network Nodes")).toBeInTheDocument();
     expect(screen.getByText("network nodes page")).toBeInTheDocument();
+  });
+
+  it("renders breadcrumb hierarchy for dashboard detail routes", async () => {
+    usePathname.mockReturnValue("/dashboard/0xchar-1/network-nodes/0xnode-1");
+
+    renderWithProviders(
+      <DashboardShell characterId="0xchar-1">
+        <div>node detail page</div>
+      </DashboardShell>,
+    );
+
+    const breadcrumbs = await screen.findByRole("navigation", {
+      name: /breadcrumbs/i,
+    });
+    expect(breadcrumbs).toBeInTheDocument();
+    expect(within(breadcrumbs).getByRole("link", { name: "Rhea Ancru" })).toHaveAttribute(
+      "href",
+      "/dashboard/0xchar-1/network-nodes?wallet=0x43acdc9cb9e379d5fab90effbaaa08896d943d9958a96d9df6f07c39025cd186&source=eve-vault",
+    );
+    expect(within(breadcrumbs).getByRole("link", { name: "Network Nodes" })).toHaveAttribute(
+      "href",
+      "/dashboard/0xchar-1/network-nodes?wallet=0x43acdc9cb9e379d5fab90effbaaa08896d943d9958a96d9df6f07c39025cd186&source=eve-vault",
+    );
+    expect(within(breadcrumbs).getByText("Power Spine")).toBeInTheDocument();
   });
 
   it("routes to a new lookup when the dashboard header search form is submitted", async () => {
