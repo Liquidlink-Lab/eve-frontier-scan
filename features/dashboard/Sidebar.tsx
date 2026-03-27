@@ -19,7 +19,6 @@ import {
   buildDashboardAssembliesHref,
   buildDashboardGatesHref,
   buildDashboardNetworkNodesHref,
-  buildDashboardShipsHref,
   getWalletSourceLabel,
 } from "@/lib/eve/routes";
 import { getSuiscanAddressUrl } from "@/lib/eve/suiscan";
@@ -40,6 +39,7 @@ export default function Sidebar({
   currentCharacterId,
   pathname,
 }: SidebarProps) {
+  const shipsEnabled = false;
   const currentCharacter =
     characters.find((character) => character.id === currentCharacterId) ?? null;
 
@@ -133,10 +133,8 @@ export default function Sidebar({
               <ListItemText primary="Assemblies" />
             </ListItemButton>
             <ListItemButton
-              component={Link}
-              href={access ? buildDashboardShipsHref(currentCharacterId, access) : "#"}
               selected={pathname.includes("/ships")}
-              disabled={!access}
+              disabled={!shipsEnabled}
             >
               <ListItemText primary="Ships" />
             </ListItemButton>

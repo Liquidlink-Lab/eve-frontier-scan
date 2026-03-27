@@ -4,9 +4,12 @@ import { Box, Paper, Stack, Typography } from "@mui/material";
 import { normalizeSuiAddress } from "@/lib/eve/address";
 import { mapDiscoveryToNetworkNodeDetail } from "@/lib/eve/discovery/eveOwnershipMappers";
 import { fetchWalletStructureDiscovery } from "@/lib/eve/discovery/eveOwnershipClient";
-import { eveLabelLookups } from "@/lib/eve/lookups";
+import { createLabelLookupsWithWorldTypes } from "@/lib/eve/lookups";
 import type { WalletSource } from "@/lib/eve/types";
+import { getWorldTypeLookup } from "@/lib/eve/worldTypes";
 import NetworkNodeDetailPage from "@/features/network-nodes/NetworkNodeDetailPage";
+
+const dashboardLabelLookups = createLabelLookupsWithWorldTypes(getWorldTypeLookup());
 
 export const metadata: Metadata = {
   title: "Network Node Detail",
@@ -45,7 +48,7 @@ export default async function DashboardNetworkNodeDetailPage({
     discovery,
     characterId,
     nodeId,
-    eveLabelLookups,
+    dashboardLabelLookups,
   );
 
   if (!networkNode) {

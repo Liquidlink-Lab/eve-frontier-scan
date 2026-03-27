@@ -225,12 +225,7 @@ function mapConnectedAssembly(
 function groupConnectedAssemblies(
   assemblies: ConnectedAssemblySummary[],
 ): ConnectedAssemblyGroup[] {
-  const orderedLabels = [
-    "Gate",
-    "Storage",
-    "Shipyard-like / ship-support",
-    "Other",
-  ] as const;
+  const orderedLabels = ["Gate", "Storage", "Turret", "Other"] as const;
   const groups = new Map<string, ConnectedAssemblySummary[]>(
     orderedLabels.map((label) => [label, []]),
   );
@@ -246,7 +241,7 @@ function groupConnectedAssemblies(
 }
 
 function getConnectedAssemblyGroupLabel(typeLabel: string) {
-  if (typeLabel === "Gate") {
+  if (typeLabel.includes("Gate")) {
     return "Gate";
   }
 
@@ -254,13 +249,8 @@ function getConnectedAssemblyGroupLabel(typeLabel: string) {
     return "Storage";
   }
 
-  if (
-    typeLabel === "Manufacturing" ||
-    typeLabel.includes("Shipyard") ||
-    typeLabel.includes("Ship") ||
-    typeLabel.includes("Hangar")
-  ) {
-    return "Shipyard-like / ship-support";
+  if (typeLabel.includes("Turret")) {
+    return "Turret";
   }
 
   return "Other";

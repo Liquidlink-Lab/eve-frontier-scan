@@ -21,7 +21,7 @@ const networkNode: NetworkNodeDetailSummary = {
     y: "25",
     z: "3000",
   },
-  connectedAssemblyCount: 4,
+  connectedAssemblyCount: 5,
   status: "online",
   fuelPercent: 28,
   fuelEtaMs: 3_240_000_000,
@@ -38,6 +38,12 @@ const networkNode: NetworkNodeDetailSummary = {
       name: "Vault Alpha",
       typeLabel: "Heavy Storage",
       status: "online",
+    },
+    {
+      id: "0xturret-1",
+      name: "Bastion One",
+      typeLabel: "Smart Turret",
+      status: "offline",
     },
   ],
   connectedAssemblyGroups: [
@@ -64,8 +70,15 @@ const networkNode: NetworkNodeDetailSummary = {
       ],
     },
     {
-      label: "Shipyard-like / ship-support",
-      assemblies: [],
+      label: "Turret",
+      assemblies: [
+        {
+          id: "0xturret-1",
+          name: "Bastion One",
+          typeLabel: "Smart Turret",
+          status: "offline",
+        },
+      ],
     },
     {
       label: "Other",
@@ -98,12 +111,21 @@ describe("NetworkNodeDetailPage", () => {
     expect(screen.getByText("30013131")).toBeInTheDocument();
     expect(screen.getByText("-100, 25, 3000")).toBeInTheDocument();
     expect(screen.getByText("28%")).toBeInTheDocument();
+    expect(screen.getByRole("progressbar", { name: "Fuel level" })).toHaveAttribute(
+      "aria-valuenow",
+      "28",
+    );
     expect(screen.getByText("37d 12h")).toBeInTheDocument();
     expect(screen.getByText("999")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Gate" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Storage" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Turret" })).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "Shipyard-like / ship-support" }),
+    ).not.toBeInTheDocument();
     expect(screen.getByText("Argent Gate")).toBeInTheDocument();
     expect(screen.getByText("Vault Alpha")).toBeInTheDocument();
+    expect(screen.getByText("Bastion One")).toBeInTheDocument();
   });
 
   it("renders detail links for each related assembly when character context is available", () => {
@@ -118,7 +140,7 @@ describe("NetworkNodeDetailPage", () => {
 
     const detailLinks = screen.getAllByRole("link", { name: "Details" });
 
-    expect(detailLinks).toHaveLength(2);
+    expect(detailLinks).toHaveLength(3);
     expect(detailLinks[0]).toHaveAttribute(
       "href",
       buildDashboardAssemblyDetailHref("0xcharacter-1", "0xgate-1", access),
@@ -126,6 +148,10 @@ describe("NetworkNodeDetailPage", () => {
     expect(detailLinks[1]).toHaveAttribute(
       "href",
       buildDashboardAssemblyDetailHref("0xcharacter-1", "0xstorage-1", access),
+    );
+    expect(detailLinks[2]).toHaveAttribute(
+      "href",
+      buildDashboardAssemblyDetailHref("0xcharacter-1", "0xturret-1", access),
     );
   });
 });

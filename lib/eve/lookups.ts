@@ -1,4 +1,4 @@
-import type { LabelLookups } from "./types";
+import type { LabelLookups, WorldTypeRecord } from "./types";
 
 export const eveLabelLookups: LabelLookups = {
   tribeNames: new Map([
@@ -13,3 +13,20 @@ export const eveLabelLookups: LabelLookups = {
     [88092, "Network Node"],
   ]),
 };
+
+export function createLabelLookupsWithWorldTypes(
+  worldTypes: Map<number, WorldTypeRecord>,
+): LabelLookups {
+  const typeNames = new Map(eveLabelLookups.typeNames);
+
+  for (const [typeId, worldType] of worldTypes) {
+    if (!typeNames.has(typeId)) {
+      typeNames.set(typeId, worldType.name);
+    }
+  }
+
+  return {
+    tribeNames: eveLabelLookups.tribeNames,
+    typeNames,
+  };
+}

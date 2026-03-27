@@ -54,6 +54,14 @@ export interface LabelLookups {
   typeNames: Map<number, string>;
 }
 
+export interface WorldTypeRecord {
+  id: number;
+  name: string;
+  groupName?: string;
+  categoryName?: string;
+  iconUrl?: string;
+}
+
 export interface CharacterSummary {
   id: string;
   name: string;
@@ -74,6 +82,20 @@ export interface AssemblySummary {
   typeLabel: string;
   typeRepr: string;
   status: NetworkNodeStatus;
+}
+
+export interface StorageInventoryItemSummary {
+  itemId: number;
+  itemName: string;
+  quantity: number;
+  typeId: number;
+  volume: number;
+}
+
+export interface StorageInventorySummary {
+  maxCapacity: number | null;
+  usedCapacity: number | null;
+  items: StorageInventoryItemSummary[];
 }
 
 export interface ConnectedAssemblySummary {

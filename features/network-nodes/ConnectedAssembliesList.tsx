@@ -44,7 +44,12 @@ export default function ConnectedAssembliesList({
                     sx={{ my: 0 }}
                   />
                   <Stack direction="row" spacing={1} alignItems="center">
-                    <Chip label={assembly.status} size="small" variant="outlined" />
+                    <Chip
+                      label={assembly.status}
+                      size="small"
+                      variant="outlined"
+                      color={assembly.status === "online" ? "success" : "default"}
+                    />
                     {characterId ? (
                       <LinkButton
                         href={buildDashboardAssemblyDetailHref(

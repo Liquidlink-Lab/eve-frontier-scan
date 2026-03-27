@@ -1,5 +1,6 @@
 import {
   Chip,
+  LinearProgress,
   Stack,
   TableCell,
   TableRow,
@@ -8,6 +9,7 @@ import {
 
 import LinkButton from "@/features/navigation/LinkButton";
 import { formatFuelEta } from "@/lib/eve/fuel";
+import { clampPercentage, formatPercentage } from "@/lib/eve/percent";
 import { buildDashboardNetworkNodeDetailHref } from "@/lib/eve/routes";
 import type {
   NetworkNodeSummary,
@@ -40,10 +42,16 @@ export default function NetworkNodeTableRow({
       </TableCell>
       <TableCell>{networkNode.systemName ?? "Unknown"}</TableCell>
       <TableCell>
-        <Stack spacing={0.25}>
-          <Typography>
-            {networkNode.fuelPercent === null ? "Unavailable" : `${networkNode.fuelPercent}%`}
-          </Typography>
+        <Stack spacing={0.5}>
+          <Typography>{formatPercentage(networkNode.fuelPercent)}</Typography>
+          {networkNode.fuelPercent !== null ? (
+            <LinearProgress
+              aria-label="Fuel level"
+              variant="determinate"
+              value={clampPercentage(networkNode.fuelPercent)}
+              sx={{ height: 6, borderRadius: 999 }}
+            />
+          ) : null}
           <Typography variant="body2" color="text.secondary">
             ETA {formatFuelEta(networkNode.fuelEtaMs)}
           </Typography>

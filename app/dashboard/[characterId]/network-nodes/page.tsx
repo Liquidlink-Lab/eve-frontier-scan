@@ -7,8 +7,11 @@ import {
 } from "@/lib/eve/discovery/eveOwnershipMappers";
 import { fetchWalletStructureDiscovery } from "@/lib/eve/discovery/eveOwnershipClient";
 import NetworkNodesPage from "@/features/network-nodes/NetworkNodesPage";
-import { eveLabelLookups } from "@/lib/eve/lookups";
+import { createLabelLookupsWithWorldTypes } from "@/lib/eve/lookups";
 import type { WalletSource } from "@/lib/eve/types";
+import { getWorldTypeLookup } from "@/lib/eve/worldTypes";
+
+const dashboardLabelLookups = createLabelLookupsWithWorldTypes(getWorldTypeLookup());
 
 export const metadata: Metadata = {
   title: "Network Nodes",
@@ -55,7 +58,7 @@ export default async function DashboardNetworkNodesPage({
   const networkNodes = mapDiscoveryToNetworkNodes(
     discovery,
     characterId,
-    eveLabelLookups,
+    dashboardLabelLookups,
   );
 
   return (

@@ -1,0 +1,2390 @@
+{
+  "72244": {
+    "id": 72244,
+    "name": "Feral Data",
+    "groupName": "Rogue Drone Analysis Data",
+    "categoryName": "Commodity"
+  },
+  "72960": {
+    "id": 72960,
+    "name": "Hull Repairer",
+    "groupName": "Hull Repair Unit",
+    "categoryName": "Module"
+  },
+  "73192": {
+    "id": 73192,
+    "name": "Ophidian Sensor Cloak",
+    "groupName": "License",
+    "categoryName": "Commodity"
+  },
+  "73210": {
+    "id": 73210,
+    "name": "Askur Access Code Cypher",
+    "groupName": "Commodities",
+    "categoryName": "Commodity"
+  },
+  "73264": {
+    "id": 73264,
+    "name": "Askur Hive Orders",
+    "groupName": "Commodities",
+    "categoryName": "Commodity"
+  },
+  "73314": {
+    "id": 73314,
+    "name": "Settler Intelligence Briefing",
+    "groupName": "General",
+    "categoryName": "Commodity"
+  },
+  "77484": {
+    "id": 77484,
+    "name": "Crude Extractor",
+    "groupName": "Crude Extractor",
+    "categoryName": "Module"
+  },
+  "77518": {
+    "id": 77518,
+    "name": "Lens 3X",
+    "groupName": "Crude Mining Lens",
+    "categoryName": "Charge"
+  },
+  "77728": {
+    "id": 77728,
+    "name": "Sophrogon",
+    "groupName": "Mineral",
+    "categoryName": "Material"
+  },
+  "77729": {
+    "id": 77729,
+    "name": "Rough Old Crude Matter",
+    "groupName": "Rift",
+    "categoryName": "Asteroid"
+  },
+  "77753": {
+    "id": 77753,
+    "name": "Embark",
+    "groupName": "Hydrogen Engines",
+    "categoryName": "Module"
+  },
+  "77800": {
+    "id": 77800,
+    "name": "Feldspar Crystals",
+    "groupName": "Char Ores",
+    "categoryName": "Asteroid"
+  },
+  "77801": {
+    "id": 77801,
+    "name": "Nickel-Iron Veins",
+    "groupName": "Mineral",
+    "categoryName": "Material"
+  },
+  "77803": {
+    "id": 77803,
+    "name": "Silicon Dust",
+    "groupName": "Mineral",
+    "categoryName": "Material"
+  },
+  "77804": {
+    "id": 77804,
+    "name": "Tholin Aggregates",
+    "groupName": "Mineral",
+    "categoryName": "Material"
+  },
+  "77805": {
+    "id": 77805,
+    "name": "Platinum-Group Veins ",
+    "groupName": "Mineral",
+    "categoryName": "Material"
+  },
+  "77810": {
+    "id": 77810,
+    "name": "Platinum-Palladium Matrix",
+    "groupName": "Slag Ores",
+    "categoryName": "Asteroid"
+  },
+  "77811": {
+    "id": 77811,
+    "name": "Hydrated Sulfide Matrix",
+    "groupName": "Comet Ores",
+    "categoryName": "Asteroid"
+  },
+  "77818": {
+    "id": 77818,
+    "name": "Unstable Fuel",
+    "groupName": "Hydrogen Fuel",
+    "categoryName": "Commodity"
+  },
+  "77852": {
+    "id": 77852,
+    "name": "Small Cutting Laser",
+    "groupName": "Asteroid Mining Laser",
+    "categoryName": "Module"
+  },
+  "77917": {
+    "id": 77917,
+    "name": "Heavy Storage",
+    "groupName": "Storage",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/77917.png"
+  },
+  "78416": {
+    "id": 78416,
+    "name": "Apocalypse Protocol Frame",
+    "groupName": "Exotronic Frames",
+    "categoryName": "Commodity"
+  },
+  "78417": {
+    "id": 78417,
+    "name": "Bastion Program Frame",
+    "groupName": "Exotronic Frames",
+    "categoryName": "Commodity"
+  },
+  "78418": {
+    "id": 78418,
+    "name": "Nomad Program Frame",
+    "groupName": "Exotronic Frames",
+    "categoryName": "Commodity"
+  },
+  "78420": {
+    "id": 78420,
+    "name": "Archangel Protocol Frame",
+    "groupName": "Exotronic Frames",
+    "categoryName": "Commodity"
+  },
+  "78421": {
+    "id": 78421,
+    "name": "Exterminata Protocol Frame",
+    "groupName": "Exotronic Frames",
+    "categoryName": "Commodity"
+  },
+  "78422": {
+    "id": 78422,
+    "name": "Equilibrium Program Frame",
+    "groupName": "Exotronic Frames",
+    "categoryName": "Commodity"
+  },
+  "78423": {
+    "id": 78423,
+    "name": "Water Ice",
+    "groupName": "Mineral",
+    "categoryName": "Material"
+  },
+  "78426": {
+    "id": 78426,
+    "name": "Iridosmine Nodules",
+    "groupName": "Ingot Ores",
+    "categoryName": "Asteroid"
+  },
+  "78429": {
+    "id": 78429,
+    "name": "Deep-Core Carbon Ore",
+    "groupName": "Deep-Core Carbon Asteroid",
+    "categoryName": "Asteroid"
+  },
+  "78434": {
+    "id": 78434,
+    "name": "Rough Young Crude Matter",
+    "groupName": "Rift",
+    "categoryName": "Asteroid"
+  },
+  "78435": {
+    "id": 78435,
+    "name": "Eupraxite",
+    "groupName": "Mineral",
+    "categoryName": "Material"
+  },
+  "78437": {
+    "id": 78437,
+    "name": "EU-90 Fuel",
+    "groupName": "Crude Fuel",
+    "categoryName": "Commodity",
+    "iconUrl": "https://artifacts.evefrontier.com/types/78437.png"
+  },
+  "78446": {
+    "id": 78446,
+    "name": "Methane Ice Shards",
+    "groupName": "Dewdrop Ores",
+    "categoryName": "Asteroid"
+  },
+  "78447": {
+    "id": 78447,
+    "name": "Primitive Kerogen Matrix",
+    "groupName": "Ember Ores",
+    "categoryName": "Asteroid"
+  },
+  "78448": {
+    "id": 78448,
+    "name": "Solidifying Core Aestasium",
+    "groupName": "Glint Ores",
+    "categoryName": "Asteroid"
+  },
+  "78449": {
+    "id": 78449,
+    "name": "Tholin Nodules",
+    "groupName": "Soot Ores",
+    "categoryName": "Asteroid"
+  },
+  "78450": {
+    "id": 78450,
+    "name": "Fluid Core Hermetite",
+    "groupName": "Synthetic Hermetite",
+    "categoryName": "Asteroid"
+  },
+  "78451": {
+    "id": 78451,
+    "name": "Crystallizing Core Hermetite",
+    "groupName": "Synthetic Hermetite",
+    "categoryName": "Asteroid"
+  },
+  "78452": {
+    "id": 78452,
+    "name": "Stale Core Hermetite",
+    "groupName": "Synthetic Hermetite",
+    "categoryName": "Asteroid"
+  },
+  "78453": {
+    "id": 78453,
+    "name": "Sediment Core Hermetite",
+    "groupName": "Synthetic Hermetite",
+    "categoryName": "Asteroid"
+  },
+  "78490": {
+    "id": 78490,
+    "name": "Velocity CD81",
+    "groupName": "Crude Engines",
+    "categoryName": "Module"
+  },
+  "78502": {
+    "id": 78502,
+    "name": "Velocity CD82",
+    "groupName": "Crude Engines",
+    "categoryName": "Module"
+  },
+  "78504": {
+    "id": 78504,
+    "name": "Tempo CD43",
+    "groupName": "Crude Engines",
+    "categoryName": "Module"
+  },
+  "78506": {
+    "id": 78506,
+    "name": "Celerity CD01",
+    "groupName": "Crude Engines",
+    "categoryName": "Module"
+  },
+  "78507": {
+    "id": 78507,
+    "name": "Celerity CD02",
+    "groupName": "Crude Engines",
+    "categoryName": "Module"
+  },
+  "78508": {
+    "id": 78508,
+    "name": "Celerity CD03",
+    "groupName": "Crude Engines",
+    "categoryName": "Module"
+  },
+  "78510": {
+    "id": 78510,
+    "name": "Tempo CD42",
+    "groupName": "Crude Engines",
+    "categoryName": "Module"
+  },
+  "78511": {
+    "id": 78511,
+    "name": "Tempo CD41",
+    "groupName": "Crude Engines",
+    "categoryName": "Module"
+  },
+  "78515": {
+    "id": 78515,
+    "name": "SOF-80 Fuel",
+    "groupName": "Crude Fuel",
+    "categoryName": "Commodity",
+    "iconUrl": "https://artifacts.evefrontier.com/types/78515.png"
+  },
+  "78516": {
+    "id": 78516,
+    "name": "EU-40 Fuel",
+    "groupName": "Crude Fuel",
+    "categoryName": "Commodity",
+    "iconUrl": "https://artifacts.evefrontier.com/types/78516.png"
+  },
+  "81609": {
+    "id": 81609,
+    "name": "USV",
+    "groupName": "Frigate",
+    "categoryName": "Ship"
+  },
+  "81611": {
+    "id": 81611,
+    "name": "Chumaq",
+    "groupName": "Combat Battlecruiser",
+    "categoryName": "Ship"
+  },
+  "81656": {
+    "id": 81656,
+    "name": "Tuho 7",
+    "groupName": "Energy Lance",
+    "categoryName": "Module"
+  },
+  "81657": {
+    "id": 81657,
+    "name": "Xoru 7",
+    "groupName": "Energy Lance",
+    "categoryName": "Module"
+  },
+  "81658": {
+    "id": 81658,
+    "name": "EM Disintegrator Charge (S)",
+    "groupName": "EM Disintegrator Charge ",
+    "categoryName": "Charge"
+  },
+  "81808": {
+    "id": 81808,
+    "name": "TADES",
+    "groupName": "Destroyer",
+    "categoryName": "Ship"
+  },
+  "81846": {
+    "id": 81846,
+    "name": "Sojourn",
+    "groupName": "Hydrogen Engines",
+    "categoryName": "Module"
+  },
+  "81904": {
+    "id": 81904,
+    "name": "MCF",
+    "groupName": "Frigate",
+    "categoryName": "Ship"
+  },
+  "81972": {
+    "id": 81972,
+    "name": "Base Coilgun (S)",
+    "groupName": "Mass Driver Weapon",
+    "categoryName": "Module"
+  },
+  "81974": {
+    "id": 81974,
+    "name": "Base Autocannon (S)",
+    "groupName": "Projectile Weapon",
+    "categoryName": "Module"
+  },
+  "82028": {
+    "id": 82028,
+    "name": "Base Coilgun (M)",
+    "groupName": "Mass Driver Weapon",
+    "categoryName": "Module"
+  },
+  "82030": {
+    "id": 82030,
+    "name": "Base Howitzer (M)",
+    "groupName": "Projectile Weapon",
+    "categoryName": "Module"
+  },
+  "82032": {
+    "id": 82032,
+    "name": "Base Rapid Plasma (S)",
+    "groupName": "Plasma Weapon",
+    "categoryName": "Module"
+  },
+  "82033": {
+    "id": 82033,
+    "name": "Rapid Plasma (M)",
+    "groupName": "Plasma Weapon",
+    "categoryName": "Module"
+  },
+  "82084": {
+    "id": 82084,
+    "name": "Tier 2 Autocannon (S)",
+    "groupName": "Projectile Weapon",
+    "categoryName": "Module"
+  },
+  "82085": {
+    "id": 82085,
+    "name": "Tier 3 Autocannon (S)",
+    "groupName": "Projectile Weapon",
+    "categoryName": "Module"
+  },
+  "82086": {
+    "id": 82086,
+    "name": "Tier 2 Rapid Plasma (S)",
+    "groupName": "Plasma Weapon",
+    "categoryName": "Module"
+  },
+  "82087": {
+    "id": 82087,
+    "name": "Tier 3 Rapid Plasma (S)",
+    "groupName": "Plasma Weapon",
+    "categoryName": "Module"
+  },
+  "82088": {
+    "id": 82088,
+    "name": "Tier 2 Coilgun (S)",
+    "groupName": "Mass Driver Weapon",
+    "categoryName": "Module"
+  },
+  "82089": {
+    "id": 82089,
+    "name": "Tier 3 Coilgun (S)",
+    "groupName": "Mass Driver Weapon",
+    "categoryName": "Module"
+  },
+  "82090": {
+    "id": 82090,
+    "name": "Tuho 9",
+    "groupName": "Energy Lance",
+    "categoryName": "Module"
+  },
+  "82091": {
+    "id": 82091,
+    "name": "Tuho S",
+    "groupName": "Energy Lance",
+    "categoryName": "Module"
+  },
+  "82092": {
+    "id": 82092,
+    "name": "Tier 2 Coilgun (M)",
+    "groupName": "Mass Driver Weapon",
+    "categoryName": "Module"
+  },
+  "82093": {
+    "id": 82093,
+    "name": "Tier 3 Coilgun (M)",
+    "groupName": "Mass Driver Weapon",
+    "categoryName": "Module"
+  },
+  "82094": {
+    "id": 82094,
+    "name": "Xoru 9",
+    "groupName": "Energy Lance",
+    "categoryName": "Module"
+  },
+  "82095": {
+    "id": 82095,
+    "name": "Xoru S",
+    "groupName": "Energy Lance",
+    "categoryName": "Module"
+  },
+  "82096": {
+    "id": 82096,
+    "name": "Tier 2 Rapid Plasma (M)",
+    "groupName": "Plasma Weapon",
+    "categoryName": "Module"
+  },
+  "82097": {
+    "id": 82097,
+    "name": "Tier 3 Rapid Plasma (M)",
+    "groupName": "Plasma Weapon",
+    "categoryName": "Module"
+  },
+  "82098": {
+    "id": 82098,
+    "name": "Tier 2 Howitzer (M)",
+    "groupName": "Projectile Weapon",
+    "categoryName": "Module"
+  },
+  "82099": {
+    "id": 82099,
+    "name": "Tier 3 Howitzer (M)",
+    "groupName": "Projectile Weapon",
+    "categoryName": "Module"
+  },
+  "82126": {
+    "id": 82126,
+    "name": "AC Gyrojet Ammo 2 (S)",
+    "groupName": "Gyrojet Ammunition",
+    "categoryName": "Charge"
+  },
+  "82127": {
+    "id": 82127,
+    "name": "AC Gyrojet Ammo 3 (S)",
+    "groupName": "Gyrojet Ammunition",
+    "categoryName": "Charge"
+  },
+  "82128": {
+    "id": 82128,
+    "name": "AC Gyrojet Ammo 1 (S) ",
+    "groupName": "Gyrojet Ammunition",
+    "categoryName": "Charge"
+  },
+  "82130": {
+    "id": 82130,
+    "name": "Rapid Plasma Ammo 1 (S)",
+    "groupName": "Plasma Charge",
+    "categoryName": "Charge"
+  },
+  "82131": {
+    "id": 82131,
+    "name": "Rapid Plasma Ammo 2 (S)",
+    "groupName": "Plasma Charge",
+    "categoryName": "Charge"
+  },
+  "82132": {
+    "id": 82132,
+    "name": "Rapid Plasma Ammo 1 (M)",
+    "groupName": "Plasma Charge",
+    "categoryName": "Charge"
+  },
+  "82133": {
+    "id": 82133,
+    "name": "Coilgun Ammo 1 (S)",
+    "groupName": "Coilgun Charge",
+    "categoryName": "Charge"
+  },
+  "82134": {
+    "id": 82134,
+    "name": "Coilgun Ammo 1 (M)",
+    "groupName": "Coilgun Charge",
+    "categoryName": "Charge"
+  },
+  "82137": {
+    "id": 82137,
+    "name": "EM Disintegrator Charge (M)",
+    "groupName": "EM Disintegrator Charge ",
+    "categoryName": "Charge"
+  },
+  "82140": {
+    "id": 82140,
+    "name": "Howitzer Ammo 1 (M)",
+    "groupName": "Projectile Ammo",
+    "categoryName": "Charge"
+  },
+  "82410": {
+    "id": 82410,
+    "name": "Explosive Nanite Sequencer",
+    "groupName": "Nanitic Armor Weave Sequencer",
+    "categoryName": "Charge"
+  },
+  "82411": {
+    "id": 82411,
+    "name": "EM Nanite Sequencer",
+    "groupName": "Nanitic Armor Weave Sequencer",
+    "categoryName": "Charge"
+  },
+  "82412": {
+    "id": 82412,
+    "name": "Thermal Nanite Sequencer",
+    "groupName": "Nanitic Armor Weave Sequencer",
+    "categoryName": "Charge"
+  },
+  "82413": {
+    "id": 82413,
+    "name": "Kinetic Nanite Sequencer",
+    "groupName": "Nanitic Armor Weave Sequencer",
+    "categoryName": "Charge"
+  },
+  "82424": {
+    "id": 82424,
+    "name": "HAF",
+    "groupName": "Frigate",
+    "categoryName": "Ship"
+  },
+  "82425": {
+    "id": 82425,
+    "name": "LAI",
+    "groupName": "Frigate",
+    "categoryName": "Ship"
+  },
+  "82426": {
+    "id": 82426,
+    "name": "LORHA",
+    "groupName": "Frigate",
+    "categoryName": "Ship"
+  },
+  "82430": {
+    "id": 82430,
+    "name": "MAUL",
+    "groupName": "Cruiser",
+    "categoryName": "Ship"
+  },
+  "82647": {
+    "id": 82647,
+    "name": "Bulky Armor Plates II",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "82648": {
+    "id": 82648,
+    "name": "Coated Armor Plates II",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "82649": {
+    "id": 82649,
+    "name": "Reactive Armor Plates II",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "82650": {
+    "id": 82650,
+    "name": "Nimble Armor Plates II",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "82651": {
+    "id": 82651,
+    "name": "Systematic Armor Restorer II",
+    "groupName": "Armor Repair Unit",
+    "categoryName": "Module"
+  },
+  "82652": {
+    "id": 82652,
+    "name": "Bulwark Shield Generator II",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "82653": {
+    "id": 82653,
+    "name": "Attuned Shield Generator II",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "82654": {
+    "id": 82654,
+    "name": "Reinforced Shield Generator II",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "82667": {
+    "id": 82667,
+    "name": "Shield Restorer II",
+    "groupName": "Shield Recharger",
+    "categoryName": "Module"
+  },
+  "82681": {
+    "id": 82681,
+    "name": "Afterburner II",
+    "groupName": "Propulsion Module",
+    "categoryName": "Module"
+  },
+  "82682": {
+    "id": 82682,
+    "name": "Warp Entangler II",
+    "groupName": "Warp Scrambler",
+    "categoryName": "Module"
+  },
+  "82683": {
+    "id": 82683,
+    "name": "Stasis Net II",
+    "groupName": "Stasis Web",
+    "categoryName": "Module"
+  },
+  "82915": {
+    "id": 82915,
+    "name": "Afterburner IV",
+    "groupName": "Propulsion Module",
+    "categoryName": "Module"
+  },
+  "83421": {
+    "id": 83421,
+    "name": "Bulky Armor Plates III",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "83423": {
+    "id": 83423,
+    "name": "Bulky Armor Plates V",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "83425": {
+    "id": 83425,
+    "name": "Coated Armor Plates III",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "83426": {
+    "id": 83426,
+    "name": "Coated Armor Plates IV",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "83429": {
+    "id": 83429,
+    "name": "Reactive Armor Plates III",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "83430": {
+    "id": 83430,
+    "name": "Reactive Armor Plates IV",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "83433": {
+    "id": 83433,
+    "name": "Nimble Armor Plates III",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "83434": {
+    "id": 83434,
+    "name": "Nimble Armor Plates IV",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "83437": {
+    "id": 83437,
+    "name": "Systematic Armor Restorer III",
+    "groupName": "Armor Repair Unit",
+    "categoryName": "Module"
+  },
+  "83438": {
+    "id": 83438,
+    "name": "Systematic Armor Restorer IV",
+    "groupName": "Armor Repair Unit",
+    "categoryName": "Module"
+  },
+  "83441": {
+    "id": 83441,
+    "name": "Adaptive Nanitic Armor Weave II",
+    "groupName": "Flex Armor Hardener",
+    "categoryName": "Module"
+  },
+  "83442": {
+    "id": 83442,
+    "name": "Adaptive Nanitic Armor Weave III",
+    "groupName": "Flex Armor Hardener",
+    "categoryName": "Module"
+  },
+  "83443": {
+    "id": 83443,
+    "name": "Adaptive Nanitic Armor Weave IV",
+    "groupName": "Flex Armor Hardener",
+    "categoryName": "Module"
+  },
+  "83448": {
+    "id": 83448,
+    "name": "Bulwark Shield Generator III",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "83449": {
+    "id": 83449,
+    "name": "Bulwark Shield Generator IV",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "83450": {
+    "id": 83450,
+    "name": "Attuned Shield Generator III",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "83451": {
+    "id": 83451,
+    "name": "Attuned Shield Generator IV",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "83456": {
+    "id": 83456,
+    "name": "Reinforced Shield Generator III",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "83457": {
+    "id": 83457,
+    "name": "Reinforced Shield Generator IV",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "83458": {
+    "id": 83458,
+    "name": "Shield Restorer III",
+    "groupName": "Shield Recharger",
+    "categoryName": "Module"
+  },
+  "83459": {
+    "id": 83459,
+    "name": "Shield Restorer IV",
+    "groupName": "Shield Recharger",
+    "categoryName": "Module"
+  },
+  "83463": {
+    "id": 83463,
+    "name": "Synthetic Mining Lens",
+    "groupName": "Asteroid Mining Crystal",
+    "categoryName": "Charge"
+  },
+  "83497": {
+    "id": 83497,
+    "name": "Cargo Grid II",
+    "groupName": "Expanded Cargohold",
+    "categoryName": "Module"
+  },
+  "83498": {
+    "id": 83498,
+    "name": "Cargo Grid III",
+    "groupName": "Expanded Cargohold",
+    "categoryName": "Module"
+  },
+  "83499": {
+    "id": 83499,
+    "name": "Cargo Grid IV",
+    "groupName": "Expanded Cargohold",
+    "categoryName": "Module"
+  },
+  "83500": {
+    "id": 83500,
+    "name": "Cargo Grid V",
+    "groupName": "Expanded Cargohold",
+    "categoryName": "Module"
+  },
+  "83501": {
+    "id": 83501,
+    "name": "Cargo Grid VI",
+    "groupName": "Expanded Cargohold",
+    "categoryName": "Module"
+  },
+  "83516": {
+    "id": 83516,
+    "name": "Warp Entangler III",
+    "groupName": "Warp Scrambler",
+    "categoryName": "Module"
+  },
+  "83517": {
+    "id": 83517,
+    "name": "Warp Entangler IV",
+    "groupName": "Warp Scrambler",
+    "categoryName": "Module"
+  },
+  "83518": {
+    "id": 83518,
+    "name": "Warp Entangler V",
+    "groupName": "Warp Scrambler",
+    "categoryName": "Module"
+  },
+  "83519": {
+    "id": 83519,
+    "name": "Warp Entangler VI",
+    "groupName": "Warp Scrambler",
+    "categoryName": "Module"
+  },
+  "83520": {
+    "id": 83520,
+    "name": "Stasis Net III",
+    "groupName": "Stasis Web",
+    "categoryName": "Module"
+  },
+  "83521": {
+    "id": 83521,
+    "name": "Stasis Net IV",
+    "groupName": "Stasis Web",
+    "categoryName": "Module"
+  },
+  "83522": {
+    "id": 83522,
+    "name": "Stasis Net V",
+    "groupName": "Stasis Web",
+    "categoryName": "Module"
+  },
+  "83523": {
+    "id": 83523,
+    "name": "Stasis Net VI",
+    "groupName": "Stasis Web",
+    "categoryName": "Module"
+  },
+  "83525": {
+    "id": 83525,
+    "name": "Purified Moon Cutting Laser",
+    "groupName": "Asteroid Mining Laser",
+    "categoryName": "Module"
+  },
+  "83528": {
+    "id": 83528,
+    "name": "Medium Cutting Laser",
+    "groupName": "Asteroid Mining Laser",
+    "categoryName": "Module"
+  },
+  "83536": {
+    "id": 83536,
+    "name": "Afterburner III",
+    "groupName": "Propulsion Module",
+    "categoryName": "Module"
+  },
+  "83613": {
+    "id": 83613,
+    "name": "Thermal-electro Nanitic Brace II",
+    "groupName": "Nanitic Brace",
+    "categoryName": "Module"
+  },
+  "83614": {
+    "id": 83614,
+    "name": "Thermal-electro Nanitic Brace III",
+    "groupName": "Nanitic Brace",
+    "categoryName": "Module"
+  },
+  "83615": {
+    "id": 83615,
+    "name": "Thermal-electro Nanitic Brace IV ",
+    "groupName": "Nanitic Brace",
+    "categoryName": "Module"
+  },
+  "83618": {
+    "id": 83618,
+    "name": "Explonetic-electro Nanitic Brace II ",
+    "groupName": "Nanitic Brace",
+    "categoryName": "Module"
+  },
+  "83619": {
+    "id": 83619,
+    "name": "Explonetic-electro Nanitic Brace III",
+    "groupName": "Nanitic Brace",
+    "categoryName": "Module"
+  },
+  "83620": {
+    "id": 83620,
+    "name": "Explonetic-electro Nanitic Brace IV",
+    "groupName": "Nanitic Brace",
+    "categoryName": "Module"
+  },
+  "83623": {
+    "id": 83623,
+    "name": "Explo-electro Nanitic Brace II",
+    "groupName": "Nanitic Brace",
+    "categoryName": "Module"
+  },
+  "83624": {
+    "id": 83624,
+    "name": "Explo-electro Nanitic Brace III",
+    "groupName": "Nanitic Brace",
+    "categoryName": "Module"
+  },
+  "83625": {
+    "id": 83625,
+    "name": "Explo-electro Nanitic Brace IV",
+    "groupName": "Nanitic Brace",
+    "categoryName": "Module"
+  },
+  "83628": {
+    "id": 83628,
+    "name": "Thermalnetic Nanitic Brace II",
+    "groupName": "Nanitic Brace",
+    "categoryName": "Module"
+  },
+  "83629": {
+    "id": 83629,
+    "name": "Thermalnetic Nanitic Brace III",
+    "groupName": "Nanitic Brace",
+    "categoryName": "Module"
+  },
+  "83630": {
+    "id": 83630,
+    "name": "Thermalnetic Nanitic Brace IV",
+    "groupName": "Nanitic Brace",
+    "categoryName": "Module"
+  },
+  "83768": {
+    "id": 83768,
+    "name": "EM Field Array II",
+    "groupName": "Shield Hardener",
+    "categoryName": "Module"
+  },
+  "83769": {
+    "id": 83769,
+    "name": "EM Field Array III",
+    "groupName": "Shield Hardener",
+    "categoryName": "Module"
+  },
+  "83770": {
+    "id": 83770,
+    "name": "EM Field Array IV",
+    "groupName": "Shield Hardener",
+    "categoryName": "Module"
+  },
+  "83772": {
+    "id": 83772,
+    "name": "Thermal Field Array II",
+    "groupName": "Shield Hardener",
+    "categoryName": "Module"
+  },
+  "83773": {
+    "id": 83773,
+    "name": "Thermal Field Array III",
+    "groupName": "Shield Hardener",
+    "categoryName": "Module"
+  },
+  "83774": {
+    "id": 83774,
+    "name": "Thermal Field Array IV",
+    "groupName": "Shield Hardener",
+    "categoryName": "Module"
+  },
+  "83777": {
+    "id": 83777,
+    "name": "Explosive Field Array II",
+    "groupName": "Shield Hardener",
+    "categoryName": "Module"
+  },
+  "83778": {
+    "id": 83778,
+    "name": "Explosive Field Array III",
+    "groupName": "Shield Hardener",
+    "categoryName": "Module"
+  },
+  "83779": {
+    "id": 83779,
+    "name": "Explosive Field Array IV",
+    "groupName": "Shield Hardener",
+    "categoryName": "Module"
+  },
+  "83782": {
+    "id": 83782,
+    "name": "Kinetic Field Array II",
+    "groupName": "Shield Hardener",
+    "categoryName": "Module"
+  },
+  "83783": {
+    "id": 83783,
+    "name": "Kinetic Field Array III",
+    "groupName": "Shield Hardener",
+    "categoryName": "Module"
+  },
+  "83784": {
+    "id": 83784,
+    "name": "Kinetic Field Array IV",
+    "groupName": "Shield Hardener",
+    "categoryName": "Module"
+  },
+  "83818": {
+    "id": 83818,
+    "name": "Fossilized Exotronics",
+    "groupName": "Exotronic Frames",
+    "categoryName": "Commodity"
+  },
+  "83839": {
+    "id": 83839,
+    "name": "Salt",
+    "groupName": "Mineral",
+    "categoryName": "Material"
+  },
+  "83891": {
+    "id": 83891,
+    "name": "Gravionite",
+    "groupName": "Rogue Drone Components",
+    "categoryName": "Material"
+  },
+  "83892": {
+    "id": 83892,
+    "name": "Luminalis",
+    "groupName": "Rogue Drone Components",
+    "categoryName": "Material"
+  },
+  "83893": {
+    "id": 83893,
+    "name": "Eclipsite",
+    "groupName": "Rogue Drone Components",
+    "categoryName": "Material"
+  },
+  "83894": {
+    "id": 83894,
+    "name": "Radiantium",
+    "groupName": "Rogue Drone Components",
+    "categoryName": "Material"
+  },
+  "83895": {
+    "id": 83895,
+    "name": "Radiantium Mining Lens",
+    "groupName": "Asteroid Mining Crystal",
+    "categoryName": "Charge"
+  },
+  "83896": {
+    "id": 83896,
+    "name": "Gravionite Mining Lens",
+    "groupName": "Asteroid Mining Crystal",
+    "categoryName": "Charge"
+  },
+  "83897": {
+    "id": 83897,
+    "name": "Luminalis Mining Lens",
+    "groupName": "Asteroid Mining Crystal",
+    "categoryName": "Charge"
+  },
+  "83898": {
+    "id": 83898,
+    "name": "Eclipsite Mining Lens",
+    "groupName": "Asteroid Mining Crystal",
+    "categoryName": "Charge"
+  },
+  "83899": {
+    "id": 83899,
+    "name": "Catalytic Dust",
+    "groupName": "Rogue Drone Components",
+    "categoryName": "Material"
+  },
+  "83978": {
+    "id": 83978,
+    "name": "Navigational Artefact",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "83979": {
+    "id": 83979,
+    "name": "Oil Painting",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "83980": {
+    "id": 83980,
+    "name": "Stranger's Head",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "83981": {
+    "id": 83981,
+    "name": "Miner Hiring Form",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "83982": {
+    "id": 83982,
+    "name": "Network Pollinator",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "83983": {
+    "id": 83983,
+    "name": "Old Neurocord",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "83984": {
+    "id": 83984,
+    "name": "Synod Propaganda",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "83985": {
+    "id": 83985,
+    "name": "Normalization Permit",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "83986": {
+    "id": 83986,
+    "name": "Very Strange Musical Instrument",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "83987": {
+    "id": 83987,
+    "name": "Multimedia Library",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "83988": {
+    "id": 83988,
+    "name": "Drone Signal Records",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "84180": {
+    "id": 84180,
+    "name": "Printed Circuits",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "84182": {
+    "id": 84182,
+    "name": "Reinforced Alloys",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "84204": {
+    "id": 84204,
+    "name": "Batched Reinforced Alloys",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "84206": {
+    "id": 84206,
+    "name": "Packaged Reinforced Alloys",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "84210": {
+    "id": 84210,
+    "name": "Carbon Weave",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "84556": {
+    "id": 84556,
+    "name": "Smart Turret",
+    "groupName": "Defense",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/84556.png"
+  },
+  "84810": {
+    "id": 84810,
+    "name": "Ship chassis materials S ( copy )",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "84868": {
+    "id": 84868,
+    "name": "SOF-40 Fuel",
+    "groupName": "Crude Fuel",
+    "categoryName": "Commodity",
+    "iconUrl": "https://artifacts.evefrontier.com/types/84868.png"
+  },
+  "84955": {
+    "id": 84955,
+    "name": "Heavy Gate",
+    "groupName": "Gates",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/84955.png"
+  },
+  "85291": {
+    "id": 85291,
+    "name": "Deployable Beacon",
+    "groupName": "Deployable Beacon",
+    "categoryName": "Deployable"
+  },
+  "86465": {
+    "id": 86465,
+    "name": "Fuel Experiment Transcript 1/3",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86466": {
+    "id": 86466,
+    "name": "Fuel Experiment Transcript 2/3",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86467": {
+    "id": 86467,
+    "name": "Fuel Experiment Transcript 3/3",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86615": {
+    "id": 86615,
+    "name": "Jump Drive Test Transcription 1/5",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86616": {
+    "id": 86616,
+    "name": "Jump Drive Test Transcription 2/5",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86617": {
+    "id": 86617,
+    "name": "Jump Drive Test Transcription 3/5",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86618": {
+    "id": 86618,
+    "name": "Jump Drive Test Transcription 4/5",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86619": {
+    "id": 86619,
+    "name": "Jump Drive Test Transcription 5/5",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86620": {
+    "id": 86620,
+    "name": "Mining Drone Behavior 1/8",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86621": {
+    "id": 86621,
+    "name": "Mining Drone Behavior 2/8",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86622": {
+    "id": 86622,
+    "name": "Mining Drone Behavior 3/8",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86623": {
+    "id": 86623,
+    "name": "Mining Drone Behavior 4/8",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86624": {
+    "id": 86624,
+    "name": "Mining Drone Behavior 5/8",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86625": {
+    "id": 86625,
+    "name": "Mining Drone Behavior 6/8",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86626": {
+    "id": 86626,
+    "name": "Mining Drone Behavior 7/8",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86627": {
+    "id": 86627,
+    "name": "Mining Drone Behavior 8/8",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86634": {
+    "id": 86634,
+    "name": "Exclave Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86635": {
+    "id": 86635,
+    "name": "Exclave Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86636": {
+    "id": 86636,
+    "name": "Exclave Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86637": {
+    "id": 86637,
+    "name": "Exclave Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86638": {
+    "id": 86638,
+    "name": "Exclave Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86657": {
+    "id": 86657,
+    "name": "Stillness Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86658": {
+    "id": 86658,
+    "name": "Stillness Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86659": {
+    "id": 86659,
+    "name": "Stillness Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86681": {
+    "id": 86681,
+    "name": "Crude Matter Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86682": {
+    "id": 86682,
+    "name": "Crude Matter Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86683": {
+    "id": 86683,
+    "name": "Crude Matter Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86684": {
+    "id": 86684,
+    "name": "Crude Matter Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86685": {
+    "id": 86685,
+    "name": "Crude Matter Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86686": {
+    "id": 86686,
+    "name": "Trinary Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86687": {
+    "id": 86687,
+    "name": "Trinary Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86688": {
+    "id": 86688,
+    "name": "Trinary Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86689": {
+    "id": 86689,
+    "name": "Fabricators Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86690": {
+    "id": 86690,
+    "name": "Fabricators Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86691": {
+    "id": 86691,
+    "name": "Fabricators Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86692": {
+    "id": 86692,
+    "name": "Fabricators Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86693": {
+    "id": 86693,
+    "name": "Fabricators Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86694": {
+    "id": 86694,
+    "name": "Fabricators Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86695": {
+    "id": 86695,
+    "name": "Keeper Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86696": {
+    "id": 86696,
+    "name": "Keeper Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86697": {
+    "id": 86697,
+    "name": "Keeper Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86698": {
+    "id": 86698,
+    "name": "Keeper Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86699": {
+    "id": 86699,
+    "name": "Keeper Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86700": {
+    "id": 86700,
+    "name": "Keeper Keep Database Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86702": {
+    "id": 86702,
+    "name": "Vault Promotional Material",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86765": {
+    "id": 86765,
+    "name": "Derelict C304320 Data Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86766": {
+    "id": 86766,
+    "name": "Derelict C304320 Data Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86767": {
+    "id": 86767,
+    "name": "Derelict C304320 Data Fragment",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "86798": {
+    "id": 86798,
+    "name": "Derelict C102403",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "87119": {
+    "id": 87119,
+    "name": "Mini Printer",
+    "groupName": "Industry",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/87119.png"
+  },
+  "87120": {
+    "id": 87120,
+    "name": "Heavy Printer",
+    "groupName": "Industry",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/87120.png"
+  },
+  "87160": {
+    "id": 87160,
+    "name": "Refuge",
+    "groupName": "Core",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/87160.png"
+  },
+  "87161": {
+    "id": 87161,
+    "name": "Field Refinery",
+    "groupName": "Core",
+    "categoryName": "Deployable"
+  },
+  "87162": {
+    "id": 87162,
+    "name": "Field Printer",
+    "groupName": "Core",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/87162.png"
+  },
+  "87375": {
+    "id": 87375,
+    "name": "Rich Common Ore",
+    "groupName": "Natural Resources",
+    "categoryName": "Asteroid"
+  },
+  "87566": {
+    "id": 87566,
+    "name": "Field Storage",
+    "groupName": "Core",
+    "categoryName": "Deployable"
+  },
+  "87595": {
+    "id": 87595,
+    "name": "Unrefined Radiantium",
+    "groupName": "Natural Resources",
+    "categoryName": "Asteroid"
+  },
+  "87599": {
+    "id": 87599,
+    "name": "Cryogenic Ejector S",
+    "groupName": "Heat Ejector",
+    "categoryName": "Module"
+  },
+  "87698": {
+    "id": 87698,
+    "name": "Wend",
+    "groupName": "Shuttle",
+    "categoryName": "Ship"
+  },
+  "87846": {
+    "id": 87846,
+    "name": "Recurve",
+    "groupName": "Corvette",
+    "categoryName": "Ship"
+  },
+  "87847": {
+    "id": 87847,
+    "name": "Reflex",
+    "groupName": "Corvette",
+    "categoryName": "Ship"
+  },
+  "87848": {
+    "id": 87848,
+    "name": "Reiver",
+    "groupName": "Corvette",
+    "categoryName": "Ship"
+  },
+  "88063": {
+    "id": 88063,
+    "name": "Refinery",
+    "groupName": "Industry",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88063.png"
+  },
+  "88064": {
+    "id": 88064,
+    "name": "Heavy Refinery",
+    "groupName": "Industry",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88064.png"
+  },
+  "88067": {
+    "id": 88067,
+    "name": "Printer",
+    "groupName": "Industry",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88067.png"
+  },
+  "88068": {
+    "id": 88068,
+    "name": "Assembler",
+    "groupName": "Industry",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88068.png"
+  },
+  "88069": {
+    "id": 88069,
+    "name": "Mini Berth",
+    "groupName": "Industry",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88069.png"
+  },
+  "88070": {
+    "id": 88070,
+    "name": "Berth",
+    "groupName": "Industry",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88070.png"
+  },
+  "88071": {
+    "id": 88071,
+    "name": "Heavy Berth",
+    "groupName": "Industry",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88071.png"
+  },
+  "88082": {
+    "id": 88082,
+    "name": "Mini Storage",
+    "groupName": "Storage",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88082.png"
+  },
+  "88083": {
+    "id": 88083,
+    "name": "Storage",
+    "groupName": "Storage",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88083.png"
+  },
+  "88086": {
+    "id": 88086,
+    "name": "Mini Gate",
+    "groupName": "Gates",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88086.png"
+  },
+  "88092": {
+    "id": 88092,
+    "name": "Network Node",
+    "groupName": "Core",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88092.png"
+  },
+  "88093": {
+    "id": 88093,
+    "name": "Shelter",
+    "groupName": "Hangars",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88093.png"
+  },
+  "88094": {
+    "id": 88094,
+    "name": "Heavy Shelter",
+    "groupName": "Hangars",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88094.png"
+  },
+  "88098": {
+    "id": 88098,
+    "name": "Monolith 1",
+    "groupName": "Misc.",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88098.png"
+  },
+  "88099": {
+    "id": 88099,
+    "name": "Monolith 2",
+    "groupName": "Misc.",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88099.png"
+  },
+  "88100": {
+    "id": 88100,
+    "name": "Wall 1",
+    "groupName": "Misc.",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88100.png"
+  },
+  "88101": {
+    "id": 88101,
+    "name": "Wall 2",
+    "groupName": "Misc.",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88101.png"
+  },
+  "88234": {
+    "id": 88234,
+    "name": "Troilite Sulfide Grains",
+    "groupName": "Mineral",
+    "categoryName": "Material"
+  },
+  "88235": {
+    "id": 88235,
+    "name": "Feldspar Crystal Shards",
+    "groupName": "Mineral",
+    "categoryName": "Material"
+  },
+  "88319": {
+    "id": 88319,
+    "name": "D2 Fuel",
+    "groupName": "Hydrogen Fuel",
+    "categoryName": "Commodity",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88319.png"
+  },
+  "88335": {
+    "id": 88335,
+    "name": "D1 Fuel",
+    "groupName": "Hydrogen Fuel",
+    "categoryName": "Commodity",
+    "iconUrl": "https://artifacts.evefrontier.com/types/88335.png"
+  },
+  "88561": {
+    "id": 88561,
+    "name": "Thermal Composites",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "88564": {
+    "id": 88564,
+    "name": "Feral Echo",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "88565": {
+    "id": 88565,
+    "name": "Still Knot",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "88764": {
+    "id": 88764,
+    "name": "Salvaged Materials",
+    "groupName": "Salvage",
+    "categoryName": "Commodity"
+  },
+  "88765": {
+    "id": 88765,
+    "name": "Mummified Clone",
+    "groupName": "Salvage",
+    "categoryName": "Commodity"
+  },
+  "88780": {
+    "id": 88780,
+    "name": "Echo Chamber",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "88781": {
+    "id": 88781,
+    "name": "Chitinous Organics",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "88782": {
+    "id": 88782,
+    "name": "Aromatic Carbon Weave",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "88783": {
+    "id": 88783,
+    "name": "Kerogen Tar",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "88839": {
+    "id": 88839,
+    "name": "Batched Printed Circuits",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "88840": {
+    "id": 88840,
+    "name": "Packaged Printed Circuits",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "88841": {
+    "id": 88841,
+    "name": "Batched Carbon Weave",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "88842": {
+    "id": 88842,
+    "name": "Packaged Carbon Weave",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "88843": {
+    "id": 88843,
+    "name": "Batched Thermal Composites",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "88844": {
+    "id": 88844,
+    "name": "Packaged Thermal Composites",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "88886": {
+    "id": 88886,
+    "name": "Heat Exchanger XS",
+    "groupName": "Heat Ejector",
+    "categoryName": "Module"
+  },
+  "88887": {
+    "id": 88887,
+    "name": "Compressed Coolant ",
+    "groupName": "Heat Sink Charge",
+    "categoryName": "Charge"
+  },
+  "88889": {
+    "id": 88889,
+    "name": "Heat Exchanger S",
+    "groupName": "Heat Ejector",
+    "categoryName": "Module"
+  },
+  "89087": {
+    "id": 89087,
+    "name": "Synod Technocore",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "89088": {
+    "id": 89088,
+    "name": "Exclave Technocore",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "89089": {
+    "id": 89089,
+    "name": "Building Foam",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "89258": {
+    "id": 89258,
+    "name": "Hydrocarbon Residue",
+    "groupName": "Mineral",
+    "categoryName": "Material"
+  },
+  "89259": {
+    "id": 89259,
+    "name": "Silica Grains",
+    "groupName": "Mineral",
+    "categoryName": "Material"
+  },
+  "89260": {
+    "id": 89260,
+    "name": "Iron-Rich Nodules",
+    "groupName": "Mineral",
+    "categoryName": "Material"
+  },
+  "89775": {
+    "id": 89775,
+    "name": "SEER I",
+    "groupName": "Misc.",
+    "categoryName": "Deployable"
+  },
+  "89776": {
+    "id": 89776,
+    "name": "SEER II",
+    "groupName": "Misc.",
+    "categoryName": "Deployable"
+  },
+  "89777": {
+    "id": 89777,
+    "name": "HARBINGER I",
+    "groupName": "Misc.",
+    "categoryName": "Deployable"
+  },
+  "89778": {
+    "id": 89778,
+    "name": "HARBINGER II",
+    "groupName": "Misc.",
+    "categoryName": "Deployable"
+  },
+  "89779": {
+    "id": 89779,
+    "name": "RAINMAKER II",
+    "groupName": "Misc.",
+    "categoryName": "Deployable"
+  },
+  "89780": {
+    "id": 89780,
+    "name": "RAINMAKER I",
+    "groupName": "Misc.",
+    "categoryName": "Deployable"
+  },
+  "89794": {
+    "id": 89794,
+    "name": "Defiled Crude Matter",
+    "groupName": "Rift",
+    "categoryName": "Asteroid"
+  },
+  "90184": {
+    "id": 90184,
+    "name": "Relay",
+    "groupName": "Industry",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/90184.png"
+  },
+  "90887": {
+    "id": 90887,
+    "name": "Hop",
+    "groupName": "Warp Accelerator",
+    "categoryName": "Module"
+  },
+  "91106": {
+    "id": 91106,
+    "name": "Stride",
+    "groupName": "Corvette",
+    "categoryName": "Ship"
+  },
+  "91107": {
+    "id": 91107,
+    "name": "Carom",
+    "groupName": "Corvette",
+    "categoryName": "Ship"
+  },
+  "91205": {
+    "id": 91205,
+    "name": "Redundant Module",
+    "groupName": "Propulsion Module",
+    "categoryName": "Module"
+  },
+  "91206": {
+    "id": 91206,
+    "name": "Void Residue",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "91209": {
+    "id": 91209,
+    "name": "Singularity Reactor Fragment",
+    "groupName": "Defensive System",
+    "categoryName": "Module"
+  },
+  "91210": {
+    "id": 91210,
+    "name": "Void Fragments",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "91374": {
+    "id": 91374,
+    "name": "Char",
+    "groupName": "Char",
+    "categoryName": "Asteroid"
+  },
+  "91375": {
+    "id": 91375,
+    "name": "Slag",
+    "groupName": "Slag",
+    "categoryName": "Asteroid"
+  },
+  "91376": {
+    "id": 91376,
+    "name": "Ingot",
+    "groupName": "Ingot",
+    "categoryName": "Asteroid"
+  },
+  "91377": {
+    "id": 91377,
+    "name": "Comet",
+    "groupName": "Comet",
+    "categoryName": "Asteroid"
+  },
+  "91378": {
+    "id": 91378,
+    "name": "Dewdrop",
+    "groupName": "Dewdrop",
+    "categoryName": "Asteroid"
+  },
+  "91379": {
+    "id": 91379,
+    "name": "Ember",
+    "groupName": "Ember",
+    "categoryName": "Asteroid"
+  },
+  "91380": {
+    "id": 91380,
+    "name": "Glint",
+    "groupName": "Glint",
+    "categoryName": "Asteroid"
+  },
+  "91381": {
+    "id": 91381,
+    "name": "Soot",
+    "groupName": "Soot",
+    "categoryName": "Asteroid"
+  },
+  "91700": {
+    "id": 91700,
+    "name": "Mini Printer",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91701": {
+    "id": 91701,
+    "name": "Printer",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91702": {
+    "id": 91702,
+    "name": "Heavy Printer",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91703": {
+    "id": 91703,
+    "name": "Refinery",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91704": {
+    "id": 91704,
+    "name": "Heavy Refinery",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91705": {
+    "id": 91705,
+    "name": "Mini Berth",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91706": {
+    "id": 91706,
+    "name": "Berth",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91707": {
+    "id": 91707,
+    "name": "Heavy Berth",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91708": {
+    "id": 91708,
+    "name": "Assembler",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91709": {
+    "id": 91709,
+    "name": "Shelter",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91710": {
+    "id": 91710,
+    "name": "Heavy Shelter",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91711": {
+    "id": 91711,
+    "name": "Mini Gate",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91712": {
+    "id": 91712,
+    "name": "Heavy Gate",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91713": {
+    "id": 91713,
+    "name": "Mini Storage",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91714": {
+    "id": 91714,
+    "name": "Storage",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91715": {
+    "id": 91715,
+    "name": "Heavy Storage",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91717": {
+    "id": 91717,
+    "name": "Relay",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91718": {
+    "id": 91718,
+    "name": "Monolith 1",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91719": {
+    "id": 91719,
+    "name": "Monolith 2",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91720": {
+    "id": 91720,
+    "name": "Wall 1",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91721": {
+    "id": 91721,
+    "name": "Wall 2",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91722": {
+    "id": 91722,
+    "name": "RAINMAKER I",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91723": {
+    "id": 91723,
+    "name": "RAINMAKER II",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91724": {
+    "id": 91724,
+    "name": "HARBINGER I",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91725": {
+    "id": 91725,
+    "name": "HARBINGER II",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91726": {
+    "id": 91726,
+    "name": "SEER I",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91727": {
+    "id": 91727,
+    "name": "SEER II",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91751": {
+    "id": 91751,
+    "name": "Refuge",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91752": {
+    "id": 91752,
+    "name": "Field Refinery",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91753": {
+    "id": 91753,
+    "name": "Field Printer",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91756": {
+    "id": 91756,
+    "name": "Field Storage",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "91871": {
+    "id": 91871,
+    "name": "Nest",
+    "groupName": "Hangars",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/91871.png"
+  },
+  "91937": {
+    "id": 91937,
+    "name": "Calamitous Marrow",
+    "groupName": "Miscellaneous",
+    "categoryName": "Commodity"
+  },
+  "91978": {
+    "id": 91978,
+    "name": "Nursery",
+    "groupName": "Industry",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/91978.png"
+  },
+  "91997": {
+    "id": 91997,
+    "name": "Lens 9001X",
+    "groupName": "Crude Mining Lens",
+    "categoryName": "Charge"
+  },
+  "92165": {
+    "id": 92165,
+    "name": "Nursery",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "92166": {
+    "id": 92166,
+    "name": "Nest",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "92279": {
+    "id": 92279,
+    "name": "Mini Turret",
+    "groupName": "Defense",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/92279.png"
+  },
+  "92280": {
+    "id": 92280,
+    "name": "Mini Turret",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "92389": {
+    "id": 92389,
+    "name": "Skip",
+    "groupName": "Warp Accelerator",
+    "categoryName": "Module"
+  },
+  "92390": {
+    "id": 92390,
+    "name": "Lunge",
+    "groupName": "Warp Accelerator",
+    "categoryName": "Module"
+  },
+  "92394": {
+    "id": 92394,
+    "name": "Fine Young Crude Matter",
+    "groupName": "Rift",
+    "categoryName": "Asteroid"
+  },
+  "92401": {
+    "id": 92401,
+    "name": "Turret",
+    "groupName": "Defense",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/92401.png"
+  },
+  "92402": {
+    "id": 92402,
+    "name": "Turret - Autocannon",
+    "groupName": "Projectile Weapon",
+    "categoryName": "Module"
+  },
+  "92403": {
+    "id": 92403,
+    "name": "Turret - Plasma",
+    "groupName": "Plasma Weapon",
+    "categoryName": "Module"
+  },
+  "92404": {
+    "id": 92404,
+    "name": "Heavy Turret",
+    "groupName": "Defense",
+    "categoryName": "Deployable",
+    "iconUrl": "https://artifacts.evefrontier.com/types/92404.png"
+  },
+  "92406": {
+    "id": 92406,
+    "name": "Turret",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "92407": {
+    "id": 92407,
+    "name": "Heavy Turret",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "92414": {
+    "id": 92414,
+    "name": "Fine Old Crude Matter",
+    "groupName": "Rift",
+    "categoryName": "Asteroid"
+  },
+  "92421": {
+    "id": 92421,
+    "name": "Leap",
+    "groupName": "Warp Accelerator",
+    "categoryName": "Module"
+  },
+  "92422": {
+    "id": 92422,
+    "name": "Brine",
+    "groupName": "Mineral",
+    "categoryName": "Material"
+  },
+  "92483": {
+    "id": 92483,
+    "name": "Still Kernel",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  },
+  "92511": {
+    "id": 92511,
+    "name": "Turret - Howitzer",
+    "groupName": "Projectile Weapon",
+    "categoryName": "Module"
+  },
+  "93141": {
+    "id": 93141,
+    "name": "Field Cairn",
+    "groupName": "Core",
+    "categoryName": "Deployable"
+  },
+  "93228": {
+    "id": 93228,
+    "name": "Field Cairn",
+    "groupName": "Construction site",
+    "categoryName": "Deployable"
+  },
+  "99001": {
+    "id": 99001,
+    "name": "Palladium",
+    "groupName": "Manufacturing Component",
+    "categoryName": "Material"
+  }
+}

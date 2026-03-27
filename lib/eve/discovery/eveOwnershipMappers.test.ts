@@ -76,6 +76,8 @@ const lookups = {
   tribeNames: new Map([[3, "Caldari"]]),
   typeNames: new Map([
     [77917, "Heavy Storage"],
+    [84556, "Smart Turret"],
+    [87161, "Field Refinery"],
     [88064, "Heavy Refinery"],
     [88092, "Network Node"],
   ]),
@@ -284,7 +286,7 @@ describe("eve ownership domain helpers", () => {
               connectedAssemblyIds: [
                 "0xgate-1",
                 "0xstorage-1",
-                "0xshipyard-1",
+                "0xturret-1",
                 "0xother-1",
               ],
             },
@@ -313,11 +315,11 @@ describe("eve ownership domain helpers", () => {
               connectedAssemblyIds: [],
             },
             {
-              id: "0xshipyard-1",
-              typeId: 88002,
-              typeLabel: "Manufacturing",
-              typeRepr: "0xpkg::manufacturing::Manufacturing",
-              name: "Shipyard West",
+              id: "0xturret-1",
+              typeId: 84556,
+              typeLabel: "Assembly",
+              typeRepr: "0xpkg::assembly::Assembly",
+              name: "Assembly 0xturret-1",
               ownerCapId: "0xowner-cap-1",
               status: "offline",
               fuelPercent: null,
@@ -326,10 +328,10 @@ describe("eve ownership domain helpers", () => {
             },
             {
               id: "0xother-1",
-              typeId: 88064,
+              typeId: 87161,
               typeLabel: "Assembly",
               typeRepr: "0xpkg::assembly::Assembly",
-              name: "Refinery One",
+              name: "Assembly 0xother-1",
               ownerCapId: "0xowner-cap-1",
               status: "offline",
               fuelPercent: null,
@@ -362,6 +364,7 @@ describe("eve ownership domain helpers", () => {
       connectedAssemblyCount: 4,
       status: "online",
       fuelPercent: 60,
+      fuelEtaMs: undefined,
       fuelQuantity: 6,
       connectedAssemblies: [
         {
@@ -377,15 +380,15 @@ describe("eve ownership domain helpers", () => {
           status: "online",
         },
         {
-          id: "0xshipyard-1",
-          name: "Shipyard West",
-          typeLabel: "Manufacturing",
+          id: "0xturret-1",
+          name: "Assembly 0xturret-1",
+          typeLabel: "Smart Turret",
           status: "offline",
         },
         {
           id: "0xother-1",
-          name: "Refinery One",
-          typeLabel: "Heavy Refinery",
+          name: "Assembly 0xother-1",
+          typeLabel: "Field Refinery",
           status: "offline",
         },
       ],
@@ -413,12 +416,12 @@ describe("eve ownership domain helpers", () => {
           ],
         },
         {
-          label: "Shipyard-like / ship-support",
+          label: "Turret",
           assemblies: [
             {
-              id: "0xshipyard-1",
-              name: "Shipyard West",
-              typeLabel: "Manufacturing",
+              id: "0xturret-1",
+              name: "Assembly 0xturret-1",
+              typeLabel: "Smart Turret",
               status: "offline",
             },
           ],
@@ -428,8 +431,8 @@ describe("eve ownership domain helpers", () => {
           assemblies: [
             {
               id: "0xother-1",
-              name: "Refinery One",
-              typeLabel: "Heavy Refinery",
+              name: "Assembly 0xother-1",
+              typeLabel: "Field Refinery",
               status: "offline",
             },
           ],

@@ -3,10 +3,17 @@ import { Box, Paper, Stack, Typography } from "@mui/material";
 
 import AssemblyDetailPage from "@/features/assemblies/AssemblyDetailPage";
 import { normalizeSuiAddress } from "@/lib/eve/address";
+import { discoverStorageInventory } from "@/lib/eve/discovery/storageInventoryDiscovery";
 import { mapDiscoveryToAssembliesByType } from "@/lib/eve/discovery/eveOwnershipMappers";
-import { fetchWalletStructureDiscovery } from "@/lib/eve/discovery/eveOwnershipClient";
-import { eveLabelLookups } from "@/lib/eve/lookups";
+import {
+  createOwnershipGraphQlClient,
+  fetchWalletStructureDiscovery,
+} from "@/lib/eve/discovery/eveOwnershipClient";
+import { createLabelLookupsWithWorldTypes } from "@/lib/eve/lookups";
 import type { WalletSource } from "@/lib/eve/types";
+import { getWorldTypeLookup } from "@/lib/eve/worldTypes";
+
+const dashboardLabelLookups = createLabelLookupsWithWorldTypes(getWorldTypeLookup());
 
 export const metadata: Metadata = {
   title: "Assembly Detail",
@@ -44,8 +51,13 @@ export default async function DashboardAssemblyDetailPage({
 
   const discovery = await fetchWalletStructureDiscovery(normalizedWalletAddress);
   const character = discovery.characters.find((entry) => entry.characterId === characterId);
+  const assemblyStructure = character
+    ? [...character.ownedStructures, ...(character.relatedStructures ?? [])].find(
+        (entry) => entry.id === assemblyId,
+      ) ?? null
+    : null;
   const assembly = Object.values(
-    mapDiscoveryToAssembliesByType(discovery, characterId, eveLabelLookups),
+    mapDiscoveryToAssembliesByType(discovery, characterId, dashboardLabelLookups),
   )
     .flat()
     .find((entry) => entry.id === assemblyId);
@@ -59,10 +71,17 @@ export default async function DashboardAssemblyDetailPage({
     );
   }
 
+  const storageInventory = await discoverStorageInventory({
+    assembly: assemblyStructure,
+    graphQl: createOwnershipGraphQlClient(),
+    worldTypes: getWorldTypeLookup(),
+  });
+
   return (
     <AssemblyDetailPage
       characterName={character?.character?.name ?? "Unknown character"}
       assembly={assembly}
+      storageInventory={storageInventory}
     />
   );
 }
