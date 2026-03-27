@@ -17,7 +17,6 @@ import CharacterSwitcher from "./CharacterSwitcher";
 import { formatShortAddress } from "@/lib/eve/address";
 import {
   buildDashboardAssembliesHref,
-  buildDashboardGatesHref,
   buildDashboardNetworkNodesHref,
   getWalletSourceLabel,
 } from "@/lib/eve/routes";
@@ -46,6 +45,7 @@ export default function Sidebar({
   pathname,
 }: SidebarProps) {
   const shipsEnabled = false;
+  const gatesEnabled = false;
   const currentCharacter =
     characters.find((character) => character.id === currentCharacterId) ?? null;
   const handleNavigate = () => {
@@ -157,11 +157,8 @@ export default function Sidebar({
               <ListItemText primary="Ships" />
             </ListItemButton>
             <ListItemButton
-              component={Link}
-              href={access ? buildDashboardGatesHref(currentCharacterId, access) : "#"}
-              onClick={handleNavigate}
               selected={pathname.includes("/gates")}
-              disabled={!access}
+              disabled={!gatesEnabled}
             >
               <ListItemText primary="Gates" />
             </ListItemButton>

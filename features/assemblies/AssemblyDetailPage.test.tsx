@@ -2,7 +2,11 @@ import type { ComponentProps } from "react";
 import { screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { buildDashboardNetworkNodeDetailHref } from "@/lib/eve/routes";
+import {
+  buildDashboardAssemblyDetailHref,
+  buildDashboardNetworkNodesHref,
+  buildDashboardNetworkNodeDetailHref,
+} from "@/lib/eve/routes";
 import type { WalletAccessContext } from "@/lib/eve/types";
 import type { AssemblyDetailSummary } from "@/lib/eve/types";
 import { renderWithProviders } from "@/test/renderWithProviders";
@@ -179,6 +183,8 @@ describe("AssemblyDetailPage", () => {
               destinationGateName: "Far Horizon",
               characterId: "0x1111111111111111",
               characterItemId: 2112000137,
+              characterName: "Hshiki",
+              characterWalletAddress: "0xpilot-wallet-1",
             },
           ],
           recentPermits: [
@@ -196,6 +202,8 @@ describe("AssemblyDetailPage", () => {
               expiresAtMs: 1710003600000,
               extensionType: "0xextension::gate_rules::GateAuth",
               timestampMs: 1710000002000,
+              characterName: "Hshiki",
+              characterWalletAddress: "0xpilot-wallet-1",
             },
           ],
         }}
@@ -218,7 +226,10 @@ describe("AssemblyDetailPage", () => {
       buildDashboardNetworkNodeDetailHref("0xcharacter-1", "0xnode-1", access),
     );
     expect(screen.getByText("Linked gate")).toBeInTheDocument();
-    expect(screen.getByText("Far Horizon")).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "Far Horizon" })[0]).toHaveAttribute(
+      "href",
+      buildDashboardAssemblyDetailHref("0xcharacter-1", "0xgate-2", access),
+    );
     expect(screen.getByText("Extension")).toBeInTheDocument();
     expect(screen.getByText("Custom extension")).toBeInTheDocument();
     expect(screen.getByText("0xextension::gate_rules::GateAuth")).toBeInTheDocument();
@@ -227,20 +238,51 @@ describe("AssemblyDetailPage", () => {
     expect(screen.getByText("Access mode")).toBeInTheDocument();
     expect(screen.getByText("Permit required")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Gate operations" })).toBeInTheDocument();
-    expect(screen.getByText("Max link distance")).toBeInTheDocument();
-    expect(screen.getByText("400000")).toBeInTheDocument();
+    expect(screen.queryByText("Max link distance")).not.toBeInTheDocument();
+    expect(screen.queryByText("400000")).not.toBeInTheDocument();
     expect(screen.getByText("Recent jumps")).toBeInTheDocument();
-    expect(
-      screen.getByText("2024-03-09T16:00:00.000Z · Transit Authority -> Far Horizon"),
-    ).toBeInTheDocument();
-    expect(screen.getByText("Pilot 0x1111…1111")).toBeInTheDocument();
+    expect(screen.getByText("Mar 9, 2024, 16:00 UTC")).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "Transit Authority" })[0]).toHaveAttribute(
+      "href",
+      buildDashboardAssemblyDetailHref("0xcharacter-1", "0xgate-1", access),
+    );
+    expect(screen.getAllByRole("link", { name: "Far Horizon" })[1]).toHaveAttribute(
+      "href",
+      buildDashboardAssemblyDetailHref("0xcharacter-1", "0xgate-2", access),
+    );
+    expect(screen.getAllByRole("link", { name: "Pilot Hshiki" })[0]).toHaveAttribute(
+      "href",
+      buildDashboardNetworkNodesHref("0x1111111111111111", {
+        walletAddress: "0xpilot-wallet-1",
+        source: "sui-address",
+      }),
+    );
+    expect(screen.getByRole("link", { name: /view jump event on suiscan/i })).toHaveAttribute(
+      "href",
+      "https://suiscan.xyz/testnet/tx/tx-jump-1",
+    );
     expect(screen.getByText("Recent permits")).toBeInTheDocument();
-    expect(
-      screen.getByText("2024-03-09T17:00:00.000Z · Permit 0xpermit-1"),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("Transit Authority -> Far Horizon · Pilot 0x1111…1111"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Mar 9, 2024, 17:00 UTC")).toBeInTheDocument();
+    expect(screen.getByText("Permit 0xpermit-1")).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "Transit Authority" })[1]).toHaveAttribute(
+      "href",
+      buildDashboardAssemblyDetailHref("0xcharacter-1", "0xgate-1", access),
+    );
+    expect(screen.getAllByRole("link", { name: "Far Horizon" })[2]).toHaveAttribute(
+      "href",
+      buildDashboardAssemblyDetailHref("0xcharacter-1", "0xgate-2", access),
+    );
+    expect(screen.getAllByRole("link", { name: "Pilot Hshiki" })[1]).toHaveAttribute(
+      "href",
+      buildDashboardNetworkNodesHref("0x1111111111111111", {
+        walletAddress: "0xpilot-wallet-1",
+        source: "sui-address",
+      }),
+    );
+    expect(screen.getByRole("link", { name: /view permit event on suiscan/i })).toHaveAttribute(
+      "href",
+      "https://suiscan.xyz/testnet/tx/tx-permit-1",
+    );
   });
 
   it("renders turret direct detail fields when present", () => {
@@ -309,7 +351,7 @@ describe("AssemblyDetailPage", () => {
       screen.getByRole("heading", { name: "Latest target priority snapshot" }),
     ).toBeInTheDocument();
     expect(screen.getByText("Updated at")).toBeInTheDocument();
-    expect(screen.getByText("2024-03-09T16:00:00.000Z")).toBeInTheDocument();
+    expect(screen.getByText("Mar 9, 2024, 16:00 UTC")).toBeInTheDocument();
     expect(screen.getByRole("columnheader", { name: "Item ID" })).toBeInTheDocument();
     expect(screen.getByRole("columnheader", { name: "Priority" })).toBeInTheDocument();
     expect(screen.getByRole("columnheader", { name: "Behaviour" })).toBeInTheDocument();

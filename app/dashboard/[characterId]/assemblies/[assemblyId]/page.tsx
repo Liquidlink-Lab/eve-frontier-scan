@@ -4,6 +4,7 @@ import { Box, Paper, Stack, Typography } from "@mui/material";
 import AssemblyDetailPage from "@/features/assemblies/AssemblyDetailPage";
 import { normalizeSuiAddress } from "@/lib/eve/address";
 import { eveEnv } from "@/lib/eve/env";
+import { discoverCharacterSummaries } from "@/lib/eve/discovery/characterSummaryDiscovery";
 import { discoverGateActivity } from "@/lib/eve/discovery/gateActivityDiscovery";
 import {
   discoverAssemblyExtensionFrozenStatus,
@@ -117,6 +118,15 @@ export default async function DashboardAssemblyDetailPage({
         recentJumps: [],
         recentPermits: [],
       };
+  const gateActivityCharacterSummaries = isGateAssembly
+    ? await discoverCharacterSummaries({
+        characterIds: [
+          ...gateActivity.recentJumps.map((jump) => jump.characterId),
+          ...gateActivity.recentPermits.map((permit) => permit.characterId),
+        ].filter((value): value is string => Boolean(value)),
+        rpc,
+      })
+    : new Map();
   const turretActivity = isTurretAssembly
     ? await discoverTurretActivity({
         turretId: assembly.id,
@@ -139,11 +149,23 @@ export default async function DashboardAssemblyDetailPage({
       ...jump,
       sourceGateName: structureNamesById.get(jump.sourceGateId) ?? null,
       destinationGateName: structureNamesById.get(jump.destinationGateId) ?? null,
+      characterName: jump.characterId
+        ? gateActivityCharacterSummaries.get(jump.characterId)?.name ?? null
+        : null,
+      characterWalletAddress: jump.characterId
+        ? gateActivityCharacterSummaries.get(jump.characterId)?.walletAddress ?? null
+        : null,
     })),
     recentPermits: gateActivity.recentPermits.map((permit) => ({
       ...permit,
       sourceGateName: structureNamesById.get(permit.sourceGateId) ?? null,
       destinationGateName: structureNamesById.get(permit.destinationGateId) ?? null,
+      characterName: permit.characterId
+        ? gateActivityCharacterSummaries.get(permit.characterId)?.name ?? null
+        : null,
+      characterWalletAddress: permit.characterId
+        ? gateActivityCharacterSummaries.get(permit.characterId)?.walletAddress ?? null
+        : null,
     })),
     latestTurretPrioritySnapshot: turretActivity,
   };

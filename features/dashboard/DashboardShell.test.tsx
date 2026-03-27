@@ -125,9 +125,10 @@ describe("DashboardShell", () => {
       "aria-disabled",
       "true",
     );
-    expect(screen.getByRole("link", { name: /gates/i })).toHaveAttribute(
-      "href",
-      "/dashboard/0xchar-1/gates?wallet=0x43acdc9cb9e379d5fab90effbaaa08896d943d9958a96d9df6f07c39025cd186&source=eve-vault",
+    expect(screen.queryByRole("link", { name: /gates/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /gates/i })).toHaveAttribute(
+      "aria-disabled",
+      "true",
     );
     expect(
       screen.getByRole("textbox", { name: /inspect another address/i }),

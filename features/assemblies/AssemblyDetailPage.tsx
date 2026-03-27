@@ -1,4 +1,6 @@
+import type { ReactNode } from "react";
 import {
+  Button,
   Chip,
   LinearProgress,
   Link as MuiLink,
@@ -19,10 +21,16 @@ import TypeIcon from "@/features/icons/TypeIcon";
 import LinkText from "@/features/navigation/LinkText";
 import { formatShortAddress } from "@/lib/eve/address";
 import { calculatePercentage, clampPercentage, formatPercentage } from "@/lib/eve/percent";
-import { buildDashboardNetworkNodeDetailHref } from "@/lib/eve/routes";
-import { getSuiscanObjectUrl } from "@/lib/eve/suiscan";
+import {
+  buildDashboardAssemblyDetailHref,
+  buildDashboardNetworkNodesHref,
+  buildDashboardNetworkNodeDetailHref,
+} from "@/lib/eve/routes";
+import { getSuiscanObjectUrl, getSuiscanTransactionUrl } from "@/lib/eve/suiscan";
 import type {
   AssemblyDetailSummary,
+  GateJumpSummary,
+  GatePermitSummary,
   StorageInventorySummary,
   WalletAccessContext,
 } from "@/lib/eve/types";
@@ -52,6 +60,10 @@ export default function AssemblyDetailPage({
           assembly.energySourceId,
           access,
         )
+      : null;
+  const linkedGateHref =
+    access && characterId && assembly.linkedGateId
+      ? buildDashboardAssemblyDetailHref(characterId, assembly.linkedGateId, access)
       : null;
 
   return (
@@ -165,9 +177,15 @@ export default function AssemblyDetailPage({
             ) : null}
             {assembly.linkedGateId ? (
               <DetailField label="Linked gate">
-                <Typography>
-                  {assembly.linkedGateName ?? formatShortAddress(assembly.linkedGateId)}
-                </Typography>
+                {linkedGateHref ? (
+                  <LinkText href={linkedGateHref} underline="hover">
+                    {assembly.linkedGateName ?? formatShortAddress(assembly.linkedGateId)}
+                  </LinkText>
+                ) : (
+                  <Typography>
+                    {assembly.linkedGateName ?? formatShortAddress(assembly.linkedGateId)}
+                  </Typography>
+                )}
               </DetailField>
             ) : null}
             {assembly.gateAccessMode ? (
@@ -184,55 +202,70 @@ export default function AssemblyDetailPage({
               <Typography component="h2" variant="h4">
                 Gate operations
               </Typography>
-              <DetailField label="Max link distance">
-                <Typography>
-                  {assembly.gateMaxLinkDistance === null ||
-                  assembly.gateMaxLinkDistance === undefined
-                    ? "Unavailable"
-                    : String(assembly.gateMaxLinkDistance)}
-                </Typography>
-              </DetailField>
-              <Stack spacing={1}>
+              <Stack spacing={1.25}>
                 <Typography color="text.secondary">Recent jumps</Typography>
                 {(assembly.recentJumps ?? []).length === 0 ? (
                   <Typography color="text.secondary">No recent jumps found.</Typography>
                 ) : (
                   (assembly.recentJumps ?? []).map((jump) => (
-                    <Stack key={jump.txDigest} spacing={0.25}>
-                      <Typography>
-                        {`${formatTimestamp(jump.timestampMs)} · ${formatGateRoute(
-                          jump.sourceGateName,
-                          jump.sourceGateId,
-                          jump.destinationGateName,
-                          jump.destinationGateId,
-                        )}`}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {formatPilotLabel(jump.characterId)}
-                      </Typography>
-                    </Stack>
+                    <EventActivityCard
+                      key={jump.txDigest}
+                      href={getSuiscanTransactionUrl(jump.txDigest)}
+                      buttonAriaLabel="View jump event on SuiScan"
+                      timestamp={formatTimestamp(jump.timestampMs)}
+                      route={
+                        <GateEventRoute
+                          access={access}
+                          characterId={characterId}
+                          sourceGateId={jump.sourceGateId}
+                          sourceGateName={jump.sourceGateName}
+                          destinationGateId={jump.destinationGateId}
+                          destinationGateName={jump.destinationGateName}
+                        />
+                      }
+                      metadata={
+                        <PilotDashboardLink
+                          characterId={jump.characterId}
+                          characterName={jump.characterName}
+                          characterWalletAddress={jump.characterWalletAddress}
+                        />
+                      }
+                    />
                   ))
                 )}
               </Stack>
-              <Stack spacing={1}>
+              <Stack spacing={1.25}>
                 <Typography color="text.secondary">Recent permits</Typography>
                 {(assembly.recentPermits ?? []).length === 0 ? (
                   <Typography color="text.secondary">No recent permits found.</Typography>
                 ) : (
                   (assembly.recentPermits ?? []).map((permit) => (
-                    <Stack key={permit.txDigest} spacing={0.25}>
-                      <Typography>
-                        {`${formatTimestamp(permit.expiresAtMs)} · Permit ${permit.jumpPermitId}`}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {`${formatGateRoute(
-                          permit.sourceGateName,
-                          permit.sourceGateId,
-                          permit.destinationGateName,
-                          permit.destinationGateId,
-                        )} · ${formatPilotLabel(permit.characterId)}`}
-                      </Typography>
-                    </Stack>
+                    <EventActivityCard
+                      key={permit.txDigest}
+                      href={getSuiscanTransactionUrl(permit.txDigest)}
+                      buttonAriaLabel="View permit event on SuiScan"
+                      timestamp={formatTimestamp(permit.expiresAtMs)}
+                      route={
+                        <GateEventRoute
+                          access={access}
+                          characterId={characterId}
+                          sourceGateId={permit.sourceGateId}
+                          sourceGateName={permit.sourceGateName}
+                          destinationGateId={permit.destinationGateId}
+                          destinationGateName={permit.destinationGateName}
+                        />
+                      }
+                      metadata={
+                        <Stack spacing={0.25}>
+                          <Typography>{`Permit ${permit.jumpPermitId}`}</Typography>
+                          <PilotDashboardLink
+                            characterId={permit.characterId}
+                            characterName={permit.characterName}
+                            characterWalletAddress={permit.characterWalletAddress}
+                          />
+                        </Stack>
+                      }
+                    />
                   ))
                 )}
               </Stack>
@@ -372,20 +405,182 @@ function formatTimestamp(value: number | null | undefined) {
     return "Unavailable";
   }
 
-  return new Date(value).toISOString();
+  const date = new Date(value);
+  const month = MONTH_LABELS[date.getUTCMonth()] ?? "Unknown";
+  const day = date.getUTCDate();
+  const year = date.getUTCFullYear();
+  const hours = padTimestampSegment(date.getUTCHours());
+  const minutes = padTimestampSegment(date.getUTCMinutes());
+
+  return `${month} ${day}, ${year}, ${hours}:${minutes} UTC`;
 }
 
-function formatGateRoute(
-  sourceGateName: string | null | undefined,
-  sourceGateId: string,
-  destinationGateName: string | null | undefined,
-  destinationGateId: string,
-) {
-  return `${sourceGateName ?? formatShortAddress(sourceGateId)} -> ${
-    destinationGateName ?? formatShortAddress(destinationGateId)
-  }`;
+const MONTH_LABELS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+function padTimestampSegment(value: number) {
+  return String(value).padStart(2, "0");
+}
+
+function EventActivityCard({
+  href,
+  buttonAriaLabel,
+  timestamp,
+  route,
+  metadata,
+}: {
+  href: string;
+  buttonAriaLabel: string;
+  timestamp: string;
+  route: ReactNode;
+  metadata?: ReactNode;
+}) {
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        px: 2,
+        py: 1.75,
+        border: "1px solid rgba(148, 163, 184, 0.12)",
+        backgroundColor: "rgba(11, 18, 32, 0.72)",
+      }}
+    >
+      <Stack spacing={1.25}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          justifyContent="space-between"
+          alignItems={{ xs: "flex-start", sm: "center" }}
+          spacing={1}
+        >
+          <Typography variant="body2" color="text.secondary">
+            {timestamp}
+          </Typography>
+          <Button
+            href={href}
+            target="_blank"
+            rel="noreferrer"
+            variant="outlined"
+            color="inherit"
+            size="small"
+            aria-label={buttonAriaLabel}
+            sx={{ alignSelf: { xs: "flex-start", sm: "center" } }}
+          >
+            View on SuiScan
+          </Button>
+        </Stack>
+        <Typography component="div" sx={{ fontWeight: 500 }}>
+          {route}
+        </Typography>
+        {metadata ?? null}
+      </Stack>
+    </Paper>
+  );
+}
+
+function GateEventRoute({
+  access,
+  characterId,
+  sourceGateId,
+  sourceGateName,
+  destinationGateId,
+  destinationGateName,
+}: {
+  access?: WalletAccessContext;
+  characterId?: string;
+  sourceGateId: GateJumpSummary["sourceGateId"] | GatePermitSummary["sourceGateId"];
+  sourceGateName: string | null | undefined;
+  destinationGateId: GateJumpSummary["destinationGateId"] | GatePermitSummary["destinationGateId"];
+  destinationGateName: string | null | undefined;
+}) {
+  return (
+    <Typography component="div">
+      <AssemblyRouteLink
+        access={access}
+        characterId={characterId}
+        assemblyId={sourceGateId}
+        label={sourceGateName ?? formatShortAddress(sourceGateId)}
+      />
+      {" -> "}
+      <AssemblyRouteLink
+        access={access}
+        characterId={characterId}
+        assemblyId={destinationGateId}
+        label={destinationGateName ?? formatShortAddress(destinationGateId)}
+      />
+    </Typography>
+  );
+}
+
+function AssemblyRouteLink({
+  access,
+  characterId,
+  assemblyId,
+  label,
+}: {
+  access?: WalletAccessContext;
+  characterId?: string;
+  assemblyId: string;
+  label: string;
+}) {
+  const href =
+    access && characterId
+      ? buildDashboardAssemblyDetailHref(characterId, assemblyId, access)
+      : null;
+
+  if (!href) {
+    return <>{label}</>;
+  }
+
+  return (
+    <LinkText href={href} underline="hover">
+      {label}
+    </LinkText>
+  );
 }
 
 function formatPilotLabel(characterId: string | null) {
   return `Pilot ${characterId ? formatShortAddress(characterId) : "Unavailable"}`;
+}
+
+function PilotDashboardLink({
+  characterId,
+  characterName,
+  characterWalletAddress,
+}: {
+  characterId: string | null;
+  characterName?: string | null;
+  characterWalletAddress?: string | null;
+}) {
+  if (characterId && characterName && characterWalletAddress) {
+    return (
+      <LinkText
+        href={buildDashboardNetworkNodesHref(characterId, {
+          walletAddress: characterWalletAddress,
+          source: "sui-address",
+        })}
+        underline="hover"
+        variant="body2"
+      >
+        {`Pilot ${characterName}`}
+      </LinkText>
+    );
+  }
+
+  return (
+    <Typography variant="body2" color="text.secondary">
+      {formatPilotLabel(characterId)}
+    </Typography>
+  );
 }

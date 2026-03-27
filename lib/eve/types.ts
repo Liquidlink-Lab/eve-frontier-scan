@@ -124,6 +124,8 @@ export interface GateJumpSummary {
   destinationGateName?: string | null;
   characterId: string | null;
   characterItemId: number | null;
+  characterName?: string | null;
+  characterWalletAddress?: string | null;
 }
 
 export interface GatePermitSummary {
@@ -137,6 +139,8 @@ export interface GatePermitSummary {
   destinationGateName?: string | null;
   characterId: string | null;
   characterItemId: number | null;
+  characterName?: string | null;
+  characterWalletAddress?: string | null;
   expiresAtMs: number | null;
   extensionType: string | null;
   timestampMs: number;
