@@ -27,7 +27,14 @@ const discovery = {
           ownerCapId: "0xowner-cap-1",
           status: "online",
           fuelPercent: 60,
+          fuelEtaMs: 3_240_000,
           fuelQuantity: 6,
+          location: {
+            solarSystemId: 30013131,
+            x: "-100",
+            y: "25",
+            z: "3000",
+          },
           connectedAssemblyIds: ["0xstorage-1"],
         },
         {
@@ -40,6 +47,12 @@ const discovery = {
           status: "online",
           fuelPercent: null,
           fuelQuantity: null,
+          location: {
+            solarSystemId: 30013131,
+            x: "-200",
+            y: "50",
+            z: "6000",
+          },
           connectedAssemblyIds: [],
         },
         {
@@ -115,11 +128,18 @@ describe("eve ownership domain helpers", () => {
       {
         id: "0xnode-1",
         name: "Power Spine",
-        systemName: null,
+        systemName: "30013131",
         connectedAssemblyCount: 1,
         status: "online",
         fuelPercent: 60,
+        fuelEtaMs: 3_240_000,
         fuelQuantity: 6,
+        location: {
+          solarSystemId: 30013131,
+          x: "-100",
+          y: "25",
+          z: "3000",
+        },
         connectedAssemblies: [
           {
             id: "0xstorage-1",
@@ -159,13 +179,19 @@ describe("eve ownership domain helpers", () => {
         },
       ],
       "Heavy Storage": [
-        {
-          id: "0xstorage-1",
-          name: "Vault Alpha",
-          systemName: null,
-          typeLabel: "Heavy Storage",
-          status: "online",
-          typeId: 77917,
+          {
+            id: "0xstorage-1",
+            name: "Vault Alpha",
+            systemName: "30013131",
+            location: {
+              solarSystemId: 30013131,
+              x: "-200",
+              y: "50",
+              z: "6000",
+            },
+            typeLabel: "Heavy Storage",
+            status: "online",
+            typeId: 77917,
           typeRepr: "0xpkg::storage_unit::StorageUnit",
         },
       ],
@@ -407,6 +433,98 @@ describe("eve ownership domain helpers", () => {
               status: "offline",
             },
           ],
+        },
+      ],
+    });
+  });
+
+  it("classifies related gate assemblies from character discovery fallback data", async () => {
+    const relatedGateDiscovery = {
+      walletAddress: "0xwallet-1",
+      characters: [
+        {
+          characterId: "0xchar-1",
+          character: {
+            id: "0xchar-1",
+            name: "Rhea Ancru",
+            tribeId: 3,
+            ownerCapId: "0xowner-cap-1",
+          },
+          playerProfileIds: ["0xprofile-1"],
+          ownedStructures: [
+            {
+              id: "0xnode-1",
+              typeId: 88092,
+              typeLabel: "Network Node",
+              typeRepr: "0xpkg::network_node::NetworkNode",
+              name: "Power Spine",
+              ownerCapId: "0xowner-cap-1",
+              status: "online",
+              fuelPercent: 60,
+              fuelQuantity: 6,
+              connectedAssemblyIds: ["0xforeign-gate-1"],
+            },
+          ],
+          relatedStructures: [
+            {
+              id: "0xforeign-gate-1",
+              typeId: 84955,
+              typeLabel: "Gate",
+              typeRepr: "0xpkg::gate::Gate",
+              name: "Frontier Transit Authority",
+              ownerCapId: "0xforeign-cap",
+              status: "offline",
+              fuelPercent: null,
+              fuelQuantity: null,
+              connectedAssemblyIds: [],
+            },
+          ],
+        },
+      ],
+    } as const;
+
+    const modulePath = "./eveOwnershipMappers";
+    const loadedModule = await import(/* @vite-ignore */ modulePath).catch(() => ({
+      mapDiscoveryToNetworkNodeDetail: undefined,
+      mapDiscoveryToAssembliesByType: undefined,
+    }));
+
+    expect(typeof loadedModule.mapDiscoveryToNetworkNodeDetail).toBe("function");
+    expect(typeof loadedModule.mapDiscoveryToAssembliesByType).toBe("function");
+
+    const detail = loadedModule.mapDiscoveryToNetworkNodeDetail?.(
+      relatedGateDiscovery,
+      "0xchar-1",
+      "0xnode-1",
+      lookups,
+    );
+    const groups = loadedModule.mapDiscoveryToAssembliesByType?.(
+      relatedGateDiscovery,
+      "0xchar-1",
+      lookups,
+    );
+
+    expect(detail?.connectedAssemblyGroups[0]).toEqual({
+      label: "Gate",
+      assemblies: [
+        {
+          id: "0xforeign-gate-1",
+          name: "Frontier Transit Authority",
+          typeLabel: "Gate",
+          status: "offline",
+        },
+      ],
+    });
+    expect(groups).toEqual({
+      Gate: [
+        {
+          id: "0xforeign-gate-1",
+          name: "Frontier Transit Authority",
+          systemName: null,
+          typeLabel: "Gate",
+          status: "offline",
+          typeId: 84955,
+          typeRepr: "0xpkg::gate::Gate",
         },
       ],
     });

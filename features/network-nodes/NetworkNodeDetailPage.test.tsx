@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import { buildDashboardAssemblyDetailHref } from "@/lib/eve/routes";
 import type { NetworkNodeDetailSummary, WalletAccessContext } from "@/lib/eve/types";
 import { renderWithProviders } from "@/test/renderWithProviders";
 import NetworkNodeDetailPage from "./NetworkNodeDetailPage";
@@ -13,11 +14,18 @@ const access: WalletAccessContext = {
 const networkNode: NetworkNodeDetailSummary = {
   id: "0x0123456789abcdef",
   name: "Power Spine",
-  systemName: null,
+  systemName: "30013131",
+  location: {
+    solarSystemId: 30013131,
+    x: "-100",
+    y: "25",
+    z: "3000",
+  },
   connectedAssemblyCount: 4,
   status: "online",
-  fuelPercent: 60,
-  fuelQuantity: 6,
+  fuelPercent: 28,
+  fuelEtaMs: 3_240_000_000,
+  fuelQuantity: 999,
   connectedAssemblies: [
     {
       id: "0xgate-1",
@@ -87,12 +95,37 @@ describe("NetworkNodeDetailPage", () => {
     );
     expect(screen.getByText("Rhea Ancru")).toBeInTheDocument();
     expect(screen.getAllByText("online").length).toBeGreaterThan(0);
-    expect(screen.getByText("Unknown")).toBeInTheDocument();
-    expect(screen.getByText("60%")).toBeInTheDocument();
-    expect(screen.getByText("6")).toBeInTheDocument();
+    expect(screen.getByText("30013131")).toBeInTheDocument();
+    expect(screen.getByText("-100, 25, 3000")).toBeInTheDocument();
+    expect(screen.getByText("28%")).toBeInTheDocument();
+    expect(screen.getByText("37d 12h")).toBeInTheDocument();
+    expect(screen.getByText("999")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Gate" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Storage" })).toBeInTheDocument();
     expect(screen.getByText("Argent Gate")).toBeInTheDocument();
     expect(screen.getByText("Vault Alpha")).toBeInTheDocument();
+  });
+
+  it("renders detail links for each related assembly when character context is available", () => {
+    renderWithProviders(
+      <NetworkNodeDetailPage
+        access={access}
+        characterId="0xcharacter-1"
+        characterName="Rhea Ancru"
+        networkNode={networkNode}
+      />,
+    );
+
+    const detailLinks = screen.getAllByRole("link", { name: "Details" });
+
+    expect(detailLinks).toHaveLength(2);
+    expect(detailLinks[0]).toHaveAttribute(
+      "href",
+      buildDashboardAssemblyDetailHref("0xcharacter-1", "0xgate-1", access),
+    );
+    expect(detailLinks[1]).toHaveAttribute(
+      "href",
+      buildDashboardAssemblyDetailHref("0xcharacter-1", "0xstorage-1", access),
+    );
   });
 });

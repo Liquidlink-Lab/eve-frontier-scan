@@ -53,6 +53,18 @@ export default function AssemblyDetailPage({
               )}
             </Stack>
             <Stack direction="row" justifyContent="space-between" spacing={2}>
+              <Typography color="text.secondary">Solar system</Typography>
+              <Typography>{assembly.systemName ?? "Unknown"}</Typography>
+            </Stack>
+            <Stack direction="row" justifyContent="space-between" spacing={2}>
+              <Typography color="text.secondary">Coordinates</Typography>
+              <Typography>
+                {assembly.location
+                  ? `${assembly.location.x}, ${assembly.location.y}, ${assembly.location.z}`
+                  : "Unavailable"}
+              </Typography>
+            </Stack>
+            <Stack direction="row" justifyContent="space-between" spacing={2}>
               <Typography color="text.secondary">Status</Typography>
               <Chip
                 label={assembly.status}

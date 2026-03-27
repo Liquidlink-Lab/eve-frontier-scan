@@ -7,6 +7,13 @@ export interface WalletAccessContext {
 
 export type NetworkNodeStatus = "online" | "offline" | "unknown";
 
+export interface StructureLocation {
+  solarSystemId: number;
+  x: string;
+  y: string;
+  z: string;
+}
+
 export interface DiscoveredCharacter {
   id: string;
   name: string;
@@ -23,7 +30,9 @@ export interface DiscoveredStructure {
   ownerCapId: string | null;
   status: NetworkNodeStatus;
   fuelPercent: number | null;
+  fuelEtaMs?: number | null;
   fuelQuantity: number | null;
+  location?: StructureLocation;
   connectedAssemblyIds: string[];
 }
 
@@ -32,6 +41,7 @@ export interface CharacterStructureDiscovery {
   character: DiscoveredCharacter | null;
   playerProfileIds: string[];
   ownedStructures: DiscoveredStructure[];
+  relatedStructures?: DiscoveredStructure[];
 }
 
 export interface WalletStructureDiscovery {
@@ -59,6 +69,7 @@ export interface AssemblySummary {
   id: string;
   name: string;
   systemName: string | null;
+  location?: StructureLocation;
   typeId: number | null;
   typeLabel: string;
   typeRepr: string;
@@ -81,9 +92,11 @@ export interface NetworkNodeSummary {
   id: string;
   name: string;
   systemName: string | null;
+  location?: StructureLocation;
   connectedAssemblyCount: number;
   status: NetworkNodeStatus;
   fuelPercent: number | null;
+  fuelEtaMs?: number | null;
   fuelQuantity: number | null;
   connectedAssemblies: ConnectedAssemblySummary[];
 }

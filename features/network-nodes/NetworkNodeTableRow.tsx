@@ -1,11 +1,13 @@
 import {
   Chip,
+  Stack,
   TableCell,
   TableRow,
   Typography,
 } from "@mui/material";
 
 import LinkButton from "@/features/navigation/LinkButton";
+import { formatFuelEta } from "@/lib/eve/fuel";
 import { buildDashboardNetworkNodeDetailHref } from "@/lib/eve/routes";
 import type {
   NetworkNodeSummary,
@@ -38,7 +40,14 @@ export default function NetworkNodeTableRow({
       </TableCell>
       <TableCell>{networkNode.systemName ?? "Unknown"}</TableCell>
       <TableCell>
-        {networkNode.fuelPercent === null ? "Unavailable" : `${networkNode.fuelPercent}%`}
+        <Stack spacing={0.25}>
+          <Typography>
+            {networkNode.fuelPercent === null ? "Unavailable" : `${networkNode.fuelPercent}%`}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            ETA {formatFuelEta(networkNode.fuelEtaMs)}
+          </Typography>
+        </Stack>
       </TableCell>
       <TableCell>{networkNode.connectedAssemblyCount}</TableCell>
       <TableCell align="right">

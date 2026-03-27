@@ -54,11 +54,12 @@ export function mapDiscoveryToNetworkNodes(
     return [];
   }
 
+  const structures = getCharacterStructures(characterDiscovery);
   const structuresById = new Map(
-    characterDiscovery.ownedStructures.map((structure) => [structure.id, structure] as const),
+    structures.map((structure) => [structure.id, structure] as const),
   );
 
-  return characterDiscovery.ownedStructures
+  return structures
     .filter((structure) => isNetworkNodeType(structure.typeRepr))
     .map((networkNode) => mapNetworkNodeSummary(networkNode, structuresById, lookups))
     .sort((left, right) => left.name.localeCompare(right.name));
@@ -76,10 +77,11 @@ export function mapDiscoveryToNetworkNodeDetail(
     return null;
   }
 
+  const structures = getCharacterStructures(characterDiscovery);
   const structuresById = new Map(
-    characterDiscovery.ownedStructures.map((structure) => [structure.id, structure] as const),
+    structures.map((structure) => [structure.id, structure] as const),
   );
-  const networkNode = characterDiscovery.ownedStructures.find(
+  const networkNode = structures.find(
     (structure) => structure.id === nodeId && isNetworkNodeType(structure.typeRepr),
   );
 
@@ -108,7 +110,7 @@ export function mapDiscoveryToAssembliesByType(
 
   const groups = new Map<string, AssemblySummary[]>();
 
-  for (const structure of characterDiscovery.ownedStructures) {
+  for (const structure of getCharacterStructures(characterDiscovery)) {
     if (isNetworkNodeType(structure.typeRepr)) {
       continue;
     }
@@ -124,7 +126,8 @@ export function mapDiscoveryToAssembliesByType(
         structure.typeLabel,
         typeLabel,
       ),
-      systemName: null,
+      systemName: getSolarSystemLabel(structure.location),
+      ...(structure.location ? { location: structure.location } : {}),
       status: structure.status,
       typeId: structure.typeId,
       typeLabel,
@@ -150,6 +153,27 @@ function findCharacterDiscovery(
   return discovery.characters.find((entry) => entry.characterId === characterId) ?? null;
 }
 
+function getCharacterStructures(
+  characterDiscovery: WalletStructureDiscovery["characters"][number],
+) {
+  const structuresById = new Map<
+    string,
+    WalletStructureDiscovery["characters"][number]["ownedStructures"][number]
+  >();
+
+  for (const structure of characterDiscovery.ownedStructures) {
+    structuresById.set(structure.id, structure);
+  }
+
+  for (const structure of characterDiscovery.relatedStructures ?? []) {
+    if (!structuresById.has(structure.id)) {
+      structuresById.set(structure.id, structure);
+    }
+  }
+
+  return Array.from(structuresById.values());
+}
+
 function mapNetworkNodeSummary(
   networkNode: WalletStructureDiscovery["characters"][number]["ownedStructures"][number],
   structuresById: Map<
@@ -161,10 +185,12 @@ function mapNetworkNodeSummary(
   return {
     id: networkNode.id,
     name: networkNode.name,
-    systemName: null,
+    systemName: getSolarSystemLabel(networkNode.location),
+    ...(networkNode.location ? { location: networkNode.location } : {}),
     connectedAssemblyCount: networkNode.connectedAssemblyIds.length,
     status: networkNode.status,
     fuelPercent: networkNode.fuelPercent,
+    fuelEtaMs: networkNode.fuelEtaMs,
     fuelQuantity: networkNode.fuelQuantity,
     connectedAssemblies: networkNode.connectedAssemblyIds.map((connectedId) =>
       mapConnectedAssembly(structuresById.get(connectedId), connectedId, lookups),
@@ -255,6 +281,12 @@ function getDisplayName(
   }
 
   return name;
+}
+
+function getSolarSystemLabel(
+  location: WalletStructureDiscovery["characters"][number]["ownedStructures"][number]["location"],
+) {
+  return location ? String(location.solarSystemId) : null;
 }
 
 function getTribeName(tribeId: number | null, lookups: LabelLookups) {

@@ -1,12 +1,18 @@
 import { Chip, List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
 
-import type { ConnectedAssemblyGroup } from "@/lib/eve/types";
+import LinkButton from "@/features/navigation/LinkButton";
+import { buildDashboardAssemblyDetailHref } from "@/lib/eve/routes";
+import type { ConnectedAssemblyGroup, WalletAccessContext } from "@/lib/eve/types";
 
 interface ConnectedAssembliesListProps {
+  access: WalletAccessContext;
+  characterId?: string;
   groups: ConnectedAssemblyGroup[];
 }
 
 export default function ConnectedAssembliesList({
+  access,
+  characterId,
   groups,
 }: ConnectedAssembliesListProps) {
   return (
@@ -37,7 +43,21 @@ export default function ConnectedAssembliesList({
                     secondary={assembly.typeLabel}
                     sx={{ my: 0 }}
                   />
-                  <Chip label={assembly.status} size="small" variant="outlined" />
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Chip label={assembly.status} size="small" variant="outlined" />
+                    {characterId ? (
+                      <LinkButton
+                        href={buildDashboardAssemblyDetailHref(
+                          characterId,
+                          assembly.id,
+                          access,
+                        )}
+                        size="small"
+                      >
+                        Details
+                      </LinkButton>
+                    ) : null}
+                  </Stack>
                 </ListItem>
               ))}
             </List>

@@ -1,4 +1,5 @@
 import { formatShortAddress } from "../address";
+import { calculateFuelEtaMs, calculateFuelFillPercent } from "../fuel";
 import type {
   CharacterStructureDiscovery,
   DiscoveredCharacter,
@@ -6,6 +7,7 @@ import type {
   NetworkNodeStatus,
   WalletStructureDiscovery,
 } from "../types";
+import { discoverRevealedLocations } from "./locationDiscovery";
 
 export interface DiscoveryGraphQlObjectNode {
   address?: string;
@@ -119,13 +121,40 @@ export async function discoverOwnedStructures({
         ownedStructures.push(structure);
       }
     }
+    const relatedStructures = await fetchRelatedStructures(
+      graphQl,
+      packageId,
+      ownedStructures,
+    );
 
     characters.push({
       characterId,
       character: getCharacterRecord(characterNode),
       playerProfileIds: profileIds,
       ownedStructures,
+      ...(relatedStructures.length > 0 ? { relatedStructures } : {}),
     });
+  }
+
+  const revealedLocations = await discoverRevealedLocations({
+    packageId,
+    graphQl,
+    structureIds: characters.flatMap((character) =>
+      getCharacterStructures(character).map((structure) => structure.id),
+    ),
+  });
+
+  for (const character of characters) {
+    character.ownedStructures = character.ownedStructures.map((structure) => {
+      const location = revealedLocations.get(structure.id);
+      return location ? { ...structure, location } : structure;
+    });
+    if (character.relatedStructures) {
+      character.relatedStructures = character.relatedStructures.map((structure) => {
+        const location = revealedLocations.get(structure.id);
+        return location ? { ...structure, location } : structure;
+      });
+    }
   }
 
   return {
@@ -164,6 +193,48 @@ async function fetchObjectWithJson(
   };
 
   return response.data?.object ?? null;
+}
+
+async function fetchRelatedStructures(
+  graphQl: DiscoverOwnedStructuresParams["graphQl"],
+  packageId: string,
+  ownedStructures: DiscoveredStructure[],
+) {
+  const knownStructureIds = new Set(ownedStructures.map((structure) => structure.id));
+  const relatedStructureIds = Array.from(
+    new Set(
+      ownedStructures.flatMap((structure) =>
+        structure.connectedAssemblyIds.filter((connectedId) => !knownStructureIds.has(connectedId)),
+      ),
+    ),
+  );
+  const relatedStructures: DiscoveredStructure[] = [];
+
+  for (const structureId of relatedStructureIds) {
+    const structureNode = await fetchObjectWithJson(graphQl, structureId);
+
+    if (!structureNode || !isFromPackage(structureNode, packageId)) {
+      continue;
+    }
+
+    const structure = getStructureRecord(structureNode, null);
+
+    if (!structure || knownStructureIds.has(structure.id)) {
+      continue;
+    }
+
+    knownStructureIds.add(structure.id);
+    relatedStructures.push(structure);
+  }
+
+  return relatedStructures;
+}
+
+function getCharacterStructures(character: CharacterStructureDiscovery) {
+  return [
+    ...character.ownedStructures,
+    ...(character.relatedStructures ?? []),
+  ];
 }
 
 function groupProfilesByCharacter(playerProfiles: PlayerProfileRecord[]) {
@@ -250,11 +321,12 @@ function getOwnerCapRecord(node: DiscoveryGraphQlObjectNode) {
 
 function getStructureRecord(
   node: DiscoveryGraphQlObjectNode,
-  ownerCapId: string,
+  ownerCapId: string | null,
 ): DiscoveredStructure | null {
   const json = getJsonContents(node);
   const typeRepr = getTypeRepr(node);
   const id = getStringValue(json, "id") ?? node.address;
+  const fuelEtaMs = json ? getFuelEtaMs(json) : null;
 
   if (!json || !id) {
     return null;
@@ -269,6 +341,7 @@ function getStructureRecord(
     ownerCapId: getStringValue(json, "owner_cap_id") ?? ownerCapId,
     status: getStatus(getStatusVariant(json)),
     fuelPercent: getFuelPercent(json),
+    ...(fuelEtaMs === null ? {} : { fuelEtaMs }),
     fuelQuantity: getFuelQuantity(json),
     connectedAssemblyIds: getConnectedAssemblyIds(json),
   };
@@ -381,14 +454,11 @@ function getFuelPercent(record: Record<string, unknown>) {
   }
 
   const fuelRecord = fuel as Record<string, unknown>;
-  const maxCapacity = parseInteger(fuelRecord.max_capacity);
-  const quantity = parseInteger(fuelRecord.quantity);
-
-  if (maxCapacity === null || quantity === null || maxCapacity === 0) {
-    return null;
-  }
-
-  return Math.round((quantity / maxCapacity) * 100);
+  return calculateFuelFillPercent({
+    maxCapacity: parseInteger(fuelRecord.max_capacity),
+    quantity: parseInteger(fuelRecord.quantity),
+    unitVolume: parseInteger(fuelRecord.unit_volume),
+  });
 }
 
 function getFuelQuantity(record: Record<string, unknown>) {
@@ -399,6 +469,25 @@ function getFuelQuantity(record: Record<string, unknown>) {
   }
 
   return parseInteger((fuel as Record<string, unknown>).quantity);
+}
+
+function getFuelEtaMs(record: Record<string, unknown>) {
+  const fuel = record.fuel;
+
+  if (!fuel || typeof fuel !== "object") {
+    return null;
+  }
+
+  const fuelRecord = fuel as Record<string, unknown>;
+
+  return calculateFuelEtaMs({
+    burnRateInMs: parseInteger(fuelRecord.burn_rate_in_ms),
+    burnStartTime: parseInteger(fuelRecord.burn_start_time),
+    fuelTypeId: parseInteger(fuelRecord.type_id),
+    isBurning: Boolean(fuelRecord.is_burning),
+    previousCycleElapsedTime: parseInteger(fuelRecord.previous_cycle_elapsed_time),
+    quantity: parseInteger(fuelRecord.quantity),
+  });
 }
 
 function getConnectedAssemblyIds(record: Record<string, unknown>) {

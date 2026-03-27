@@ -18,6 +18,7 @@ const networkNodes: NetworkNodeSummary[] = [
     connectedAssemblyCount: 3,
     status: "online",
     fuelPercent: 40,
+    fuelEtaMs: 5_400_000,
     fuelQuantity: 400,
     connectedAssemblies: [],
   },
@@ -28,6 +29,7 @@ const networkNodes: NetworkNodeSummary[] = [
     connectedAssemblyCount: 5,
     status: "offline",
     fuelPercent: 60,
+    fuelEtaMs: null,
     fuelQuantity: 600,
     connectedAssemblies: [],
   },
@@ -38,6 +40,7 @@ const networkNodes: NetworkNodeSummary[] = [
     connectedAssemblyCount: 3,
     status: "online",
     fuelPercent: 10,
+    fuelEtaMs: 9_000_000,
     fuelQuantity: 100,
     connectedAssemblies: [],
   },
@@ -66,6 +69,9 @@ describe("NetworkNodesPage", () => {
     ]);
 
     expect(screen.getAllByRole("link", { name: /details/i })).toHaveLength(3);
+    expect(screen.getByText("ETA 1h 30m")).toBeInTheDocument();
+    expect(screen.getByText("ETA 2h 30m")).toBeInTheDocument();
+    expect(screen.getByText("ETA Unavailable")).toBeInTheDocument();
 
     expect(screen.getAllByRole("row").slice(1).map((row) => row.textContent)).toEqual([
       expect.stringContaining("Gamma Relay"),

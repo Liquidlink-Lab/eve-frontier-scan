@@ -9,6 +9,7 @@ import { mapDiscoveryToCharacterSummaries } from "@/lib/eve/discovery/eveOwnersh
 import { fetchWalletStructureDiscovery } from "@/lib/eve/discovery/eveOwnershipClient";
 import { eveLabelLookups } from "@/lib/eve/lookups";
 import { parseWalletAccessSearchParams } from "@/lib/eve/routes";
+import DashboardSearchForm from "./DashboardSearchForm";
 import Sidebar, { drawerWidth } from "./Sidebar";
 
 interface DashboardShellProps extends PropsWithChildren {
@@ -59,6 +60,28 @@ export default function DashboardShell({
           ml: `${drawerWidth}px`,
         }}
       >
+        <Box
+          component="header"
+          sx={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1200,
+            borderBottom: "1px solid rgba(148, 163, 184, 0.12)",
+            backgroundColor: "rgba(5, 7, 11, 0.84)",
+            backdropFilter: "blur(18px)",
+          }}
+        >
+          <Box
+            sx={{
+              px: 3,
+              py: 1.5,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <DashboardSearchForm />
+          </Box>
+        </Box>
         {children}
       </Box>
     </Box>

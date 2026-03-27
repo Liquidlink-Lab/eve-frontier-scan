@@ -63,6 +63,14 @@ export default function NetworkNodeDetailPage({
               <Typography>{networkNode.systemName ?? "Unknown"}</Typography>
             </Stack>
             <Stack direction="row" justifyContent="space-between" spacing={2}>
+              <Typography color="text.secondary">Coordinates</Typography>
+              <Typography>
+                {networkNode.location
+                  ? `${networkNode.location.x}, ${networkNode.location.y}, ${networkNode.location.z}`
+                  : "Unavailable"}
+              </Typography>
+            </Stack>
+            <Stack direction="row" justifyContent="space-between" spacing={2}>
               <Typography color="text.secondary">Status</Typography>
               <Chip
                 label={networkNode.status}
@@ -79,7 +87,11 @@ export default function NetworkNodeDetailPage({
           <Typography variant="h4" sx={{ mb: 2 }}>
             Related assemblies
           </Typography>
-          <ConnectedAssembliesList groups={networkNode.connectedAssemblyGroups} />
+          <ConnectedAssembliesList
+            access={access}
+            characterId={characterId}
+            groups={networkNode.connectedAssemblyGroups}
+          />
         </Paper>
       </Stack>
     </Box>

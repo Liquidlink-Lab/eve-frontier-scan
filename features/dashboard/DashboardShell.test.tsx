@@ -1,4 +1,5 @@
 import { screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { renderWithProviders } from "@/test/renderWithProviders";
@@ -121,7 +122,28 @@ describe("DashboardShell", () => {
       "href",
       "/dashboard/0xchar-1/gates?wallet=0x43acdc9cb9e379d5fab90effbaaa08896d943d9958a96d9df6f07c39025cd186&source=eve-vault",
     );
+    expect(
+      screen.getByRole("textbox", { name: /inspect another address/i }),
+    ).toBeInTheDocument();
     expect(screen.getByText("network nodes page")).toBeInTheDocument();
+  });
+
+  it("routes to a new lookup when the dashboard header search form is submitted", async () => {
+    const user = userEvent.setup();
+
+    renderWithProviders(
+      <DashboardShell characterId="0xchar-1">
+        <div>network nodes page</div>
+      </DashboardShell>,
+    );
+
+    await user.type(
+      await screen.findByRole("textbox", { name: /inspect another address/i }),
+      " 0xAbCdEf1234 ",
+    );
+    await user.click(screen.getByRole("button", { name: /^inspect$/i }));
+
+    expect(push).toHaveBeenCalledWith("/lookup/0xabcdef1234");
   });
 
   it("does not render the dashboard sidebar outside dashboard routes", () => {
@@ -134,6 +156,9 @@ describe("DashboardShell", () => {
     );
 
     expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", { name: /inspect another address/i }),
+    ).not.toBeInTheDocument();
     expect(screen.getByText("home page")).toBeInTheDocument();
     expect(fetchWalletStructureDiscovery).not.toHaveBeenCalled();
   });

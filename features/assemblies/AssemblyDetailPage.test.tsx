@@ -8,7 +8,13 @@ import AssemblyDetailPage from "./AssemblyDetailPage";
 const assembly: AssemblySummary = {
   id: "0xabcdef1234567890",
   name: "Heavy Storage · 0xabcd…7890",
-  systemName: null,
+  systemName: "30013131",
+  location: {
+    solarSystemId: 30013131,
+    x: "-200",
+    y: "50",
+    z: "6000",
+  },
   status: "online",
   typeId: 77917,
   typeLabel: "Heavy Storage",
@@ -33,5 +39,7 @@ describe("AssemblyDetailPage", () => {
     );
     expect(screen.getByText("online")).toBeInTheDocument();
     expect(screen.getByText("Rhea Ancru")).toBeInTheDocument();
+    expect(screen.getByText("30013131")).toBeInTheDocument();
+    expect(screen.getByText("-200, 50, 6000")).toBeInTheDocument();
   });
 });
