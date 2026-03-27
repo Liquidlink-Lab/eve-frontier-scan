@@ -4,7 +4,9 @@ import { Box, Paper, Stack, Typography } from "@mui/material";
 import AssemblyDetailPage from "@/features/assemblies/AssemblyDetailPage";
 import { normalizeSuiAddress } from "@/lib/eve/address";
 import { discoverStorageInventory } from "@/lib/eve/discovery/storageInventoryDiscovery";
-import { mapDiscoveryToAssembliesByType } from "@/lib/eve/discovery/eveOwnershipMappers";
+import {
+  mapDiscoveryToAssemblyDetail,
+} from "@/lib/eve/discovery/eveOwnershipMappers";
 import {
   createOwnershipGraphQlClient,
   fetchWalletStructureDiscovery,
@@ -56,11 +58,12 @@ export default async function DashboardAssemblyDetailPage({
         (entry) => entry.id === assemblyId,
       ) ?? null
     : null;
-  const assembly = Object.values(
-    mapDiscoveryToAssembliesByType(discovery, characterId, dashboardLabelLookups),
-  )
-    .flat()
-    .find((entry) => entry.id === assemblyId);
+  const assembly = mapDiscoveryToAssemblyDetail(
+    discovery,
+    characterId,
+    assemblyId,
+    dashboardLabelLookups,
+  );
 
   if (!assembly) {
     return (

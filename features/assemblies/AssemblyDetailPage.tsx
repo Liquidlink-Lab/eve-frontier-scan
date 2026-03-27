@@ -17,11 +17,11 @@ import { formatShortAddress } from "@/lib/eve/address";
 import { calculatePercentage, clampPercentage, formatPercentage } from "@/lib/eve/percent";
 import { getSuiscanObjectUrl } from "@/lib/eve/suiscan";
 import { getAssemblyWikiUrl } from "@/lib/eve/wikiLinks";
-import type { AssemblySummary, StorageInventorySummary } from "@/lib/eve/types";
+import type { AssemblyDetailSummary, StorageInventorySummary } from "@/lib/eve/types";
 
 interface AssemblyDetailPageProps {
   characterName: string;
-  assembly: AssemblySummary;
+  assembly: AssemblyDetailSummary;
   storageInventory?: StorageInventorySummary | null;
 }
 
@@ -94,6 +94,77 @@ export default function AssemblyDetailPage({
                 variant="outlined"
               />
             </Stack>
+            {assembly.description ? (
+              <Stack direction="row" justifyContent="space-between" spacing={2}>
+                <Typography color="text.secondary">Description</Typography>
+                <Typography>{assembly.description}</Typography>
+              </Stack>
+            ) : null}
+            {assembly.url ? (
+              <Stack direction="row" justifyContent="space-between" spacing={2}>
+                <Typography color="text.secondary">Reference URL</Typography>
+                <MuiLink href={assembly.url} underline="hover" target="_blank" rel="noreferrer">
+                  {assembly.url}
+                </MuiLink>
+              </Stack>
+            ) : null}
+            {assembly.itemId !== null ? (
+              <Stack direction="row" justifyContent="space-between" spacing={2}>
+                <Typography color="text.secondary">Tenant item ID</Typography>
+                <Typography>{assembly.itemId}</Typography>
+              </Stack>
+            ) : null}
+            {assembly.tenant ? (
+              <Stack direction="row" justifyContent="space-between" spacing={2}>
+                <Typography color="text.secondary">Tenant</Typography>
+                <Typography>{assembly.tenant}</Typography>
+              </Stack>
+            ) : null}
+            {assembly.ownerCapId ? (
+              <Stack direction="row" justifyContent="space-between" spacing={2}>
+                <Typography color="text.secondary">Owner Cap</Typography>
+                <Typography>{assembly.ownerCapId}</Typography>
+              </Stack>
+            ) : null}
+            {assembly.energySourceId ? (
+              <Stack direction="row" justifyContent="space-between" spacing={2}>
+                <Typography color="text.secondary">Powered by</Typography>
+                <Typography>
+                  {assembly.energySourceName ?? formatShortAddress(assembly.energySourceId)}
+                </Typography>
+              </Stack>
+            ) : null}
+            {(assembly.extensionType || assembly.extensionLabel) ? (
+              <Stack direction="row" justifyContent="space-between" spacing={2}>
+                <Typography color="text.secondary">Extension</Typography>
+                <Stack spacing={0.5} sx={{ alignItems: "flex-end" }}>
+                  <Typography>{assembly.extensionLabel}</Typography>
+                  {assembly.extensionType ? (
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontFamily: "monospace" }}
+                    >
+                      {assembly.extensionType}
+                    </Typography>
+                  ) : null}
+                </Stack>
+              </Stack>
+            ) : null}
+            {assembly.linkedGateId ? (
+              <Stack direction="row" justifyContent="space-between" spacing={2}>
+                <Typography color="text.secondary">Linked gate</Typography>
+                <Typography>
+                  {assembly.linkedGateName ?? formatShortAddress(assembly.linkedGateId)}
+                </Typography>
+              </Stack>
+            ) : null}
+            {assembly.gateAccessMode ? (
+              <Stack direction="row" justifyContent="space-between" spacing={2}>
+                <Typography color="text.secondary">Access mode</Typography>
+                <Typography>{assembly.gateAccessMode}</Typography>
+              </Stack>
+            ) : null}
           </Stack>
         </Paper>
 

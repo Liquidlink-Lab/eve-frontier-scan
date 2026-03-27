@@ -338,7 +338,14 @@ function getStructureRecord(
     typeLabel: getTypeLabel(typeRepr),
     typeRepr,
     name: getMetadataName(json) ?? `${getTypeLabel(typeRepr)} ${formatShortAddress(id)}`,
+    description: getMetadataDescription(json),
+    url: getMetadataUrl(json),
+    itemId: getKeyItemId(json),
+    tenant: getKeyTenant(json),
     ownerCapId: getStringValue(json, "owner_cap_id") ?? ownerCapId,
+    energySourceId: getStringValue(json, "energy_source_id"),
+    linkedGateId: getStringValue(json, "linked_gate_id"),
+    extensionType: getExtensionType(json),
     status: getStatus(getStatusVariant(json)),
     fuelPercent: getFuelPercent(json),
     ...(fuelEtaMs === null ? {} : { fuelEtaMs }),
@@ -366,13 +373,60 @@ function getStringValue(record: Record<string, unknown> | null, key: string) {
 }
 
 function getMetadataName(record: Record<string, unknown> | null) {
+  return getMetadataTextValue(record, "name");
+}
+
+function getMetadataDescription(record: Record<string, unknown> | null) {
+  return getMetadataTextValue(record, "description");
+}
+
+function getMetadataUrl(record: Record<string, unknown> | null) {
+  return getMetadataTextValue(record, "url");
+}
+
+function getMetadataTextValue(
+  record: Record<string, unknown> | null,
+  key: "name" | "description" | "url",
+) {
   const metadata = record?.metadata;
 
   if (!metadata || typeof metadata !== "object") {
     return null;
   }
 
-  const name = (metadata as Record<string, unknown>).name;
+  const value = (metadata as Record<string, unknown>)[key];
+  return typeof value === "string" && value.length > 0 ? value : null;
+}
+
+function getKeyItemId(record: Record<string, unknown> | null) {
+  const key = record?.key;
+
+  if (!key || typeof key !== "object") {
+    return null;
+  }
+
+  return parseInteger((key as Record<string, unknown>).item_id);
+}
+
+function getKeyTenant(record: Record<string, unknown> | null) {
+  const key = record?.key;
+
+  if (!key || typeof key !== "object") {
+    return null;
+  }
+
+  const tenant = (key as Record<string, unknown>).tenant;
+  return typeof tenant === "string" && tenant.length > 0 ? tenant : null;
+}
+
+function getExtensionType(record: Record<string, unknown> | null) {
+  const extension = record?.extension;
+
+  if (!extension || typeof extension !== "object") {
+    return null;
+  }
+
+  const name = (extension as Record<string, unknown>).name;
   return typeof name === "string" && name.length > 0 ? name : null;
 }
 

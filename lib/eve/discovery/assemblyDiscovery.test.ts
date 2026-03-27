@@ -165,10 +165,16 @@ describe("discoverOwnedStructures", () => {
                     },
                     json: {
                       id: networkNodeId,
+                      key: {
+                        item_id: "1000000010001",
+                        tenant: "utopia",
+                      },
                       type_id: "88092",
                       owner_cap_id: "0xnode-cap",
                       metadata: {
                         name: "Node Prime",
+                        description: "Primary power relay",
+                        url: "https://example.com/network-node",
                       },
                       status: {
                         status: {
@@ -206,10 +212,17 @@ describe("discoverOwnedStructures", () => {
                     },
                     json: {
                       id: storageUnitId,
+                      key: {
+                        item_id: "1000000010002",
+                        tenant: "utopia",
+                      },
                       type_id: "77917",
                       owner_cap_id: "0xstorage-cap",
+                      energy_source_id: networkNodeId,
                       metadata: {
                         name: "Storage Alpha",
+                        description: "Bulk storage reserve",
+                        url: "https://example.com/storage-alpha",
                       },
                       status: {
                         status: {
@@ -236,10 +249,22 @@ describe("discoverOwnedStructures", () => {
                     },
                     json: {
                       id: foreignGateId,
+                      key: {
+                        item_id: "1000000010003",
+                        tenant: "utopia",
+                      },
                       type_id: "84955",
                       owner_cap_id: "0xforeign-gate-cap",
+                      linked_gate_id:
+                        "0x0000000000000000000000000000000000000000000000000000000000000044",
+                      energy_source_id: networkNodeId,
                       metadata: {
                         name: "Transit Authority",
+                        description: "Interstellar checkpoint",
+                        url: "https://example.com/transit-authority",
+                      },
+                      extension: {
+                        name: "0xextension::gate_rules::GateAuth",
                       },
                       status: {
                         status: {
@@ -348,6 +373,13 @@ describe("discoverOwnedStructures", () => {
               typeRepr: `${pkg}::network_node::NetworkNode`,
               typeId: 88092,
               name: "Node Prime",
+              description: "Primary power relay",
+              energySourceId: null,
+              extensionType: null,
+              url: "https://example.com/network-node",
+              itemId: 1000000010001,
+              linkedGateId: null,
+              tenant: "utopia",
               ownerCapId: "0xnode-cap",
               status: "online",
             },
@@ -360,7 +392,14 @@ describe("discoverOwnedStructures", () => {
               typeRepr: `${pkg}::storage_unit::StorageUnit`,
               typeId: 77917,
               name: "Storage Alpha",
+              description: "Bulk storage reserve",
+              url: "https://example.com/storage-alpha",
+              itemId: 1000000010002,
+              tenant: "utopia",
               ownerCapId: "0xstorage-cap",
+              energySourceId: networkNodeId,
+              extensionType: null,
+              linkedGateId: null,
               status: "online",
             },
           ],
@@ -374,7 +413,15 @@ describe("discoverOwnedStructures", () => {
               typeRepr: `${pkg}::gate::Gate`,
               typeId: 84955,
               name: "Transit Authority",
+              description: "Interstellar checkpoint",
+              url: "https://example.com/transit-authority",
+              itemId: 1000000010003,
+              tenant: "utopia",
               ownerCapId: "0xforeign-gate-cap",
+              linkedGateId:
+                "0x0000000000000000000000000000000000000000000000000000000000000044",
+              energySourceId: networkNodeId,
+              extensionType: "0xextension::gate_rules::GateAuth",
               status: "offline",
             },
           ],

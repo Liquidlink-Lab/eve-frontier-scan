@@ -43,7 +43,12 @@ const discovery = {
           typeLabel: "Storage Unit",
           typeRepr: "0xpkg::storage_unit::StorageUnit",
           name: "Vault Alpha",
+          description: "Keep the isotopes moving.",
+          url: "https://example.com/vault-alpha",
+          itemId: 1000000011001,
+          tenant: "utopia",
           ownerCapId: "0xowner-cap-1",
+          energySourceId: "0xnode-1",
           status: "online",
           fuelPercent: null,
           fuelQuantity: null,
@@ -65,6 +70,55 @@ const discovery = {
           status: "offline",
           fuelPercent: null,
           fuelQuantity: null,
+          connectedAssemblyIds: [],
+        },
+        {
+          id: "0xgate-1",
+          typeId: 84955,
+          typeLabel: "Gate",
+          typeRepr: "0xpkg::gate::Gate",
+          name: "Transit Authority",
+          description: "Permit-managed border gate.",
+          url: "https://example.com/transit-authority",
+          itemId: 1000000012001,
+          tenant: "utopia",
+          ownerCapId: "0xowner-cap-1",
+          status: "online",
+          fuelPercent: null,
+          fuelQuantity: null,
+          energySourceId: "0xnode-1",
+          linkedGateId: "0xgate-2",
+          extensionType: "0xextension::gate_rules::GateAuth",
+          connectedAssemblyIds: [],
+        },
+        {
+          id: "0xgate-2",
+          typeId: 84955,
+          typeLabel: "Gate",
+          typeRepr: "0xpkg::gate::Gate",
+          name: "Far Horizon",
+          ownerCapId: "0xowner-cap-1",
+          status: "offline",
+          fuelPercent: null,
+          fuelQuantity: null,
+          connectedAssemblyIds: [],
+        },
+        {
+          id: "0xturret-1",
+          typeId: 84556,
+          typeLabel: "Turret",
+          typeRepr: "0xpkg::turret::Turret",
+          name: "Sentinel Grid",
+          description: "Aggressor-first defensive turret.",
+          url: "https://example.com/sentinel-grid",
+          itemId: 1000000013001,
+          tenant: "utopia",
+          ownerCapId: "0xowner-cap-1",
+          status: "online",
+          fuelPercent: null,
+          fuelQuantity: null,
+          energySourceId: "0xnode-1",
+          extensionType: "0xextension::turret_rules::TurretAuth",
           connectedAssemblyIds: [],
         },
       ],
@@ -169,6 +223,26 @@ describe("eve ownership domain helpers", () => {
     );
 
     expect(groups).toEqual({
+      Gate: [
+        {
+          id: "0xgate-2",
+          name: "Far Horizon",
+          systemName: null,
+          typeLabel: "Gate",
+          status: "offline",
+          typeId: 84955,
+          typeRepr: "0xpkg::gate::Gate",
+        },
+        {
+          id: "0xgate-1",
+          name: "Transit Authority",
+          systemName: null,
+          typeLabel: "Gate",
+          status: "online",
+          typeId: 84955,
+          typeRepr: "0xpkg::gate::Gate",
+        },
+      ],
       "Heavy Refinery": [
         {
           id: "0xrefinery-1",
@@ -181,20 +255,31 @@ describe("eve ownership domain helpers", () => {
         },
       ],
       "Heavy Storage": [
-          {
-            id: "0xstorage-1",
-            name: "Vault Alpha",
-            systemName: "30013131",
-            location: {
-              solarSystemId: 30013131,
-              x: "-200",
-              y: "50",
-              z: "6000",
-            },
-            typeLabel: "Heavy Storage",
-            status: "online",
-            typeId: 77917,
+        {
+          id: "0xstorage-1",
+          name: "Vault Alpha",
+          systemName: "30013131",
+          location: {
+            solarSystemId: 30013131,
+            x: "-200",
+            y: "50",
+            z: "6000",
+          },
+          typeLabel: "Heavy Storage",
+          status: "online",
+          typeId: 77917,
           typeRepr: "0xpkg::storage_unit::StorageUnit",
+        },
+      ],
+      "Smart Turret": [
+        {
+          id: "0xturret-1",
+          name: "Sentinel Grid",
+          systemName: null,
+          typeLabel: "Smart Turret",
+          status: "online",
+          typeId: 84556,
+          typeRepr: "0xpkg::turret::Turret",
         },
       ],
     });
@@ -530,6 +615,84 @@ describe("eve ownership domain helpers", () => {
           typeRepr: "0xpkg::gate::Gate",
         },
       ],
+    });
+  });
+
+  it("maps a gate detail summary with resolved linked gate and energy source metadata", async () => {
+    const modulePath = "./eveOwnershipMappers";
+    const loadedModule = await import(/* @vite-ignore */ modulePath).catch(() => ({
+      mapDiscoveryToAssemblyDetail: undefined,
+    }));
+
+    expect(typeof loadedModule.mapDiscoveryToAssemblyDetail).toBe("function");
+
+    const detail = loadedModule.mapDiscoveryToAssemblyDetail?.(
+      discovery,
+      "0xchar-1",
+      "0xgate-1",
+      lookups,
+    );
+
+    expect(detail).toEqual({
+      id: "0xgate-1",
+      name: "Transit Authority",
+      systemName: null,
+      typeId: 84955,
+      typeLabel: "Gate",
+      typeRepr: "0xpkg::gate::Gate",
+      status: "online",
+      description: "Permit-managed border gate.",
+      url: "https://example.com/transit-authority",
+      itemId: 1000000012001,
+      tenant: "utopia",
+      ownerCapId: "0xowner-cap-1",
+      energySourceId: "0xnode-1",
+      energySourceName: "Power Spine",
+      linkedGateId: "0xgate-2",
+      linkedGateName: "Far Horizon",
+      extensionType: "0xextension::gate_rules::GateAuth",
+      extensionLabel: "Custom extension",
+      extensionFrozen: null,
+      gateAccessMode: "Permit required",
+    });
+  });
+
+  it("maps a turret detail summary with resolved energy source and extension label", async () => {
+    const modulePath = "./eveOwnershipMappers";
+    const loadedModule = await import(/* @vite-ignore */ modulePath).catch(() => ({
+      mapDiscoveryToAssemblyDetail: undefined,
+    }));
+
+    expect(typeof loadedModule.mapDiscoveryToAssemblyDetail).toBe("function");
+
+    const detail = loadedModule.mapDiscoveryToAssemblyDetail?.(
+      discovery,
+      "0xchar-1",
+      "0xturret-1",
+      lookups,
+    );
+
+    expect(detail).toEqual({
+      id: "0xturret-1",
+      name: "Sentinel Grid",
+      systemName: null,
+      typeId: 84556,
+      typeLabel: "Smart Turret",
+      typeRepr: "0xpkg::turret::Turret",
+      status: "online",
+      description: "Aggressor-first defensive turret.",
+      url: "https://example.com/sentinel-grid",
+      itemId: 1000000013001,
+      tenant: "utopia",
+      ownerCapId: "0xowner-cap-1",
+      energySourceId: "0xnode-1",
+      energySourceName: "Power Spine",
+      linkedGateId: null,
+      linkedGateName: null,
+      extensionType: "0xextension::turret_rules::TurretAuth",
+      extensionLabel: "Custom extension",
+      extensionFrozen: null,
+      gateAccessMode: null,
     });
   });
 });

@@ -1,4 +1,5 @@
 import type {
+  AssemblyDetailSummary,
   AssemblySummary,
   CharacterSummary,
   ConnectedAssemblyGroup,
@@ -144,6 +145,68 @@ export function mapDiscoveryToAssembliesByType(
         entries.sort((left, right) => left.name.localeCompare(right.name)),
       ]),
   );
+}
+
+export function mapDiscoveryToAssemblyDetail(
+  discovery: WalletStructureDiscovery,
+  characterId: string,
+  assemblyId: string,
+  lookups: LabelLookups,
+): AssemblyDetailSummary | null {
+  const characterDiscovery = findCharacterDiscovery(discovery, characterId);
+
+  if (!characterDiscovery) {
+    return null;
+  }
+
+  const structures = getCharacterStructures(characterDiscovery);
+  const structuresById = new Map(
+    structures.map((structure) => [structure.id, structure] as const),
+  );
+  const structure = structures.find(
+    (entry) => entry.id === assemblyId && !isNetworkNodeType(entry.typeRepr),
+  );
+
+  if (!structure) {
+    return null;
+  }
+
+  const typeLabel = getStructureLabel(structure.typeId, structure.typeLabel, lookups);
+  const energySource = structure.energySourceId
+    ? structuresById.get(structure.energySourceId)
+    : null;
+  const linkedGate = structure.linkedGateId
+    ? structuresById.get(structure.linkedGateId)
+    : null;
+
+  return {
+    id: structure.id,
+    name: getDisplayName(
+      structure.name,
+      structure.id,
+      structure.typeLabel,
+      typeLabel,
+    ),
+    systemName: getSolarSystemLabel(structure.location),
+    ...(structure.location ? { location: structure.location } : {}),
+    typeId: structure.typeId,
+    typeLabel,
+    typeRepr: structure.typeRepr,
+    status: structure.status,
+    description: structure.description ?? null,
+    url: structure.url ?? null,
+    itemId: structure.itemId ?? null,
+    tenant: structure.tenant ?? null,
+    ownerCapId: structure.ownerCapId,
+    energySourceId: structure.energySourceId ?? null,
+    energySourceName: energySource?.name ?? null,
+    linkedGateId: structure.linkedGateId ?? null,
+    linkedGateName: linkedGate?.name ?? null,
+    extensionType: structure.extensionType ?? null,
+    extensionLabel: structure.extensionType ? "Custom extension" : "Default logic",
+    extensionFrozen: null,
+    gateAccessMode: getGateAccessMode(structure),
+  };
 }
 
 function findCharacterDiscovery(
@@ -297,6 +360,16 @@ function getStructureLabel(
   }
 
   return lookups.typeNames.get(typeId) ?? fallbackLabel;
+}
+
+function getGateAccessMode(
+  structure: WalletStructureDiscovery["characters"][number]["ownedStructures"][number],
+) {
+  if (!structure.typeRepr.includes("::gate::Gate")) {
+    return null;
+  }
+
+  return structure.extensionType ? "Permit required" : "Public";
 }
 
 function isNetworkNodeType(typeRepr: string) {

@@ -27,7 +27,14 @@ export interface DiscoveredStructure {
   typeLabel: string;
   typeRepr: string;
   name: string;
+  description?: string | null;
+  url?: string | null;
+  itemId?: number | null;
+  tenant?: string | null;
   ownerCapId: string | null;
+  energySourceId?: string | null;
+  linkedGateId?: string | null;
+  extensionType?: string | null;
   status: NetworkNodeStatus;
   fuelPercent: number | null;
   fuelEtaMs?: number | null;
@@ -82,6 +89,22 @@ export interface AssemblySummary {
   typeLabel: string;
   typeRepr: string;
   status: NetworkNodeStatus;
+}
+
+export interface AssemblyDetailSummary extends AssemblySummary {
+  description: string | null;
+  url: string | null;
+  itemId: number | null;
+  tenant: string | null;
+  ownerCapId: string | null;
+  energySourceId: string | null;
+  energySourceName: string | null;
+  linkedGateId: string | null;
+  linkedGateName: string | null;
+  extensionType: string | null;
+  extensionLabel: string;
+  extensionFrozen: boolean | null;
+  gateAccessMode: string | null;
 }
 
 export interface StorageInventoryItemSummary {
