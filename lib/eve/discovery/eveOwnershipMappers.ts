@@ -257,6 +257,9 @@ function mapNetworkNodeSummary(
     status: networkNode.status,
     fuelPercent: networkNode.fuelPercent,
     fuelEtaMs: networkNode.fuelEtaMs,
+    fuelTypeId: networkNode.fuelTypeId ?? null,
+    fuelTypeName: getFuelTypeName(networkNode.fuelTypeId, lookups),
+    fuelTypeIconUrl: getStructureIconUrl(networkNode.fuelTypeId ?? null, lookups),
     fuelQuantity: networkNode.fuelQuantity,
     connectedAssemblies: networkNode.connectedAssemblyIds.map((connectedId) =>
       mapConnectedAssembly(structuresById.get(connectedId), connectedId, lookups),
@@ -373,6 +376,14 @@ function getStructureIconUrl(typeId: number | null, lookups: LabelLookups) {
   }
 
   return lookups.typeIcons?.get(typeId) ?? null;
+}
+
+function getFuelTypeName(typeId: number | null | undefined, lookups: LabelLookups) {
+  if (typeId === null || typeId === undefined) {
+    return null;
+  }
+
+  return lookups.typeNames.get(typeId) ?? `Fuel type ${typeId}`;
 }
 
 function getGateAccessMode(

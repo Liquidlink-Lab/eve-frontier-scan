@@ -361,6 +361,7 @@ describe("discoverOwnedStructures", () => {
               connectedAssemblyIds: [storageUnitId, foreignGateId],
               fuelPercent: 60,
               fuelEtaMs: 9720000,
+              fuelTypeId: 78437,
               fuelQuantity: 2,
               id: networkNodeId,
               location: {

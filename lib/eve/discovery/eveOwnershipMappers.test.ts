@@ -28,6 +28,7 @@ const discovery = {
           status: "online",
           fuelPercent: 60,
           fuelEtaMs: 3_240_000,
+          fuelTypeId: 78437,
           fuelQuantity: 6,
           location: {
             solarSystemId: 30013131,
@@ -129,6 +130,7 @@ const discovery = {
 const lookups = {
   tribeNames: new Map([[3, "Caldari"]]),
   typeNames: new Map([
+    [78437, "EU-90 Fuel"],
     [77917, "Heavy Storage"],
     [84556, "Smart Turret"],
     [87161, "Field Refinery"],
@@ -136,6 +138,7 @@ const lookups = {
     [88092, "Network Node"],
   ]),
   typeIcons: new Map([
+    [78437, "https://cdn.example/types/78437.png"],
     [77917, "https://cdn.example/types/77917.png"],
     [84556, "https://cdn.example/types/84556.png"],
     [84955, "https://cdn.example/types/84955.png"],
@@ -197,6 +200,9 @@ describe("eve ownership domain helpers", () => {
         status: "online",
         fuelPercent: 60,
         fuelEtaMs: 3_240_000,
+        fuelTypeId: 78437,
+        fuelTypeName: "EU-90 Fuel",
+        fuelTypeIconUrl: "https://cdn.example/types/78437.png",
         fuelQuantity: 6,
         location: {
           solarSystemId: 30013131,
@@ -382,6 +388,7 @@ describe("eve ownership domain helpers", () => {
               ownerCapId: "0xowner-cap-1",
               status: "online",
               fuelPercent: 60,
+              fuelTypeId: 78437,
               fuelQuantity: 6,
               connectedAssemblyIds: [
                 "0xgate-1",
@@ -465,6 +472,9 @@ describe("eve ownership domain helpers", () => {
       status: "online",
       fuelPercent: 60,
       fuelEtaMs: undefined,
+      fuelTypeId: 78437,
+      fuelTypeName: "EU-90 Fuel",
+      fuelTypeIconUrl: "https://cdn.example/types/78437.png",
       fuelQuantity: 6,
       iconUrl: "https://cdn.example/types/88092.png",
       connectedAssemblies: [

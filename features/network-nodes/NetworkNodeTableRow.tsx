@@ -47,6 +47,16 @@ export default function NetworkNodeTableRow({
       <TableCell>{networkNode.systemName ?? "Unknown"}</TableCell>
       <TableCell>
         <Stack spacing={0.5}>
+          {networkNode.fuelTypeName ? (
+            <Stack direction="row" spacing={0.75} alignItems="center">
+              <TypeIcon
+                iconUrl={networkNode.fuelTypeIconUrl}
+                label={networkNode.fuelTypeName}
+                size={18}
+              />
+              <Typography variant="body2">{networkNode.fuelTypeName}</Typography>
+            </Stack>
+          ) : null}
           <Typography>{formatPercentage(networkNode.fuelPercent)}</Typography>
           {networkNode.fuelPercent !== null ? (
             <LinearProgress

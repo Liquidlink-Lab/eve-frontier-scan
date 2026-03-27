@@ -32,6 +32,9 @@ const networkNode: NetworkNodeDetailSummary = {
   status: "online",
   fuelPercent: 28,
   fuelEtaMs: 3_240_000_000,
+  fuelTypeId: 78437,
+  fuelTypeName: "EU-90 Fuel",
+  fuelTypeIconUrl: "https://cdn.example/types/78437.png",
   fuelQuantity: 999,
   connectedAssemblies: [
       {
@@ -135,6 +138,12 @@ describe("NetworkNodeDetailPage", () => {
     expect(screen.getAllByText("online").length).toBeGreaterThan(0);
     expect(screen.getByText("30013131")).toBeInTheDocument();
     expect(screen.getByText("-100, 25, 3000")).toBeInTheDocument();
+    expect(screen.getByText("Fuel type")).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "EU-90 Fuel icon" })).toHaveAttribute(
+      "src",
+      "https://cdn.example/types/78437.png",
+    );
+    expect(screen.getByText("EU-90 Fuel")).toBeInTheDocument();
     expect(screen.getByText("28%")).toBeInTheDocument();
     expect(screen.getByRole("progressbar", { name: "Fuel level" })).toHaveAttribute(
       "aria-valuenow",

@@ -327,6 +327,7 @@ function getStructureRecord(
   const typeRepr = getTypeRepr(node);
   const id = getStringValue(json, "id") ?? node.address;
   const fuelEtaMs = json ? getFuelEtaMs(json) : null;
+  const fuelTypeId = json ? getFuelTypeId(json) : null;
 
   if (!json || !id) {
     return null;
@@ -349,6 +350,7 @@ function getStructureRecord(
     status: getStatus(getStatusVariant(json)),
     fuelPercent: getFuelPercent(json),
     ...(fuelEtaMs === null ? {} : { fuelEtaMs }),
+    ...(fuelTypeId === null ? {} : { fuelTypeId }),
     fuelQuantity: getFuelQuantity(json),
     connectedAssemblyIds: getConnectedAssemblyIds(json),
   };
@@ -523,6 +525,16 @@ function getFuelQuantity(record: Record<string, unknown>) {
   }
 
   return parseInteger((fuel as Record<string, unknown>).quantity);
+}
+
+function getFuelTypeId(record: Record<string, unknown>) {
+  const fuel = record.fuel;
+
+  if (!fuel || typeof fuel !== "object") {
+    return null;
+  }
+
+  return parseInteger((fuel as Record<string, unknown>).type_id);
 }
 
 function getFuelEtaMs(record: Record<string, unknown>) {

@@ -38,6 +38,7 @@ export interface DiscoveredStructure {
   status: NetworkNodeStatus;
   fuelPercent: number | null;
   fuelEtaMs?: number | null;
+  fuelTypeId?: number | null;
   fuelQuantity: number | null;
   location?: StructureLocation;
   connectedAssemblyIds: string[];
@@ -204,6 +205,9 @@ export interface NetworkNodeSummary {
   status: NetworkNodeStatus;
   fuelPercent: number | null;
   fuelEtaMs?: number | null;
+  fuelTypeId?: number | null;
+  fuelTypeName?: string | null;
+  fuelTypeIconUrl?: string | null;
   fuelQuantity: number | null;
   connectedAssemblies: ConnectedAssemblySummary[];
 }
