@@ -79,6 +79,7 @@ describe("discoverStorageInventory", () => {
           {
             id: 82134,
             name: "Antimatter Charge",
+            iconUrl: "https://cdn.example/items/82134.png",
           },
         ],
       ]),
@@ -91,6 +92,7 @@ describe("discoverStorageInventory", () => {
         {
           itemId: 1_000_000_019_584,
           itemName: "Antimatter Charge",
+          iconUrl: "https://cdn.example/items/82134.png",
           quantity: 3,
           typeId: 82_134,
           volume: 65,
@@ -98,6 +100,7 @@ describe("discoverStorageInventory", () => {
         {
           itemId: 1_000_000_099_999,
           itemName: "Unknown item (type_id: 99999)",
+          iconUrl: null,
           quantity: 2,
           typeId: 99_999,
           volume: 1,

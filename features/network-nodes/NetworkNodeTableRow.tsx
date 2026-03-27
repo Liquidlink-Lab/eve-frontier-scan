@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import TypeIcon from "@/features/icons/TypeIcon";
 import LinkButton from "@/features/navigation/LinkButton";
 import { formatFuelEta } from "@/lib/eve/fuel";
 import { clampPercentage, formatPercentage } from "@/lib/eve/percent";
@@ -38,7 +39,10 @@ export default function NetworkNodeTableRow({
         />
       </TableCell>
       <TableCell>
-        <Typography fontWeight={600}>{networkNode.name}</Typography>
+        <Stack direction="row" spacing={1.25} alignItems="center">
+          <TypeIcon iconUrl={networkNode.iconUrl} label="Network Node" size={28} />
+          <Typography fontWeight={600}>{networkNode.name}</Typography>
+        </Stack>
       </TableCell>
       <TableCell>{networkNode.systemName ?? "Unknown"}</TableCell>
       <TableCell>

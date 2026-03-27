@@ -1,5 +1,6 @@
 import { Chip, List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
 
+import TypeIcon from "@/features/icons/TypeIcon";
 import LinkButton from "@/features/navigation/LinkButton";
 import { buildDashboardAssemblyDetailHref } from "@/lib/eve/routes";
 import type { ConnectedAssemblyGroup, WalletAccessContext } from "@/lib/eve/types";
@@ -38,11 +39,18 @@ export default function ConnectedAssembliesList({
                     gap: 2,
                   }}
                 >
-                  <ListItemText
-                    primary={assembly.name}
-                    secondary={assembly.typeLabel}
-                    sx={{ my: 0 }}
-                  />
+                  <Stack direction="row" spacing={1.25} alignItems="center" sx={{ minWidth: 0 }}>
+                    <TypeIcon
+                      iconUrl={assembly.iconUrl}
+                      label={assembly.typeLabel}
+                      size={32}
+                    />
+                    <ListItemText
+                      primary={assembly.name}
+                      secondary={assembly.typeLabel}
+                      sx={{ my: 0 }}
+                    />
+                  </Stack>
                   <Stack direction="row" spacing={1} alignItems="center">
                     <Chip
                       label={assembly.status}

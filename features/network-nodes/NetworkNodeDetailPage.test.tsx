@@ -20,6 +20,7 @@ const access: WalletAccessContext = {
 const networkNode: NetworkNodeDetailSummary = {
   id: "0x0123456789abcdef",
   name: "Power Spine",
+  iconUrl: "https://cdn.example/types/88092.png",
   systemName: "30013131",
   location: {
     solarSystemId: 30013131,
@@ -33,24 +34,27 @@ const networkNode: NetworkNodeDetailSummary = {
   fuelEtaMs: 3_240_000_000,
   fuelQuantity: 999,
   connectedAssemblies: [
-    {
-      id: "0xgate-1",
-      name: "Argent Gate",
-      typeLabel: "Gate",
-      status: "online",
-    },
-    {
-      id: "0xstorage-1",
-      name: "Vault Alpha",
-      typeLabel: "Heavy Storage",
-      status: "online",
-    },
-    {
-      id: "0xturret-1",
-      name: "Bastion One",
-      typeLabel: "Smart Turret",
-      status: "offline",
-    },
+      {
+        id: "0xgate-1",
+        name: "Argent Gate",
+        iconUrl: "https://cdn.example/types/84955.png",
+        typeLabel: "Gate",
+        status: "online",
+      },
+      {
+        id: "0xstorage-1",
+        name: "Vault Alpha",
+        iconUrl: "https://cdn.example/types/77917.png",
+        typeLabel: "Heavy Storage",
+        status: "online",
+      },
+      {
+        id: "0xturret-1",
+        name: "Bastion One",
+        iconUrl: "https://cdn.example/types/84556.png",
+        typeLabel: "Smart Turret",
+        status: "offline",
+      },
   ],
   connectedAssemblyGroups: [
     {
@@ -59,6 +63,7 @@ const networkNode: NetworkNodeDetailSummary = {
         {
           id: "0xgate-1",
           name: "Argent Gate",
+          iconUrl: "https://cdn.example/types/84955.png",
           typeLabel: "Gate",
           status: "online",
         },
@@ -70,6 +75,7 @@ const networkNode: NetworkNodeDetailSummary = {
         {
           id: "0xstorage-1",
           name: "Vault Alpha",
+          iconUrl: "https://cdn.example/types/77917.png",
           typeLabel: "Heavy Storage",
           status: "online",
         },
@@ -81,6 +87,7 @@ const networkNode: NetworkNodeDetailSummary = {
         {
           id: "0xturret-1",
           name: "Bastion One",
+          iconUrl: "https://cdn.example/types/84556.png",
           typeLabel: "Smart Turret",
           status: "offline",
         },
@@ -106,6 +113,17 @@ describe("NetworkNodeDetailPage", () => {
     expect(
       screen.getByRole("heading", { name: "Power Spine" }),
     ).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Network Node icon" })).toHaveAttribute(
+      "src",
+      "https://cdn.example/types/88092.png",
+    );
+    expect(screen.getByRole("img", { name: "Network Node icon" })).toHaveStyle({
+      width: "64px",
+      height: "64px",
+    });
+    expect(document.head.textContent).toContain("min-width:600px");
+    expect(document.head.textContent).toContain("width:80px");
+    expect(document.head.textContent).toContain("height:80px");
     expect(screen.getByRole("button", { name: /^refresh$/i })).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "0x0123…cdef" }),

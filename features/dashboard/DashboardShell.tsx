@@ -1,8 +1,10 @@
 "use client";
 
 import type { PropsWithChildren } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Box } from "@mui/material";
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import { Box, IconButton, useMediaQuery, useTheme } from "@mui/material";
 import { usePathname, useSearchParams } from "next/navigation";
 
 import { mapDiscoveryToCharacterSummaries } from "@/lib/eve/discovery/eveOwnershipMappers";
@@ -21,9 +23,14 @@ export default function DashboardShell({
   children,
   characterId,
 }: DashboardShellProps) {
+  const theme = useTheme();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const isDashboardRoute = pathname.startsWith("/dashboard/");
+  const isDesktopNavigation = useMediaQuery(theme.breakpoints.up("md"), {
+    noSsr: true,
+  });
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const access = parseWalletAccessSearchParams(searchParams);
 
   const discoveryQuery = useQuery({
@@ -53,12 +60,16 @@ export default function DashboardShell({
         access={access}
         characters={characters}
         currentCharacterId={characterId}
+        isDesktopNavigation={isDesktopNavigation}
+        mobileOpen={mobileSidebarOpen}
+        onClose={() => setMobileSidebarOpen(false)}
         pathname={pathname}
       />
       <Box
+        data-testid="dashboard-shell-content"
         sx={{
           minHeight: "100vh",
-          ml: `${drawerWidth}px`,
+          ml: isDesktopNavigation ? `${drawerWidth}px` : 0,
         }}
       >
         <Box
@@ -85,10 +96,31 @@ export default function DashboardShell({
               <Box
                 sx={{
                   display: "flex",
-                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 1.5,
                 }}
               >
-                <DashboardSearchForm />
+                <IconButton
+                  aria-label="Open dashboard navigation"
+                  onClick={() => setMobileSidebarOpen(true)}
+                  sx={{
+                    display: { xs: "inline-flex", md: "none" },
+                    color: "text.primary",
+                    flexShrink: 0,
+                  }}
+                >
+                  <MenuRoundedIcon />
+                </IconButton>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flex: 1,
+                    minWidth: 0,
+                  }}
+                >
+                  <DashboardSearchForm />
+                </Box>
               </Box>
             </Box>
           </Box>

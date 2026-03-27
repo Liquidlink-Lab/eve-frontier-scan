@@ -125,6 +125,7 @@ function parseInventoryItem(
   return {
     itemId,
     itemName: worldTypes.get(typeId)?.name ?? `Unknown item (type_id: ${typeId})`,
+    iconUrl: worldTypes.get(typeId)?.iconUrl ?? null,
     quantity,
     typeId,
     volume,

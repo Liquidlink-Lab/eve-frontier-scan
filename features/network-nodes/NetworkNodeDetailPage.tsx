@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 
 import DashboardRefreshButton from "@/features/dashboard/DashboardRefreshButton";
+import TypeIcon from "@/features/icons/TypeIcon";
 import LinkButton from "@/features/navigation/LinkButton";
 import { formatShortAddress } from "@/lib/eve/address";
 import { buildDashboardNetworkNodesHref } from "@/lib/eve/routes";
@@ -32,21 +33,34 @@ export default function NetworkNodeDetailPage({
   return (
     <Box component="main" sx={{ flex: 1, px: 3, py: { xs: 4, md: 6 } }}>
       <Stack spacing={3} sx={{ maxWidth: 1040, mx: "auto" }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <div>
-            <Typography variant="overline" color="text.secondary">
-              {characterName}
-            </Typography>
-            <Typography variant="h3">{networkNode.name}</Typography>
-            <MuiLink
-              href={getSuiscanObjectUrl(networkNode.id)}
-              underline="hover"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {formatShortAddress(networkNode.id)}
-            </MuiLink>
-          </div>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          justifyContent="space-between"
+          alignItems={{ xs: "flex-start", sm: "center" }}
+          spacing={1.5}
+        >
+          <Stack direction="row" spacing={2} alignItems="flex-start">
+            <TypeIcon
+              iconUrl={networkNode.iconUrl}
+              label="Network Node"
+              size={64}
+              desktopSize={80}
+            />
+            <div>
+              <Typography variant="overline" color="text.secondary">
+                {characterName}
+              </Typography>
+              <Typography variant="h3">{networkNode.name}</Typography>
+              <MuiLink
+                href={getSuiscanObjectUrl(networkNode.id)}
+                underline="hover"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {formatShortAddress(networkNode.id)}
+              </MuiLink>
+            </div>
+          </Stack>
           <Stack direction="row" spacing={1.5} alignItems="center">
             <DashboardRefreshButton />
             {characterId ? (

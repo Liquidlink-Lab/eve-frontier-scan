@@ -127,6 +127,7 @@ export function mapDiscoveryToAssembliesByType(
         structure.typeLabel,
         typeLabel,
       ),
+      iconUrl: getStructureIconUrl(structure.typeId, lookups),
       systemName: getSolarSystemLabel(structure.location),
       ...(structure.location ? { location: structure.location } : {}),
       status: structure.status,
@@ -187,6 +188,7 @@ export function mapDiscoveryToAssemblyDetail(
       structure.typeLabel,
       typeLabel,
     ),
+    iconUrl: getStructureIconUrl(structure.typeId, lookups),
     systemName: getSolarSystemLabel(structure.location),
     ...(structure.location ? { location: structure.location } : {}),
     typeId: structure.typeId,
@@ -248,6 +250,7 @@ function mapNetworkNodeSummary(
   return {
     id: networkNode.id,
     name: networkNode.name,
+    iconUrl: getStructureIconUrl(networkNode.typeId, lookups),
     systemName: getSolarSystemLabel(networkNode.location),
     ...(networkNode.location ? { location: networkNode.location } : {}),
     connectedAssemblyCount: networkNode.connectedAssemblyIds.length,
@@ -272,6 +275,7 @@ function mapConnectedAssembly(
     return {
       id: connectedId,
       name: `Assembly ${connectedId}`,
+      iconUrl: null,
       typeLabel: "Assembly",
       status: "unknown" as const,
     };
@@ -280,6 +284,7 @@ function mapConnectedAssembly(
   return {
     id: structure.id,
     name: structure.name,
+    iconUrl: getStructureIconUrl(structure.typeId, lookups),
     typeLabel: getStructureLabel(structure.typeId, structure.typeLabel, lookups),
     status: structure.status,
   };
@@ -360,6 +365,14 @@ function getStructureLabel(
   }
 
   return lookups.typeNames.get(typeId) ?? fallbackLabel;
+}
+
+function getStructureIconUrl(typeId: number | null, lookups: LabelLookups) {
+  if (typeId === null) {
+    return null;
+  }
+
+  return lookups.typeIcons?.get(typeId) ?? null;
 }
 
 function getGateAccessMode(

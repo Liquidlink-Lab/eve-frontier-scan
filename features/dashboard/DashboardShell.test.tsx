@@ -36,6 +36,7 @@ describe("DashboardShell", () => {
     fetchWalletStructureDiscovery.mockReset();
     usePathname.mockReset();
     useSearchParams.mockReset();
+    setViewportWidth(1280);
 
     usePathname.mockReturnValue("/dashboard/0xchar-1/network-nodes");
     useSearchParams.mockReturnValue(
@@ -95,7 +96,12 @@ describe("DashboardShell", () => {
       </DashboardShell>,
     );
 
-    expect(await screen.findByRole("navigation")).toBeInTheDocument();
+    expect(
+      await screen.findByRole("navigation", { name: /dashboard navigation/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId("dashboard-shell-content")).toHaveStyle({
+      marginLeft: "296px",
+    });
     expect(screen.getByText("Connected EVE Vault")).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "0x43ac…d186" }),
@@ -138,6 +144,32 @@ describe("DashboardShell", () => {
     );
     expect(within(breadcrumbs).getByText("Network Nodes")).toBeInTheDocument();
     expect(screen.getByText("network nodes page")).toBeInTheDocument();
+  });
+
+  it("collapses the sidebar behind a menu button on mobile", async () => {
+    setViewportWidth(390);
+    const user = userEvent.setup();
+
+    renderWithProviders(
+      <DashboardShell characterId="0xchar-1">
+        <div>network nodes page</div>
+      </DashboardShell>,
+    );
+
+    expect(screen.getByTestId("dashboard-shell-content")).toHaveStyle({
+      marginLeft: "0px",
+    });
+    expect(
+      screen.queryByRole("navigation", { name: /dashboard navigation/i }),
+    ).not.toBeInTheDocument();
+
+    await user.click(
+      screen.getByRole("button", { name: /open dashboard navigation/i }),
+    );
+
+    expect(
+      await screen.findByRole("navigation", { name: /dashboard navigation/i }),
+    ).toBeInTheDocument();
   });
 
   it("renders breadcrumb hierarchy for dashboard detail routes", async () => {
@@ -199,3 +231,37 @@ describe("DashboardShell", () => {
     expect(fetchWalletStructureDiscovery).not.toHaveBeenCalled();
   });
 });
+
+function setViewportWidth(width: number) {
+  Object.defineProperty(window, "innerWidth", {
+    configurable: true,
+    writable: true,
+    value: width,
+  });
+
+  window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+    matches: evaluateMediaQuery(query, width),
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  }));
+}
+
+function evaluateMediaQuery(query: string, width: number) {
+  const minMatch = query.match(/\(min-width:\s*(\d+)px\)/);
+  const maxMatch = query.match(/\(max-width:\s*(\d+(?:\.\d+)?)px\)/);
+
+  if (minMatch && width < Number(minMatch[1])) {
+    return false;
+  }
+
+  if (maxMatch && width > Number(maxMatch[1])) {
+    return false;
+  }
+
+  return true;
+}

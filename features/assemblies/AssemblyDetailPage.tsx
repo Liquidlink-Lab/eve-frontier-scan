@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import DashboardRefreshButton from "@/features/dashboard/DashboardRefreshButton";
+import TypeIcon from "@/features/icons/TypeIcon";
 import LinkText from "@/features/navigation/LinkText";
 import { formatShortAddress } from "@/lib/eve/address";
 import { calculatePercentage, clampPercentage, formatPercentage } from "@/lib/eve/percent";
@@ -60,20 +61,28 @@ export default function AssemblyDetailPage({
           alignItems={{ xs: "flex-start", sm: "center" }}
           spacing={1.5}
         >
-          <div>
-            <Typography variant="overline" color="text.secondary">
-              {characterName}
-            </Typography>
-            <Typography variant="h3">{assembly.name}</Typography>
-            <MuiLink
-              href={getSuiscanObjectUrl(assembly.id)}
-              underline="hover"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {formatShortAddress(assembly.id)}
-            </MuiLink>
-          </div>
+          <Stack direction="row" spacing={2} alignItems="flex-start">
+            <TypeIcon
+              iconUrl={assembly.iconUrl}
+              label={assembly.typeLabel}
+              size={64}
+              desktopSize={80}
+            />
+            <div>
+              <Typography variant="overline" color="text.secondary">
+                {characterName}
+              </Typography>
+              <Typography variant="h3">{assembly.name}</Typography>
+              <MuiLink
+                href={getSuiscanObjectUrl(assembly.id)}
+                underline="hover"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {formatShortAddress(assembly.id)}
+              </MuiLink>
+            </div>
+          </Stack>
           <DashboardRefreshButton />
         </Stack>
 
@@ -333,7 +342,16 @@ export default function AssemblyDetailPage({
                   <TableBody>
                     {storageInventory.items.map((item) => (
                       <TableRow key={`${item.typeId}:${item.itemId}`}>
-                        <TableCell>{item.itemName}</TableCell>
+                        <TableCell>
+                          <Stack direction="row" spacing={1.25} alignItems="center">
+                            <TypeIcon
+                              iconUrl={item.iconUrl}
+                              label={item.itemName}
+                              size={24}
+                            />
+                            <Typography component="span">{item.itemName}</Typography>
+                          </Stack>
+                        </TableCell>
                         <TableCell align="right">{item.quantity}</TableCell>
                         <TableCell align="right">{item.volume}</TableCell>
                         <TableCell align="right">{item.itemId}</TableCell>

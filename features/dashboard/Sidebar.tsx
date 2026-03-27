@@ -30,6 +30,9 @@ interface SidebarProps {
   access: WalletAccessContext | null;
   characters: CharacterSummary[];
   currentCharacterId: string;
+  isDesktopNavigation: boolean;
+  mobileOpen: boolean;
+  onClose: () => void;
   pathname: string;
 }
 
@@ -37,19 +40,31 @@ export default function Sidebar({
   access,
   characters,
   currentCharacterId,
+  isDesktopNavigation,
+  mobileOpen,
+  onClose,
   pathname,
 }: SidebarProps) {
   const shipsEnabled = false;
   const currentCharacter =
     characters.find((character) => character.id === currentCharacterId) ?? null;
+  const handleNavigate = () => {
+    if (!isDesktopNavigation) {
+      onClose();
+    }
+  };
 
   return (
     <Drawer
-      variant="permanent"
-      open
+      variant={isDesktopNavigation ? "permanent" : "temporary"}
+      open={isDesktopNavigation ? true : mobileOpen}
+      onClose={onClose}
+      ModalProps={{
+        keepMounted: false,
+      }}
       sx={{
-        width: drawerWidth,
-        flexShrink: 0,
+        width: isDesktopNavigation ? drawerWidth : 0,
+        flexShrink: isDesktopNavigation ? 0 : undefined,
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
@@ -99,6 +114,7 @@ export default function Sidebar({
           access={access}
           characters={characters}
           currentCharacterId={currentCharacterId}
+          onNavigate={handleNavigate}
         />
 
         <Divider />
@@ -119,6 +135,7 @@ export default function Sidebar({
                   ? buildDashboardNetworkNodesHref(currentCharacterId, access)
                   : "#"
               }
+              onClick={handleNavigate}
               selected={pathname.endsWith("/network-nodes")}
               disabled={!access}
             >
@@ -127,6 +144,7 @@ export default function Sidebar({
             <ListItemButton
               component={Link}
               href={access ? buildDashboardAssembliesHref(currentCharacterId, access) : "#"}
+              onClick={handleNavigate}
               selected={pathname.includes("/assemblies")}
               disabled={!access}
             >
@@ -141,6 +159,7 @@ export default function Sidebar({
             <ListItemButton
               component={Link}
               href={access ? buildDashboardGatesHref(currentCharacterId, access) : "#"}
+              onClick={handleNavigate}
               selected={pathname.includes("/gates")}
               disabled={!access}
             >

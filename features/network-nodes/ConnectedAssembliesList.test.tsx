@@ -17,12 +17,14 @@ const groups: ConnectedAssemblyGroup[] = [
       {
         id: "0xgate-1",
         name: "Argent Gate",
+        iconUrl: "https://cdn.example/types/84955.png",
         typeLabel: "Heavy Gate",
         status: "online",
       },
       {
         id: "0xgate-2",
         name: "Breach Gate",
+        iconUrl: null,
         typeLabel: "Heavy Gate",
         status: "offline",
       },
@@ -39,6 +41,18 @@ describe("ConnectedAssembliesList", () => {
 
     expect(onlineAssembly).not.toBeNull();
     expect(offlineAssembly).not.toBeNull();
+    expect(
+      within(onlineAssembly!).getByRole("img", { name: "Heavy Gate icon" }),
+    ).toHaveAttribute("src", "https://cdn.example/types/84955.png");
+    expect(
+      within(onlineAssembly!).getByRole("img", { name: "Heavy Gate icon" }),
+    ).toHaveStyle({ width: "32px", height: "32px" });
+    expect(
+      within(offlineAssembly!).getByLabelText("Heavy Gate icon fallback"),
+    ).toBeInTheDocument();
+    expect(
+      within(offlineAssembly!).getByLabelText("Heavy Gate icon fallback"),
+    ).toHaveStyle({ width: "32px", height: "32px" });
 
     const onlineChip = within(onlineAssembly!).getByText("online").closest(".MuiChip-root");
     const offlineChip = within(offlineAssembly!).getByText("offline").closest(

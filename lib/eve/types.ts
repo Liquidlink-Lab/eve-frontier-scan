@@ -59,6 +59,7 @@ export interface WalletStructureDiscovery {
 export interface LabelLookups {
   tribeNames: Map<number, string>;
   typeNames: Map<number, string>;
+  typeIcons?: Map<number, string>;
 }
 
 export interface WorldTypeRecord {
@@ -83,6 +84,7 @@ export interface CharacterSummary {
 export interface AssemblySummary {
   id: string;
   name: string;
+  iconUrl?: string | null;
   systemName: string | null;
   location?: StructureLocation;
   typeId: number | null;
@@ -163,6 +165,7 @@ export interface TurretPrioritySnapshotSummary {
 export interface StorageInventoryItemSummary {
   itemId: number;
   itemName: string;
+  iconUrl?: string | null;
   quantity: number;
   typeId: number;
   volume: number;
@@ -177,6 +180,7 @@ export interface StorageInventorySummary {
 export interface ConnectedAssemblySummary {
   id: string;
   name: string;
+  iconUrl?: string | null;
   typeLabel: string;
   status: NetworkNodeStatus;
 }
@@ -189,6 +193,7 @@ export interface ConnectedAssemblyGroup {
 export interface NetworkNodeSummary {
   id: string;
   name: string;
+  iconUrl?: string | null;
   systemName: string | null;
   location?: StructureLocation;
   connectedAssemblyCount: number;

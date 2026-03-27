@@ -13,6 +13,7 @@ const access: WalletAccessContext = {
 const networkNode: NetworkNodeSummary = {
   id: "0xnode-1",
   name: "Power Spine",
+  iconUrl: "https://cdn.example/types/88092.png",
   systemName: "30013131",
   status: "online",
   fuelPercent: 28,
@@ -39,6 +40,10 @@ describe("NetworkNodeTableRow", () => {
     const row = screen.getByText("Power Spine").closest("tr");
 
     expect(row).not.toBeNull();
+    expect(within(row!).getByRole("img", { name: "Network Node icon" })).toHaveAttribute(
+      "src",
+      "https://cdn.example/types/88092.png",
+    );
     expect(within(row!).getByText("28%")).toBeInTheDocument();
     expect(within(row!).getByText("ETA 37d 12h")).toBeInTheDocument();
     expect(within(row!).getByRole("progressbar", { name: "Fuel level" })).toHaveAttribute(

@@ -17,6 +17,7 @@ vi.mock("next/navigation", () => ({
 const assembly: AssemblyDetailSummary = {
   id: "0xabcdef1234567890",
   name: "Heavy Storage · 0xabcd…7890",
+  iconUrl: "https://cdn.example/types/77917.png",
   systemName: "30013131",
   location: {
     solarSystemId: 30013131,
@@ -60,6 +61,17 @@ describe("AssemblyDetailPage", () => {
       "href",
       "https://suiscan.xyz/testnet/object/0xabcdef1234567890",
     );
+    expect(screen.getByRole("img", { name: "Heavy Storage icon" })).toHaveAttribute(
+      "src",
+      "https://cdn.example/types/77917.png",
+    );
+    expect(screen.getByRole("img", { name: "Heavy Storage icon" })).toHaveStyle({
+      width: "64px",
+      height: "64px",
+    });
+    expect(document.head.textContent).toContain("min-width:600px");
+    expect(document.head.textContent).toContain("width:80px");
+    expect(document.head.textContent).toContain("height:80px");
     expect(screen.getByText("Heavy Storage")).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Heavy Storage" })).not.toBeInTheDocument();
     expect(screen.getByText("online")).toBeInTheDocument();
@@ -85,6 +97,7 @@ describe("AssemblyDetailPage", () => {
               {
                 itemId: 1_000_000_019_584,
                 itemName: "Antimatter Charge",
+                iconUrl: "https://cdn.example/items/82134.png",
                 quantity: 3,
                 typeId: 82_134,
                 volume: 65,
@@ -92,6 +105,7 @@ describe("AssemblyDetailPage", () => {
               {
                 itemId: 1_000_000_099_999,
                 itemName: "Unknown item (type_id: 99999)",
+                iconUrl: null,
                 quantity: 2,
                 typeId: 99_999,
                 volume: 1,
@@ -113,6 +127,13 @@ describe("AssemblyDetailPage", () => {
     expect(screen.getByRole("columnheader", { name: "Volume" })).toBeInTheDocument();
     expect(screen.getByRole("columnheader", { name: "Item ID" })).toBeInTheDocument();
     expect(screen.getByRole("columnheader", { name: "Type ID" })).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Antimatter Charge icon" })).toHaveAttribute(
+      "src",
+      "https://cdn.example/items/82134.png",
+    );
+    expect(
+      screen.getByLabelText("Unknown item (type_id: 99999) icon fallback"),
+    ).toBeInTheDocument();
     expect(screen.getByText("Antimatter Charge")).toBeInTheDocument();
     expect(screen.getByText("Unknown item (type_id: 99999)")).toBeInTheDocument();
     expect(screen.getByText("1000000019584")).toBeInTheDocument();
@@ -128,6 +149,7 @@ describe("AssemblyDetailPage", () => {
           ...assembly,
           id: "0xgate-1",
           name: "Transit Authority",
+          iconUrl: "https://cdn.example/types/84955.png",
           typeId: 84955,
           typeLabel: "Gate",
           typeRepr: "0xpkg::gate::Gate",
@@ -230,6 +252,7 @@ describe("AssemblyDetailPage", () => {
           ...assembly,
           id: "0xturret-1",
           name: "Sentinel Grid",
+          iconUrl: "https://cdn.example/types/84556.png",
           typeId: 84556,
           typeLabel: "Smart Turret",
           typeRepr: "0xpkg::turret::Turret",

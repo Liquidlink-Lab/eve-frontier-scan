@@ -11,12 +11,14 @@ interface CharacterSwitcherProps {
   access: WalletAccessContext | null;
   characters: CharacterSummary[];
   currentCharacterId: string;
+  onNavigate?: () => void;
 }
 
 export default function CharacterSwitcher({
   access,
   characters,
   currentCharacterId,
+  onNavigate,
 }: CharacterSwitcherProps) {
   const router = useRouter();
   const selectedCharacterId = characters.some(
@@ -36,6 +38,7 @@ export default function CharacterSwitcher({
       return;
     }
 
+    onNavigate?.();
     router.push(buildDashboardNetworkNodesHref(nextCharacterId, access));
   }
 
