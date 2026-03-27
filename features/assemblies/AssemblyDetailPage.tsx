@@ -13,27 +13,43 @@ import {
 } from "@mui/material";
 
 import DashboardRefreshButton from "@/features/dashboard/DashboardRefreshButton";
+import LinkText from "@/features/navigation/LinkText";
 import { formatShortAddress } from "@/lib/eve/address";
 import { calculatePercentage, clampPercentage, formatPercentage } from "@/lib/eve/percent";
+import { buildDashboardNetworkNodeDetailHref } from "@/lib/eve/routes";
 import { getSuiscanObjectUrl } from "@/lib/eve/suiscan";
-import { getAssemblyWikiUrl } from "@/lib/eve/wikiLinks";
-import type { AssemblyDetailSummary, StorageInventorySummary } from "@/lib/eve/types";
+import type {
+  AssemblyDetailSummary,
+  StorageInventorySummary,
+  WalletAccessContext,
+} from "@/lib/eve/types";
 
 interface AssemblyDetailPageProps {
+  access?: WalletAccessContext;
+  characterId?: string;
   characterName: string;
   assembly: AssemblyDetailSummary;
   storageInventory?: StorageInventorySummary | null;
 }
 
 export default function AssemblyDetailPage({
+  access,
+  characterId,
   characterName,
   assembly,
   storageInventory,
 }: AssemblyDetailPageProps) {
-  const wikiUrl = getAssemblyWikiUrl(assembly.typeLabel);
   const storageCapacityPercent = storageInventory
     ? calculatePercentage(storageInventory.usedCapacity, storageInventory.maxCapacity)
     : null;
+  const energySourceHref =
+    access && characterId && assembly.energySourceId
+      ? buildDashboardNetworkNodeDetailHref(
+          characterId,
+          assembly.energySourceId,
+          access,
+        )
+      : null;
 
   return (
     <main>
@@ -65,13 +81,7 @@ export default function AssemblyDetailPage({
           <Stack spacing={2}>
             <Stack direction="row" justifyContent="space-between" spacing={2}>
               <Typography color="text.secondary">Type</Typography>
-              {wikiUrl ? (
-                <MuiLink href={wikiUrl} underline="hover" target="_blank" rel="noreferrer">
-                  {assembly.typeLabel}
-                </MuiLink>
-              ) : (
-                <Typography>{assembly.typeLabel}</Typography>
-              )}
+              <Typography>{assembly.typeLabel}</Typography>
             </Stack>
             <Stack direction="row" justifyContent="space-between" spacing={2}>
               <Typography color="text.secondary">Solar system</Typography>
@@ -108,30 +118,18 @@ export default function AssemblyDetailPage({
                 </MuiLink>
               </Stack>
             ) : null}
-            {assembly.itemId !== null ? (
-              <Stack direction="row" justifyContent="space-between" spacing={2}>
-                <Typography color="text.secondary">Tenant item ID</Typography>
-                <Typography>{assembly.itemId}</Typography>
-              </Stack>
-            ) : null}
-            {assembly.tenant ? (
-              <Stack direction="row" justifyContent="space-between" spacing={2}>
-                <Typography color="text.secondary">Tenant</Typography>
-                <Typography>{assembly.tenant}</Typography>
-              </Stack>
-            ) : null}
-            {assembly.ownerCapId ? (
-              <Stack direction="row" justifyContent="space-between" spacing={2}>
-                <Typography color="text.secondary">Owner Cap</Typography>
-                <Typography>{assembly.ownerCapId}</Typography>
-              </Stack>
-            ) : null}
             {assembly.energySourceId ? (
               <Stack direction="row" justifyContent="space-between" spacing={2}>
                 <Typography color="text.secondary">Powered by</Typography>
-                <Typography>
-                  {assembly.energySourceName ?? formatShortAddress(assembly.energySourceId)}
-                </Typography>
+                {energySourceHref ? (
+                  <LinkText href={energySourceHref} underline="hover">
+                    {assembly.energySourceName ?? formatShortAddress(assembly.energySourceId)}
+                  </LinkText>
+                ) : (
+                  <Typography>
+                    {assembly.energySourceName ?? formatShortAddress(assembly.energySourceId)}
+                  </Typography>
+                )}
               </Stack>
             ) : null}
             {(assembly.extensionType || assembly.extensionLabel) ? (
@@ -151,6 +149,12 @@ export default function AssemblyDetailPage({
                 </Stack>
               </Stack>
             ) : null}
+            {assembly.extensionFrozen !== null ? (
+              <Stack direction="row" justifyContent="space-between" spacing={2}>
+                <Typography color="text.secondary">Extension frozen</Typography>
+                <Typography>{assembly.extensionFrozen ? "Yes" : "No"}</Typography>
+              </Stack>
+            ) : null}
             {assembly.linkedGateId ? (
               <Stack direction="row" justifyContent="space-between" spacing={2}>
                 <Typography color="text.secondary">Linked gate</Typography>
@@ -167,6 +171,125 @@ export default function AssemblyDetailPage({
             ) : null}
           </Stack>
         </Paper>
+
+        {assembly.typeRepr.includes("::gate::Gate") ? (
+          <Paper elevation={0} sx={{ px: 3, py: 3 }}>
+            <Stack spacing={2}>
+              <Typography component="h2" variant="h4">
+                Gate operations
+              </Typography>
+              <Stack direction="row" justifyContent="space-between" spacing={2}>
+                <Typography color="text.secondary">Max link distance</Typography>
+                <Typography>
+                  {assembly.gateMaxLinkDistance === null ||
+                  assembly.gateMaxLinkDistance === undefined
+                    ? "Unavailable"
+                    : String(assembly.gateMaxLinkDistance)}
+                </Typography>
+              </Stack>
+              <Stack spacing={1}>
+                <Typography color="text.secondary">Recent jumps</Typography>
+                {(assembly.recentJumps ?? []).length === 0 ? (
+                  <Typography color="text.secondary">No recent jumps found.</Typography>
+                ) : (
+                  (assembly.recentJumps ?? []).map((jump) => (
+                    <Stack key={jump.txDigest} spacing={0.25}>
+                      <Typography>
+                        {`${formatTimestamp(jump.timestampMs)} · ${formatGateRoute(
+                          jump.sourceGateName,
+                          jump.sourceGateId,
+                          jump.destinationGateName,
+                          jump.destinationGateId,
+                        )}`}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {formatPilotLabel(jump.characterId)}
+                      </Typography>
+                    </Stack>
+                  ))
+                )}
+              </Stack>
+              <Stack spacing={1}>
+                <Typography color="text.secondary">Recent permits</Typography>
+                {(assembly.recentPermits ?? []).length === 0 ? (
+                  <Typography color="text.secondary">No recent permits found.</Typography>
+                ) : (
+                  (assembly.recentPermits ?? []).map((permit) => (
+                    <Stack key={permit.txDigest} spacing={0.25}>
+                      <Typography>
+                        {`${formatTimestamp(permit.expiresAtMs)} · Permit ${permit.jumpPermitId}`}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {`${formatGateRoute(
+                          permit.sourceGateName,
+                          permit.sourceGateId,
+                          permit.destinationGateName,
+                          permit.destinationGateId,
+                        )} · ${formatPilotLabel(permit.characterId)}`}
+                      </Typography>
+                    </Stack>
+                  ))
+                )}
+              </Stack>
+            </Stack>
+          </Paper>
+        ) : null}
+
+        {assembly.typeRepr.includes("::turret::Turret") ? (
+          <Paper elevation={0} sx={{ px: 3, py: 3 }}>
+            <Stack spacing={2}>
+              <Typography component="h2" variant="h4">
+                Latest target priority snapshot
+              </Typography>
+              {assembly.latestTurretPrioritySnapshot ? (
+                <>
+                  <Stack direction="row" justifyContent="space-between" spacing={2}>
+                    <Typography color="text.secondary">Updated at</Typography>
+                    <Typography>
+                      {formatTimestamp(assembly.latestTurretPrioritySnapshot.updatedAtMs)}
+                    </Typography>
+                  </Stack>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Item ID</TableCell>
+                        <TableCell align="right">Type ID</TableCell>
+                        <TableCell align="right">Group ID</TableCell>
+                        <TableCell align="right">Character</TableCell>
+                        <TableCell align="right">Tribe</TableCell>
+                        <TableCell align="right">HP</TableCell>
+                        <TableCell align="right">Shield</TableCell>
+                        <TableCell align="right">Armor</TableCell>
+                        <TableCell align="right">Priority</TableCell>
+                        <TableCell>Behaviour</TableCell>
+                        <TableCell>Aggressor</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {assembly.latestTurretPrioritySnapshot.targets.map((target) => (
+                        <TableRow key={`${target.itemId}:${target.priorityWeight}`}>
+                          <TableCell>{target.itemId}</TableCell>
+                          <TableCell align="right">{target.typeId}</TableCell>
+                          <TableCell align="right">{target.groupId}</TableCell>
+                          <TableCell align="right">{target.characterId}</TableCell>
+                          <TableCell align="right">{target.characterTribe}</TableCell>
+                          <TableCell align="right">{target.hpRatio}</TableCell>
+                          <TableCell align="right">{target.shieldRatio}</TableCell>
+                          <TableCell align="right">{target.armorRatio}</TableCell>
+                          <TableCell align="right">{target.priorityWeight}</TableCell>
+                          <TableCell>{target.behaviourChange}</TableCell>
+                          <TableCell>{target.isAggressor ? "Yes" : "No"}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </>
+              ) : (
+                <Typography color="text.secondary">No target priority snapshot found.</Typography>
+              )}
+            </Stack>
+          </Paper>
+        ) : null}
 
         {storageInventory ? (
           <Paper elevation={0} sx={{ px: 3, py: 3 }}>
@@ -226,4 +349,27 @@ export default function AssemblyDetailPage({
       </Stack>
     </main>
   );
+}
+
+function formatTimestamp(value: number | null | undefined) {
+  if (value === null || value === undefined) {
+    return "Unavailable";
+  }
+
+  return new Date(value).toISOString();
+}
+
+function formatGateRoute(
+  sourceGateName: string | null | undefined,
+  sourceGateId: string,
+  destinationGateName: string | null | undefined,
+  destinationGateId: string,
+) {
+  return `${sourceGateName ?? formatShortAddress(sourceGateId)} -> ${
+    destinationGateName ?? formatShortAddress(destinationGateId)
+  }`;
+}
+
+function formatPilotLabel(characterId: string | null) {
+  return `Pilot ${characterId ? formatShortAddress(characterId) : "Unavailable"}`;
 }

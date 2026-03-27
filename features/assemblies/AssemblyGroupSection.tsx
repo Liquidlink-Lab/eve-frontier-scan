@@ -1,5 +1,4 @@
 import {
-  Link as MuiLink,
   Paper,
   Table,
   TableBody,
@@ -10,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import { getAssemblyWikiUrl } from "@/lib/eve/wikiLinks";
 import type { AssemblySummary, WalletAccessContext } from "@/lib/eve/types";
 import AssemblyRow from "./AssemblyRow";
 
@@ -27,21 +25,11 @@ export default function AssemblyGroupSection({
   groupLabel,
   assemblies,
 }: AssemblyGroupSectionProps) {
-  const wikiUrl = getAssemblyWikiUrl(groupLabel);
-
   return (
     <section>
-      {wikiUrl ? (
-        <MuiLink href={wikiUrl} underline="hover" target="_blank" rel="noreferrer">
-          <Typography component="h2" variant="h4" sx={{ mb: 2 }}>
-            {groupLabel}
-          </Typography>
-        </MuiLink>
-      ) : (
-        <Typography component="h2" variant="h4" sx={{ mb: 2 }}>
-          {groupLabel}
-        </Typography>
-      )}
+      <Typography component="h2" variant="h4" sx={{ mb: 2 }}>
+        {groupLabel}
+      </Typography>
 
       <TableContainer
         component={Paper}

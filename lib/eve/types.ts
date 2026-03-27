@@ -105,6 +105,59 @@ export interface AssemblyDetailSummary extends AssemblySummary {
   extensionLabel: string;
   extensionFrozen: boolean | null;
   gateAccessMode: string | null;
+  gateMaxLinkDistance?: number | null;
+  recentJumps?: GateJumpSummary[];
+  recentPermits?: GatePermitSummary[];
+  latestTurretPrioritySnapshot?: TurretPrioritySnapshotSummary | null;
+}
+
+export interface GateJumpSummary {
+  txDigest: string;
+  timestampMs: number;
+  sourceGateId: string;
+  sourceGateItemId: number | null;
+  sourceGateName?: string | null;
+  destinationGateId: string;
+  destinationGateItemId: number | null;
+  destinationGateName?: string | null;
+  characterId: string | null;
+  characterItemId: number | null;
+}
+
+export interface GatePermitSummary {
+  txDigest: string;
+  jumpPermitId: string;
+  sourceGateId: string;
+  sourceGateItemId: number | null;
+  sourceGateName?: string | null;
+  destinationGateId: string;
+  destinationGateItemId: number | null;
+  destinationGateName?: string | null;
+  characterId: string | null;
+  characterItemId: number | null;
+  expiresAtMs: number | null;
+  extensionType: string | null;
+  timestampMs: number;
+}
+
+export interface TurretPriorityTargetSummary {
+  itemId: number;
+  typeId: number;
+  groupId: number;
+  characterId: number;
+  characterTribe: number;
+  hpRatio: number;
+  shieldRatio: number;
+  armorRatio: number;
+  isAggressor: boolean;
+  priorityWeight: number;
+  behaviourChange: string;
+}
+
+export interface TurretPrioritySnapshotSummary {
+  txDigest: string;
+  updatedAtMs: number;
+  targets: TurretPriorityTargetSummary[];
 }
 
 export interface StorageInventoryItemSummary {

@@ -3,7 +3,15 @@ import { Box, Paper, Stack, Typography } from "@mui/material";
 
 import AssemblyDetailPage from "@/features/assemblies/AssemblyDetailPage";
 import { normalizeSuiAddress } from "@/lib/eve/address";
+import { eveEnv } from "@/lib/eve/env";
+import { discoverGateActivity } from "@/lib/eve/discovery/gateActivityDiscovery";
+import {
+  discoverAssemblyExtensionFrozenStatus,
+  discoverGateConfig,
+} from "@/lib/eve/discovery/gateConfigDiscovery";
+import { createSuiJsonRpcClient } from "@/lib/eve/discovery/suiRpcClient";
 import { discoverStorageInventory } from "@/lib/eve/discovery/storageInventoryDiscovery";
+import { discoverTurretActivity } from "@/lib/eve/discovery/turretActivityDiscovery";
 import {
   mapDiscoveryToAssemblyDetail,
 } from "@/lib/eve/discovery/eveOwnershipMappers";
@@ -74,16 +82,81 @@ export default async function DashboardAssemblyDetailPage({
     );
   }
 
+  const graphQl = createOwnershipGraphQlClient();
+  const rpc = createSuiJsonRpcClient();
+  const structureNamesById = character
+    ? new Map(
+        [...character.ownedStructures, ...(character.relatedStructures ?? [])].map((entry) => [
+          entry.id,
+          entry.name,
+        ]),
+      )
+    : new Map<string, string>();
   const storageInventory = await discoverStorageInventory({
     assembly: assemblyStructure,
-    graphQl: createOwnershipGraphQlClient(),
+    graphQl,
     worldTypes: getWorldTypeLookup(),
   });
+  const isGateAssembly = assembly.typeRepr.includes("::gate::Gate");
+  const isTurretAssembly = assembly.typeRepr.includes("::turret::Turret");
+  const gateConfig = isGateAssembly
+    ? await discoverGateConfig({
+        gateTypeId: assembly.typeId,
+        graphQl,
+        packageId: eveEnv.eveWorldPackageId,
+        rpc,
+      })
+    : { maxLinkDistance: null };
+  const gateActivity = isGateAssembly
+    ? await discoverGateActivity({
+        gateId: assembly.id,
+        packageId: eveEnv.eveWorldPackageId,
+        rpc,
+      })
+    : {
+        recentJumps: [],
+        recentPermits: [],
+      };
+  const turretActivity = isTurretAssembly
+    ? await discoverTurretActivity({
+        turretId: assembly.id,
+        packageId: eveEnv.eveWorldPackageId,
+        rpc,
+      })
+    : null;
+  const extensionFrozen = isGateAssembly || isTurretAssembly
+    ? await discoverAssemblyExtensionFrozenStatus({
+        assemblyId: assembly.id,
+        packageId: eveEnv.eveWorldPackageId,
+        rpc,
+      })
+    : assembly.extensionFrozen;
+  const assemblyDetail = {
+    ...assembly,
+    extensionFrozen,
+    gateMaxLinkDistance: gateConfig.maxLinkDistance,
+    recentJumps: gateActivity.recentJumps.map((jump) => ({
+      ...jump,
+      sourceGateName: structureNamesById.get(jump.sourceGateId) ?? null,
+      destinationGateName: structureNamesById.get(jump.destinationGateId) ?? null,
+    })),
+    recentPermits: gateActivity.recentPermits.map((permit) => ({
+      ...permit,
+      sourceGateName: structureNamesById.get(permit.sourceGateId) ?? null,
+      destinationGateName: structureNamesById.get(permit.destinationGateId) ?? null,
+    })),
+    latestTurretPrioritySnapshot: turretActivity,
+  };
 
   return (
     <AssemblyDetailPage
+      access={{
+        walletAddress: normalizedWalletAddress,
+        source: accessSource,
+      }}
+      characterId={characterId}
       characterName={character?.character?.name ?? "Unknown character"}
-      assembly={assembly}
+      assembly={assemblyDetail}
       storageInventory={storageInventory}
     />
   );

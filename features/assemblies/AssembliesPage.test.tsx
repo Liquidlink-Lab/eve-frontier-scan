@@ -42,7 +42,7 @@ const groups: Record<string, AssemblySummary[]> = {
 };
 
 describe("AssembliesPage", () => {
-  it("renders only populated groups, fallback names, wiki links, and details routes", () => {
+  it("renders only populated groups, fallback names, and details routes", () => {
     renderWithProviders(
       <AssembliesPage
         access={access}
@@ -54,10 +54,8 @@ describe("AssembliesPage", () => {
 
     expect(screen.getByRole("heading", { name: "Assemblies" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /^refresh$/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Heavy Storage" })).toHaveAttribute(
-      "href",
-      "https://evefrontier.wiki/Heavy_Storage",
-    );
+    expect(screen.getByRole("heading", { name: "Heavy Storage" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Heavy Storage" })).not.toBeInTheDocument();
     expect(screen.getByText("Heavy Storage · 0xabcd…7890")).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: /details/i })).toHaveLength(2);
     expect(screen.getAllByText("Unknown").length).toBeGreaterThan(0);
