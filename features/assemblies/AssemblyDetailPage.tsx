@@ -31,6 +31,7 @@ import type {
   AssemblyDetailSummary,
   GateJumpSummary,
   GatePermitSummary,
+  StorageInventoriesSummary,
   StorageInventorySummary,
   WalletAccessContext,
 } from "@/lib/eve/types";
@@ -41,6 +42,7 @@ interface AssemblyDetailPageProps {
   characterName: string;
   assembly: AssemblyDetailSummary;
   storageInventory?: StorageInventorySummary | null;
+  storageInventories?: StorageInventoriesSummary | null;
 }
 
 export default function AssemblyDetailPage({
@@ -49,6 +51,7 @@ export default function AssemblyDetailPage({
   characterName,
   assembly,
   storageInventory,
+  storageInventories,
 }: AssemblyDetailPageProps) {
   const storageCapacityPercent = storageInventory
     ? calculatePercentage(storageInventory.usedCapacity, storageInventory.maxCapacity)
@@ -330,6 +333,19 @@ export default function AssemblyDetailPage({
           </Paper>
         ) : null}
 
+        {storageInventories ? (
+          <>
+            <StorageInventorySection
+              inventory={storageInventories.ownerInventory}
+              heading="Owner inventory"
+            />
+            <StorageInventorySection
+              inventory={storageInventories.openStorageInventory}
+              heading="Open storage"
+            />
+          </>
+        ) : null}
+
         {storageInventory ? (
           <Paper elevation={0} sx={{ px: { xs: 2.5, sm: 3 }, py: 3 }}>
             <Stack spacing={2}>
@@ -397,6 +413,84 @@ export default function AssemblyDetailPage({
         ) : null}
       </Stack>
     </main>
+  );
+}
+
+function StorageInventorySection({
+  heading,
+  inventory,
+}: {
+  heading: string;
+  inventory: StorageInventorySummary;
+}) {
+  const capacityPercent = calculatePercentage(
+    inventory.usedCapacity,
+    inventory.maxCapacity,
+  );
+
+  return (
+    <Paper elevation={0} sx={{ px: { xs: 2.5, sm: 3 }, py: 3 }}>
+      <Stack spacing={2}>
+        <Typography component="h2" variant="h4">
+          {heading}
+        </Typography>
+        <Stack spacing={0.75}>
+          <DetailField label="Capacity used">
+            <Typography>{formatPercentage(capacityPercent)}</Typography>
+          </DetailField>
+          {capacityPercent !== null ? (
+            <LinearProgress
+              aria-label={`${heading} capacity usage`}
+              variant="determinate"
+              value={clampPercentage(capacityPercent)}
+              sx={{ height: 8, borderRadius: 999 }}
+            />
+          ) : null}
+          <Typography variant="body2" color="text.secondary">
+            {inventory.usedCapacity === null || inventory.maxCapacity === null
+              ? "Capacity unavailable"
+              : `${inventory.usedCapacity} / ${inventory.maxCapacity} used`}
+          </Typography>
+        </Stack>
+        {inventory.items.length === 0 ? (
+          <Typography color="text.secondary">No inventory items found.</Typography>
+        ) : (
+          <TableContainer sx={{ overflowX: "auto" }}>
+            <Table size="small" sx={{ minWidth: 760 }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Item name</TableCell>
+                  <TableCell align="right">Quantity</TableCell>
+                  <TableCell align="right">Volume</TableCell>
+                  <TableCell align="right">Item ID</TableCell>
+                  <TableCell align="right">Type ID</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {inventory.items.map((item) => (
+                  <TableRow key={`${heading}:${item.typeId}:${item.itemId}`}>
+                    <TableCell>
+                      <Stack direction="row" spacing={1.25} alignItems="center">
+                        <TypeIcon
+                          iconUrl={item.iconUrl}
+                          label={item.itemName}
+                          size={24}
+                        />
+                        <Typography component="span">{item.itemName}</Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell align="right">{item.quantity}</TableCell>
+                    <TableCell align="right">{item.volume}</TableCell>
+                    <TableCell align="right">{item.itemId}</TableCell>
+                    <TableCell align="right">{item.typeId}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </Stack>
+    </Paper>
   );
 }
 

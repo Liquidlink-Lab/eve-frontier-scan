@@ -11,7 +11,7 @@ import {
   discoverGateConfig,
 } from "@/lib/eve/discovery/gateConfigDiscovery";
 import { createSuiJsonRpcClient } from "@/lib/eve/discovery/suiRpcClient";
-import { discoverStorageInventory } from "@/lib/eve/discovery/storageInventoryDiscovery";
+import { discoverStorageInventories } from "@/lib/eve/discovery/storageInventoryDiscovery";
 import { discoverTurretActivity } from "@/lib/eve/discovery/turretActivityDiscovery";
 import {
   mapDiscoveryToAssemblyDetail,
@@ -93,7 +93,7 @@ export default async function DashboardAssemblyDetailPage({
         ]),
       )
     : new Map<string, string>();
-  const storageInventory = await discoverStorageInventory({
+  const storageInventories = await discoverStorageInventories({
     assembly: assemblyStructure,
     graphQl,
     worldTypes: getWorldTypeLookup(),
@@ -179,7 +179,7 @@ export default async function DashboardAssemblyDetailPage({
       characterId={characterId}
       characterName={character?.character?.name ?? "Unknown character"}
       assembly={assemblyDetail}
-      storageInventory={storageInventory}
+      storageInventories={storageInventories}
     />
   );
 }

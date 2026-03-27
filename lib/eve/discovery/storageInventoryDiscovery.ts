@@ -1,7 +1,12 @@
 import { bcs } from "@mysten/sui/bcs";
+import { blake2b } from "@noble/hashes/blake2.js";
 
 import { normalizeSuiAddress } from "../address";
-import type { StorageInventorySummary, WorldTypeRecord } from "../types";
+import type {
+  StorageInventoriesSummary,
+  StorageInventorySummary,
+  WorldTypeRecord,
+} from "../types";
 
 interface DiscoverStorageInventoryParams {
   assembly: {
@@ -68,6 +73,61 @@ export async function discoverStorageInventory({
     response.data?.address?.multiGetDynamicFields?.[0]?.value?.json;
 
   return parseInventoryRecord(inventoryRecord, worldTypes);
+}
+
+export async function discoverStorageInventories({
+  assembly,
+  graphQl,
+  worldTypes,
+}: DiscoverStorageInventoryParams): Promise<StorageInventoriesSummary | null> {
+  if (!assembly?.typeRepr.includes("::storage_unit::StorageUnit")) {
+    return null;
+  }
+
+  const address = normalizeSuiAddress(assembly.id);
+  const ownerCapId = normalizeSuiAddress(assembly.ownerCapId ?? "");
+  const openStorageKey = address ? deriveOpenStorageKey(address) : null;
+
+  if (!address || !ownerCapId || !openStorageKey) {
+    return {
+      ownerInventory: createEmptyInventorySummary(),
+      openStorageInventory: createEmptyInventorySummary(),
+    };
+  }
+
+  const response = (await graphQl(GET_STORAGE_OWNER_INVENTORY, {
+    address,
+    keys: [
+      {
+        type: "0x2::object::ID",
+        bcs: bcs.Address.serialize(ownerCapId).toBase64(),
+      },
+      {
+        type: "0x2::object::ID",
+        bcs: bcs.Address.serialize(openStorageKey).toBase64(),
+      },
+    ],
+  })) as {
+    data?: {
+      address?: {
+        multiGetDynamicFields?: Array<{
+          value?: {
+            json?: Record<string, unknown>;
+          } | null;
+        } | null>;
+      } | null;
+    };
+  };
+
+  const inventoryRecord =
+    response.data?.address?.multiGetDynamicFields?.[0]?.value?.json;
+  const openStorageRecord =
+    response.data?.address?.multiGetDynamicFields?.[1]?.value?.json;
+
+  return {
+    ownerInventory: parseInventoryRecord(inventoryRecord, worldTypes),
+    openStorageInventory: parseInventoryRecord(openStorageRecord, worldTypes),
+  };
 }
 
 function parseInventoryRecord(
@@ -140,6 +200,20 @@ function createEmptyInventorySummary(): StorageInventorySummary {
   };
 }
 
+function deriveOpenStorageKey(storageUnitId: string) {
+  const storageUnitIdBytes = bcs.Address.serialize(storageUnitId).toBytes();
+  const openInventoryLabelBytes = new TextEncoder().encode("open_inventory");
+  const sourceBytes = new Uint8Array(
+    storageUnitIdBytes.length + openInventoryLabelBytes.length,
+  );
+
+  sourceBytes.set(storageUnitIdBytes);
+  sourceBytes.set(openInventoryLabelBytes, storageUnitIdBytes.length);
+
+  const digest = blake2b(sourceBytes, { dkLen: 32 });
+  return normalizeSuiAddress(`0x${bytesToHex(digest)}`);
+}
+
 function parseInteger(value: unknown) {
   if (typeof value !== "string" && typeof value !== "number") {
     return null;
@@ -147,4 +221,8 @@ function parseInteger(value: unknown) {
 
   const parsedValue = Number.parseInt(String(value), 10);
   return Number.isNaN(parsedValue) ? null : parsedValue;
+}
+
+function bytesToHex(bytes: Uint8Array) {
+  return Array.from(bytes, (value) => value.toString(16).padStart(2, "0")).join("");
 }

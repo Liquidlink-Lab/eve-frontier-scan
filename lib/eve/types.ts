@@ -182,6 +182,11 @@ export interface StorageInventorySummary {
   items: StorageInventoryItemSummary[];
 }
 
+export interface StorageInventoriesSummary {
+  ownerInventory: StorageInventorySummary;
+  openStorageInventory: StorageInventorySummary;
+}
+
 export interface ConnectedAssemblySummary {
   id: string;
   name: string;

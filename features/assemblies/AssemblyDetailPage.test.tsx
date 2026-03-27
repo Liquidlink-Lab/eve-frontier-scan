@@ -144,6 +144,59 @@ describe("AssemblyDetailPage", () => {
     expect(screen.getByText("1000000099999")).toBeInTheDocument();
   });
 
+  it("renders distinct owner inventory and open storage sections for storage units", () => {
+    renderWithProviders(
+      <AssemblyDetailPage
+        {...({
+          characterName: "Rhea Ancru",
+          assembly,
+          storageInventories: {
+            ownerInventory: {
+              maxCapacity: 20_000_000,
+              usedCapacity: 195,
+              items: [
+                {
+                  itemId: 1_000_000_019_584,
+                  itemName: "Antimatter Charge",
+                  iconUrl: "https://cdn.example/items/82134.png",
+                  quantity: 3,
+                  typeId: 82_134,
+                  volume: 65,
+                },
+              ],
+            },
+            openStorageInventory: {
+              maxCapacity: 20_000_000,
+              usedCapacity: 5_200,
+              items: [
+                {
+                  itemId: 1_000_000_078_437,
+                  itemName: "EU-90 Fuel",
+                  iconUrl: "https://cdn.example/items/78437.png",
+                  quantity: 12,
+                  typeId: 78_437,
+                  volume: 28,
+                },
+              ],
+            },
+          },
+        } as ComponentProps<typeof AssemblyDetailPage>)}
+      />,
+    );
+
+    expect(screen.getByRole("heading", { name: "Owner inventory" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Open storage" })).toBeInTheDocument();
+    expect(screen.getAllByText("Capacity used")).toHaveLength(2);
+    expect(
+      screen.getByRole("progressbar", { name: "Owner inventory capacity usage" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("progressbar", { name: "Open storage capacity usage" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Antimatter Charge")).toBeInTheDocument();
+    expect(screen.getByText("EU-90 Fuel")).toBeInTheDocument();
+  });
+
   it("renders gate-specific direct detail fields when present", () => {
     renderWithProviders(
       <AssemblyDetailPage
