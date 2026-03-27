@@ -151,6 +151,7 @@ describe("eve ownership domain helpers", () => {
         {
           id: "0xrefinery-1",
           name: "Refinery One",
+          systemName: null,
           typeLabel: "Heavy Refinery",
           status: "offline",
           typeId: 88064,
@@ -161,10 +162,251 @@ describe("eve ownership domain helpers", () => {
         {
           id: "0xstorage-1",
           name: "Vault Alpha",
+          systemName: null,
           typeLabel: "Heavy Storage",
           status: "online",
           typeId: 77917,
           typeRepr: "0xpkg::storage_unit::StorageUnit",
+        },
+      ],
+    });
+  });
+
+  it("formats fallback assembly names with the resolved type label and short object id", async () => {
+    const fallbackDiscovery = {
+      walletAddress: "0xwallet-1",
+      characters: [
+        {
+          characterId: "0xchar-1",
+          character: {
+            id: "0xchar-1",
+            name: "Rhea Ancru",
+            tribeId: 3,
+            ownerCapId: "0xowner-cap-1",
+          },
+          playerProfileIds: ["0xprofile-1"],
+          ownedStructures: [
+            {
+              id: "0xabcdef1234567890",
+              typeId: 77917,
+              typeLabel: "Storage Unit",
+              typeRepr: "0xpkg::storage_unit::StorageUnit",
+              name: "Storage Unit 0xabcd…7890",
+              ownerCapId: "0xowner-cap-1",
+              status: "online",
+              fuelPercent: null,
+              fuelQuantity: null,
+              connectedAssemblyIds: [],
+            },
+          ],
+        },
+      ],
+    } as const;
+
+    const modulePath = "./eveOwnershipMappers";
+    const loadedModule = await import(/* @vite-ignore */ modulePath).catch(() => ({
+      mapDiscoveryToAssembliesByType: undefined,
+    }));
+
+    expect(typeof loadedModule.mapDiscoveryToAssembliesByType).toBe("function");
+
+    const groups = loadedModule.mapDiscoveryToAssembliesByType?.(
+      fallbackDiscovery,
+      "0xchar-1",
+      lookups,
+    );
+
+    expect(groups).toEqual({
+      "Heavy Storage": [
+        {
+          id: "0xabcdef1234567890",
+          name: "Heavy Storage · 0xabcd…7890",
+          systemName: null,
+          typeLabel: "Heavy Storage",
+          status: "online",
+          typeId: 77917,
+          typeRepr: "0xpkg::storage_unit::StorageUnit",
+        },
+      ],
+    });
+  });
+
+  it("maps one network node into a detail summary with grouped connected assemblies", async () => {
+    const detailDiscovery = {
+      walletAddress: "0xwallet-1",
+      characters: [
+        {
+          characterId: "0xchar-1",
+          character: {
+            id: "0xchar-1",
+            name: "Rhea Ancru",
+            tribeId: 3,
+            ownerCapId: "0xowner-cap-1",
+          },
+          playerProfileIds: ["0xprofile-1"],
+          ownedStructures: [
+            {
+              id: "0x0123456789abcdef",
+              typeId: 88092,
+              typeLabel: "Network Node",
+              typeRepr: "0xpkg::network_node::NetworkNode",
+              name: "Power Spine",
+              ownerCapId: "0xowner-cap-1",
+              status: "online",
+              fuelPercent: 60,
+              fuelQuantity: 6,
+              connectedAssemblyIds: [
+                "0xgate-1",
+                "0xstorage-1",
+                "0xshipyard-1",
+                "0xother-1",
+              ],
+            },
+            {
+              id: "0xgate-1",
+              typeId: 88001,
+              typeLabel: "Gate",
+              typeRepr: "0xpkg::gate::Gate",
+              name: "Argent Gate",
+              ownerCapId: "0xowner-cap-1",
+              status: "online",
+              fuelPercent: null,
+              fuelQuantity: null,
+              connectedAssemblyIds: [],
+            },
+            {
+              id: "0xstorage-1",
+              typeId: 77917,
+              typeLabel: "Storage Unit",
+              typeRepr: "0xpkg::storage_unit::StorageUnit",
+              name: "Vault Alpha",
+              ownerCapId: "0xowner-cap-1",
+              status: "online",
+              fuelPercent: null,
+              fuelQuantity: null,
+              connectedAssemblyIds: [],
+            },
+            {
+              id: "0xshipyard-1",
+              typeId: 88002,
+              typeLabel: "Manufacturing",
+              typeRepr: "0xpkg::manufacturing::Manufacturing",
+              name: "Shipyard West",
+              ownerCapId: "0xowner-cap-1",
+              status: "offline",
+              fuelPercent: null,
+              fuelQuantity: null,
+              connectedAssemblyIds: [],
+            },
+            {
+              id: "0xother-1",
+              typeId: 88064,
+              typeLabel: "Assembly",
+              typeRepr: "0xpkg::assembly::Assembly",
+              name: "Refinery One",
+              ownerCapId: "0xowner-cap-1",
+              status: "offline",
+              fuelPercent: null,
+              fuelQuantity: null,
+              connectedAssemblyIds: [],
+            },
+          ],
+        },
+      ],
+    } as const;
+
+    const modulePath = "./eveOwnershipMappers";
+    const loadedModule = await import(/* @vite-ignore */ modulePath).catch(() => ({
+      mapDiscoveryToNetworkNodeDetail: undefined,
+    }));
+
+    expect(typeof loadedModule.mapDiscoveryToNetworkNodeDetail).toBe("function");
+
+    const detail = loadedModule.mapDiscoveryToNetworkNodeDetail?.(
+      detailDiscovery,
+      "0xchar-1",
+      "0x0123456789abcdef",
+      lookups,
+    );
+
+    expect(detail).toEqual({
+      id: "0x0123456789abcdef",
+      name: "Power Spine",
+      systemName: null,
+      connectedAssemblyCount: 4,
+      status: "online",
+      fuelPercent: 60,
+      fuelQuantity: 6,
+      connectedAssemblies: [
+        {
+          id: "0xgate-1",
+          name: "Argent Gate",
+          typeLabel: "Gate",
+          status: "online",
+        },
+        {
+          id: "0xstorage-1",
+          name: "Vault Alpha",
+          typeLabel: "Heavy Storage",
+          status: "online",
+        },
+        {
+          id: "0xshipyard-1",
+          name: "Shipyard West",
+          typeLabel: "Manufacturing",
+          status: "offline",
+        },
+        {
+          id: "0xother-1",
+          name: "Refinery One",
+          typeLabel: "Heavy Refinery",
+          status: "offline",
+        },
+      ],
+      connectedAssemblyGroups: [
+        {
+          label: "Gate",
+          assemblies: [
+            {
+              id: "0xgate-1",
+              name: "Argent Gate",
+              typeLabel: "Gate",
+              status: "online",
+            },
+          ],
+        },
+        {
+          label: "Storage",
+          assemblies: [
+            {
+              id: "0xstorage-1",
+              name: "Vault Alpha",
+              typeLabel: "Heavy Storage",
+              status: "online",
+            },
+          ],
+        },
+        {
+          label: "Shipyard-like / ship-support",
+          assemblies: [
+            {
+              id: "0xshipyard-1",
+              name: "Shipyard West",
+              typeLabel: "Manufacturing",
+              status: "offline",
+            },
+          ],
+        },
+        {
+          label: "Other",
+          assemblies: [
+            {
+              id: "0xother-1",
+              name: "Refinery One",
+              typeLabel: "Heavy Refinery",
+              status: "offline",
+            },
+          ],
         },
       ],
     });

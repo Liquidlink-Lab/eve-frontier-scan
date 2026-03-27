@@ -1,5 +1,6 @@
-import Link from "next/link";
-import { Box, Button, Paper, Stack, Typography } from "@mui/material";
+import { Box, Paper, Stack, Typography } from "@mui/material";
+
+import LinkButton from "@/features/navigation/LinkButton";
 
 export default function LookupEmptyState() {
   return (
@@ -30,9 +31,9 @@ export default function LookupEmptyState() {
           <Typography color="text.secondary">
             This wallet does not currently resolve to a tracked character profile.
           </Typography>
-          <Button component={Link} href="/" variant="outlined">
+          <LinkButton href="/" variant="outlined">
             Try another address
-          </Button>
+          </LinkButton>
         </Stack>
       </Paper>
     </Box>

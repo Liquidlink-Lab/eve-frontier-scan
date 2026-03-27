@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { Button, Chip, Paper, Stack, Typography } from "@mui/material";
+import { Chip, Paper, Stack, Typography } from "@mui/material";
 
+import LinkButton from "@/features/navigation/LinkButton";
 import { formatShortAddress } from "@/lib/eve/address";
 import { buildDashboardNetworkNodesHref } from "@/lib/eve/routes";
 import type { CharacterSummary } from "@/lib/eve/types";
@@ -46,8 +46,7 @@ export default function CharacterSelectionCard({
         <Typography color="text.secondary">
           {character.currentShipName ?? "Ship data unavailable"}
         </Typography>
-        <Button
-          component={Link}
+        <LinkButton
           href={buildDashboardNetworkNodesHref(character.id, {
             walletAddress: character.walletAddress,
             source: character.walletSource,
@@ -55,7 +54,7 @@ export default function CharacterSelectionCard({
           variant="contained"
         >
           Open dashboard
-        </Button>
+        </LinkButton>
       </Stack>
     </Paper>
   );

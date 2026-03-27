@@ -1,12 +1,11 @@
-import Link from "next/link";
 import {
-  Button,
   Chip,
   TableCell,
   TableRow,
   Typography,
 } from "@mui/material";
 
+import LinkButton from "@/features/navigation/LinkButton";
 import { buildDashboardNetworkNodeDetailHref } from "@/lib/eve/routes";
 import type {
   NetworkNodeSummary,
@@ -43,8 +42,7 @@ export default function NetworkNodeTableRow({
       </TableCell>
       <TableCell>{networkNode.connectedAssemblyCount}</TableCell>
       <TableCell align="right">
-        <Button
-          component={Link}
+        <LinkButton
           href={buildDashboardNetworkNodeDetailHref(
             characterId,
             networkNode.id,
@@ -53,7 +51,7 @@ export default function NetworkNodeTableRow({
           size="small"
         >
           Details
-        </Button>
+        </LinkButton>
       </TableCell>
     </TableRow>
   );

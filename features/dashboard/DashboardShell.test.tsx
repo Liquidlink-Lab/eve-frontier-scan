@@ -109,9 +109,18 @@ describe("DashboardShell", () => {
     expect(switcher).toHaveTextContent("Rhea Ancru");
     expect(switcher).toHaveTextContent("Tara Voss");
     expect(screen.getByRole("link", { name: /network nodes/i })).toBeInTheDocument();
-    expect(screen.getByText("Assemblies")).toBeInTheDocument();
-    expect(screen.getByText("Ships")).toBeInTheDocument();
-    expect(screen.getByText("Gates")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /assemblies/i })).toHaveAttribute(
+      "href",
+      "/dashboard/0xchar-1/assemblies?wallet=0x43acdc9cb9e379d5fab90effbaaa08896d943d9958a96d9df6f07c39025cd186&source=eve-vault",
+    );
+    expect(screen.getByRole("link", { name: /ships/i })).toHaveAttribute(
+      "href",
+      "/dashboard/0xchar-1/ships?wallet=0x43acdc9cb9e379d5fab90effbaaa08896d943d9958a96d9df6f07c39025cd186&source=eve-vault",
+    );
+    expect(screen.getByRole("link", { name: /gates/i })).toHaveAttribute(
+      "href",
+      "/dashboard/0xchar-1/gates?wallet=0x43acdc9cb9e379d5fab90effbaaa08896d943d9958a96d9df6f07c39025cd186&source=eve-vault",
+    );
     expect(screen.getByText("network nodes page")).toBeInTheDocument();
   });
 

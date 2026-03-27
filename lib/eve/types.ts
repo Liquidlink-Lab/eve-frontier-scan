@@ -58,6 +58,7 @@ export interface CharacterSummary {
 export interface AssemblySummary {
   id: string;
   name: string;
+  systemName: string | null;
   typeId: number | null;
   typeLabel: string;
   typeRepr: string;
@@ -71,6 +72,11 @@ export interface ConnectedAssemblySummary {
   status: NetworkNodeStatus;
 }
 
+export interface ConnectedAssemblyGroup {
+  label: string;
+  assemblies: ConnectedAssemblySummary[];
+}
+
 export interface NetworkNodeSummary {
   id: string;
   name: string;
@@ -80,4 +86,8 @@ export interface NetworkNodeSummary {
   fuelPercent: number | null;
   fuelQuantity: number | null;
   connectedAssemblies: ConnectedAssemblySummary[];
+}
+
+export interface NetworkNodeDetailSummary extends NetworkNodeSummary {
+  connectedAssemblyGroups: ConnectedAssemblyGroup[];
 }

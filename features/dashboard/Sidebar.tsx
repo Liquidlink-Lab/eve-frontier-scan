@@ -15,7 +15,13 @@ import {
 
 import CharacterSwitcher from "./CharacterSwitcher";
 import { formatShortAddress } from "@/lib/eve/address";
-import { buildDashboardNetworkNodesHref, getWalletSourceLabel } from "@/lib/eve/routes";
+import {
+  buildDashboardAssembliesHref,
+  buildDashboardGatesHref,
+  buildDashboardNetworkNodesHref,
+  buildDashboardShipsHref,
+  getWalletSourceLabel,
+} from "@/lib/eve/routes";
 import { getSuiscanAddressUrl } from "@/lib/eve/suiscan";
 import type { CharacterSummary, WalletAccessContext } from "@/lib/eve/types";
 
@@ -118,13 +124,28 @@ export default function Sidebar({
             >
               <ListItemText primary="Network Nodes" />
             </ListItemButton>
-            <ListItemButton disabled>
+            <ListItemButton
+              component={Link}
+              href={access ? buildDashboardAssembliesHref(currentCharacterId, access) : "#"}
+              selected={pathname.includes("/assemblies")}
+              disabled={!access}
+            >
               <ListItemText primary="Assemblies" />
             </ListItemButton>
-            <ListItemButton disabled>
+            <ListItemButton
+              component={Link}
+              href={access ? buildDashboardShipsHref(currentCharacterId, access) : "#"}
+              selected={pathname.includes("/ships")}
+              disabled={!access}
+            >
               <ListItemText primary="Ships" />
             </ListItemButton>
-            <ListItemButton disabled>
+            <ListItemButton
+              component={Link}
+              href={access ? buildDashboardGatesHref(currentCharacterId, access) : "#"}
+              selected={pathname.includes("/gates")}
+              disabled={!access}
+            >
               <ListItemText primary="Gates" />
             </ListItemButton>
           </List>
