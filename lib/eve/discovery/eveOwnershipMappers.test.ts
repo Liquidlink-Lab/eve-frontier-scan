@@ -194,7 +194,7 @@ describe("eve ownership domain helpers", () => {
       {
         id: "0xnode-1",
         name: "Power Spine",
-        systemName: "30013131",
+        systemName: "ABJ-G43",
         iconUrl: "https://cdn.example/types/88092.png",
         connectedAssemblyCount: 1,
         status: "online",
@@ -276,7 +276,7 @@ describe("eve ownership domain helpers", () => {
         {
           id: "0xstorage-1",
           name: "Vault Alpha",
-          systemName: "30013131",
+          systemName: "ABJ-G43",
           iconUrl: "https://cdn.example/types/77917.png",
           location: {
             solarSystemId: 30013131,

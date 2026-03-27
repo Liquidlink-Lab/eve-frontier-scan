@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "sync:world-types": "bun scripts/sync-world-types.ts"
+    "sync:world-types": "bun scripts/sync-world-types.ts",
+    "sync:solar-systems": "bun scripts/sync-solar-systems.ts"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",

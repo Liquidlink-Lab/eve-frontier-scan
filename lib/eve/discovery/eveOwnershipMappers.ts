@@ -12,6 +12,7 @@ import type {
 } from "../types";
 import { formatShortAddress } from "../address";
 import { getWalletSourceLabel } from "../routes";
+import { getSolarSystemName } from "../solarSystems";
 
 export function mapDiscoveryToCharacterSummaries(
   discovery: WalletStructureDiscovery,
@@ -347,7 +348,11 @@ function getDisplayName(
 function getSolarSystemLabel(
   location: WalletStructureDiscovery["characters"][number]["ownedStructures"][number]["location"],
 ) {
-  return location ? String(location.solarSystemId) : null;
+  if (!location) {
+    return null;
+  }
+
+  return getSolarSystemName(location.solarSystemId) ?? String(location.solarSystemId);
 }
 
 function getTribeName(tribeId: number | null, lookups: LabelLookups) {
