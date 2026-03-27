@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import DashboardRefreshButton from "@/features/dashboard/DashboardRefreshButton";
 import { formatShortAddress } from "@/lib/eve/address";
 import { calculatePercentage, clampPercentage, formatPercentage } from "@/lib/eve/percent";
 import { getSuiscanObjectUrl } from "@/lib/eve/suiscan";
@@ -37,20 +38,28 @@ export default function AssemblyDetailPage({
   return (
     <main>
       <Stack spacing={3} sx={{ maxWidth: 960, mx: "auto", px: 3, py: { xs: 4, md: 6 } }}>
-        <div>
-          <Typography variant="overline" color="text.secondary">
-            {characterName}
-          </Typography>
-          <Typography variant="h3">{assembly.name}</Typography>
-          <MuiLink
-            href={getSuiscanObjectUrl(assembly.id)}
-            underline="hover"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {formatShortAddress(assembly.id)}
-          </MuiLink>
-        </div>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          justifyContent="space-between"
+          alignItems={{ xs: "flex-start", sm: "center" }}
+          spacing={1.5}
+        >
+          <div>
+            <Typography variant="overline" color="text.secondary">
+              {characterName}
+            </Typography>
+            <Typography variant="h3">{assembly.name}</Typography>
+            <MuiLink
+              href={getSuiscanObjectUrl(assembly.id)}
+              underline="hover"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {formatShortAddress(assembly.id)}
+            </MuiLink>
+          </div>
+          <DashboardRefreshButton />
+        </Stack>
 
         <Paper elevation={0} sx={{ px: 3, py: 3 }}>
           <Stack spacing={2}>

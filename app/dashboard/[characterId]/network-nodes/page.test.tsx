@@ -23,6 +23,12 @@ vi.mock("@/lib/eve/discovery/eveOwnershipClient", () => ({
     fetchWalletStructureDiscovery(...args),
 }));
 
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    refresh: vi.fn(),
+  }),
+}));
+
 describe("DashboardNetworkNodesPage", () => {
   beforeEach(() => {
     fetchWalletStructureDiscovery.mockReset();

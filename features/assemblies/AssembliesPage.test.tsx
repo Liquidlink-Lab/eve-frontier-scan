@@ -1,9 +1,15 @@
 import { screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import type { AssemblySummary, WalletAccessContext } from "@/lib/eve/types";
 import { renderWithProviders } from "@/test/renderWithProviders";
 import AssembliesPage from "./AssembliesPage";
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    refresh: vi.fn(),
+  }),
+}));
 
 const access: WalletAccessContext = {
   source: "sui-address",
@@ -47,6 +53,7 @@ describe("AssembliesPage", () => {
     );
 
     expect(screen.getByRole("heading", { name: "Assemblies" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^refresh$/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Heavy Storage" })).toHaveAttribute(
       "href",
       "https://evefrontier.wiki/Heavy_Storage",

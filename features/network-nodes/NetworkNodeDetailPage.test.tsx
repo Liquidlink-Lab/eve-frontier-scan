@@ -1,10 +1,16 @@
 import { screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { buildDashboardAssemblyDetailHref } from "@/lib/eve/routes";
 import type { NetworkNodeDetailSummary, WalletAccessContext } from "@/lib/eve/types";
 import { renderWithProviders } from "@/test/renderWithProviders";
 import NetworkNodeDetailPage from "./NetworkNodeDetailPage";
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    refresh: vi.fn(),
+  }),
+}));
 
 const access: WalletAccessContext = {
   source: "eve-vault",
@@ -100,6 +106,7 @@ describe("NetworkNodeDetailPage", () => {
     expect(
       screen.getByRole("heading", { name: "Power Spine" }),
     ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^refresh$/i })).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "0x0123…cdef" }),
     ).toHaveAttribute(

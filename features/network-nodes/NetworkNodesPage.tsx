@@ -1,5 +1,6 @@
 import { Box, Paper, Stack, Typography } from "@mui/material";
 
+import DashboardRefreshButton from "@/features/dashboard/DashboardRefreshButton";
 import type {
   NetworkNodeSummary,
   WalletAccessContext,
@@ -41,12 +42,20 @@ export default function NetworkNodesPage({
   return (
     <Box component="main" sx={{ flex: 1, px: 3, py: { xs: 4, md: 6 } }}>
       <Stack spacing={3} sx={{ maxWidth: 1120, mx: "auto" }}>
-        <div>
-          <Typography variant="h3">Network Nodes</Typography>
-          <Typography color="text.secondary">
-            {characterName} node index
-          </Typography>
-        </div>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          justifyContent="space-between"
+          alignItems={{ xs: "flex-start", sm: "center" }}
+          spacing={1.5}
+        >
+          <div>
+            <Typography variant="h3">Network Nodes</Typography>
+            <Typography color="text.secondary">
+              {characterName} node index
+            </Typography>
+          </div>
+          <DashboardRefreshButton />
+        </Stack>
 
         {sortedNetworkNodes.length === 0 ? (
           <Paper elevation={0} sx={{ px: 4, py: 5 }}>

@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import DashboardRefreshButton from "@/features/dashboard/DashboardRefreshButton";
 import LinkButton from "@/features/navigation/LinkButton";
 import { formatShortAddress } from "@/lib/eve/address";
 import { buildDashboardNetworkNodesHref } from "@/lib/eve/routes";
@@ -46,14 +47,17 @@ export default function NetworkNodeDetailPage({
               {formatShortAddress(networkNode.id)}
             </MuiLink>
           </div>
-          {characterId ? (
-            <LinkButton
-              href={buildDashboardNetworkNodesHref(characterId, access)}
-              variant="outlined"
-            >
-              Back to Network Nodes
-            </LinkButton>
-          ) : null}
+          <Stack direction="row" spacing={1.5} alignItems="center">
+            <DashboardRefreshButton />
+            {characterId ? (
+              <LinkButton
+                href={buildDashboardNetworkNodesHref(characterId, access)}
+                variant="outlined"
+              >
+                Back to Network Nodes
+              </LinkButton>
+            ) : null}
+          </Stack>
         </Stack>
 
         <Paper elevation={0} sx={{ px: 3, py: 3 }}>

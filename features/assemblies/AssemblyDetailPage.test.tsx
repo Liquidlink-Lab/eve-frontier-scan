@@ -1,10 +1,16 @@
 import type { ComponentProps } from "react";
 import { screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import type { AssemblySummary } from "@/lib/eve/types";
 import { renderWithProviders } from "@/test/renderWithProviders";
 import AssemblyDetailPage from "./AssemblyDetailPage";
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    refresh: vi.fn(),
+  }),
+}));
 
 const assembly: AssemblySummary = {
   id: "0xabcdef1234567890",
@@ -40,6 +46,7 @@ describe("AssemblyDetailPage", () => {
     );
     expect(screen.getByText("online")).toBeInTheDocument();
     expect(screen.getByText("Rhea Ancru")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^refresh$/i })).toBeInTheDocument();
     expect(screen.getByText("30013131")).toBeInTheDocument();
     expect(screen.getByText("-200, 50, 6000")).toBeInTheDocument();
     expect(
