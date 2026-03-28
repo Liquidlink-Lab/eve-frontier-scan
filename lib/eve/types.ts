@@ -183,9 +183,18 @@ export interface StorageInventorySummary {
   items: StorageInventoryItemSummary[];
 }
 
+export interface StoragePlayerInventorySummary {
+  ownerCapId: string;
+  characterId?: string | null;
+  characterName?: string | null;
+  characterWalletAddress?: string | null;
+  inventory: StorageInventorySummary;
+}
+
 export interface StorageInventoriesSummary {
   ownerInventory: StorageInventorySummary;
   openStorageInventory: StorageInventorySummary;
+  playerOwnedInventories: StoragePlayerInventorySummary[];
 }
 
 export type StorageInventoryActivityAction =

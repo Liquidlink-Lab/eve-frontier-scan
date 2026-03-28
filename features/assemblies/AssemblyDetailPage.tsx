@@ -344,6 +344,22 @@ export default function AssemblyDetailPage({
               inventory={storageInventories.openStorageInventory}
               heading="Open storage"
             />
+            {storageInventories.playerOwnedInventories.map((playerInventory) => (
+              <StorageInventorySection
+                key={playerInventory.ownerCapId}
+                inventory={playerInventory.inventory}
+                heading={getPlayerInventoryHeading(playerInventory)}
+                metadata={
+                  playerInventory.characterId ? (
+                    <PilotDashboardLink
+                      characterId={playerInventory.characterId}
+                      characterName={playerInventory.characterName}
+                      characterWalletAddress={playerInventory.characterWalletAddress}
+                    />
+                  ) : undefined
+                }
+              />
+            ))}
           </>
         ) : null}
 
@@ -454,9 +470,11 @@ export default function AssemblyDetailPage({
 function StorageInventorySection({
   heading,
   inventory,
+  metadata,
 }: {
   heading: string;
   inventory: StorageInventorySummary;
+  metadata?: ReactNode;
 }) {
   const capacityPercent = calculatePercentage(
     inventory.usedCapacity,
@@ -469,6 +487,7 @@ function StorageInventorySection({
         <Typography component="h2" variant="h4">
           {heading}
         </Typography>
+        {metadata ?? null}
         <Stack spacing={0.75}>
           <DetailField label="Capacity used">
             <Typography>{formatPercentage(capacityPercent)}</Typography>
@@ -700,6 +719,17 @@ function AssemblyRouteLink({
 
 function formatPilotLabel(characterId: string | null) {
   return `Pilot ${characterId ? formatShortAddress(characterId) : "Unavailable"}`;
+}
+
+function getPlayerInventoryHeading(
+  playerInventory: NonNullable<AssemblyDetailPageProps["storageInventories"]>["playerOwnedInventories"][number],
+) {
+  return `Player inventory · ${
+    playerInventory.characterName ??
+    (playerInventory.characterId
+      ? formatShortAddress(playerInventory.characterId)
+      : formatShortAddress(playerInventory.ownerCapId))
+  }`;
 }
 
 function formatStorageInventoryActivityLabel(

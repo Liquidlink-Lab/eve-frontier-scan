@@ -33,6 +33,18 @@ const GET_STORAGE_OWNER_INVENTORY = `
   }
 `;
 
+const GET_STORAGE_INVENTORY_KEYS = `
+  query GetStorageInventoryKeys($address: SuiAddress!) {
+    object(address: $address) {
+      asMoveObject {
+        contents {
+          json
+        }
+      }
+    }
+  }
+`;
+
 export async function discoverStorageInventory({
   assembly,
   graphQl,
@@ -92,8 +104,29 @@ export async function discoverStorageInventories({
     return {
       ownerInventory: createEmptyInventorySummary(),
       openStorageInventory: createEmptyInventorySummary(),
+      playerOwnedInventories: [],
     };
   }
+
+  const inventoryKeysResponse = (await graphQl(GET_STORAGE_INVENTORY_KEYS, {
+    address,
+  })) as {
+    data?: {
+      object?: {
+        asMoveObject?: {
+          contents?: {
+            json?: Record<string, unknown>;
+          } | null;
+        } | null;
+      } | null;
+    };
+  };
+  const inventoryKeys = getInventoryKeys(
+    inventoryKeysResponse.data?.object?.asMoveObject?.contents?.json,
+  );
+  const playerOwnedInventoryKeys = inventoryKeys.filter(
+    (key) => key !== ownerCapId && key !== openStorageKey,
+  );
 
   const response = (await graphQl(GET_STORAGE_OWNER_INVENTORY, {
     address,
@@ -106,6 +139,10 @@ export async function discoverStorageInventories({
         type: "0x2::object::ID",
         bcs: bcs.Address.serialize(openStorageKey).toBase64(),
       },
+      ...playerOwnedInventoryKeys.map((key) => ({
+        type: "0x2::object::ID",
+        bcs: bcs.Address.serialize(key).toBase64(),
+      })),
     ],
   })) as {
     data?: {
@@ -127,6 +164,13 @@ export async function discoverStorageInventories({
   return {
     ownerInventory: parseInventoryRecord(inventoryRecord, worldTypes),
     openStorageInventory: parseInventoryRecord(openStorageRecord, worldTypes),
+    playerOwnedInventories: playerOwnedInventoryKeys.map((ownerCapKey, index) => ({
+      ownerCapId: ownerCapKey,
+      inventory: parseInventoryRecord(
+        response.data?.address?.multiGetDynamicFields?.[index + 2]?.value?.json,
+        worldTypes,
+      ),
+    })),
   };
 }
 
@@ -212,6 +256,18 @@ function deriveOpenStorageKey(storageUnitId: string) {
 
   const digest = blake2b(sourceBytes, { dkLen: 32 });
   return normalizeSuiAddress(`0x${bytesToHex(digest)}`);
+}
+
+function getInventoryKeys(record: Record<string, unknown> | undefined) {
+  const keys = record?.inventory_keys;
+
+  if (!Array.isArray(keys)) {
+    return [];
+  }
+
+  return keys
+    .map((value) => (typeof value === "string" ? normalizeSuiAddress(value) : null))
+    .filter((value): value is string => Boolean(value));
 }
 
 function parseInteger(value: unknown) {

@@ -179,6 +179,7 @@ describe("AssemblyDetailPage", () => {
                 },
               ],
             },
+            playerOwnedInventories: [],
           },
         } as ComponentProps<typeof AssemblyDetailPage>)}
       />,
@@ -195,6 +196,66 @@ describe("AssemblyDetailPage", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("Antimatter Charge")).toBeInTheDocument();
     expect(screen.getByText("EU-90 Fuel")).toBeInTheDocument();
+  });
+
+  it("renders player-owned inventory sections when present", () => {
+    renderWithProviders(
+      <AssemblyDetailPage
+        characterId="0xcharacter-1"
+        characterName="Rhea Ancru"
+        assembly={assembly}
+        storageInventories={{
+          ownerInventory: {
+            maxCapacity: 20_000_000,
+            usedCapacity: 195,
+            items: [],
+          },
+          openStorageInventory: {
+            maxCapacity: 20_000_000,
+            usedCapacity: 5_200,
+            items: [],
+          },
+          playerOwnedInventories: [
+            {
+              ownerCapId: "0xplayer-cap-1",
+              characterId: "0xpilot-1",
+              characterName: "Hshiki",
+              characterWalletAddress: "0xpilot-wallet-1",
+              inventory: {
+                maxCapacity: 20_000_000,
+                usedCapacity: 780,
+                items: [
+                  {
+                    itemId: 1_000_000_089_089,
+                    itemName: "Building Foam",
+                    iconUrl: "https://cdn.example/items/89089.png",
+                    quantity: 2,
+                    typeId: 89_089,
+                    volume: 390,
+                  },
+                ],
+              },
+            },
+          ],
+        }}
+      />,
+    );
+
+    expect(screen.getByRole("heading", { name: "Player inventory · Hshiki" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("progressbar", { name: "Player inventory · Hshiki capacity usage" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Building Foam icon" })).toHaveAttribute(
+      "src",
+      "https://cdn.example/items/89089.png",
+    );
+    expect(screen.getByRole("link", { name: "Pilot Hshiki" })).toHaveAttribute(
+      "href",
+      buildDashboardNetworkNodesHref("0xpilot-1", {
+        walletAddress: "0xpilot-wallet-1",
+        source: "sui-address",
+      }),
+    );
   });
 
   it("renders recent inventory activity for storage units", () => {

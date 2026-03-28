@@ -10,77 +10,131 @@ const openStorageKey =
   "0x429a463a61323293ff82df6e8346cd3ec4f63bbd724d8bae8ecc89cf76269989";
 
 describe("discoverStorageInventories", () => {
-  it("reads owner inventory and open storage in one dynamic field query", async () => {
-    const graphQl = vi.fn(async (_query: string, variables: Record<string, unknown>) => {
-      expect(variables).toEqual({
-        address: storageUnit.id,
-        keys: [
-          {
-            type: "0x2::object::ID",
-            bcs: bcs.Address.serialize(storageUnit.ownerCapId).toBase64(),
-          },
-          {
-            type: "0x2::object::ID",
-            bcs: bcs.Address.serialize(openStorageKey).toBase64(),
-          },
-        ],
-      });
+  it("reads owner, open, and player-owned inventories for a storage unit", async () => {
+    const playerInventoryKey =
+      "0x6be4f1af1ff5d9fefe404f43a6b6a7f9c9fd6cb421605f6f2adf17947d13c724";
+    const graphQl = vi
+      .fn()
+      .mockImplementationOnce(async (_query: string, variables: Record<string, unknown>) => {
+        expect(variables).toEqual({
+          address: storageUnit.id,
+        });
 
-      return {
-        data: {
-          address: {
-            multiGetDynamicFields: [
-              {
-                value: {
-                  __typename: "MoveValue",
+        return {
+          data: {
+            object: {
+              asMoveObject: {
+                contents: {
                   json: {
-                    max_capacity: "20000000",
-                    used_capacity: "195",
-                    items: {
-                      contents: [
-                        {
-                          key: "82134",
-                          value: {
-                            tenant: "utopia",
-                            type_id: "82134",
-                            item_id: "1000000019584",
-                            volume: "65",
-                            quantity: 3,
-                          },
-                        },
-                      ],
-                    },
+                    inventory_keys: [
+                      storageUnit.ownerCapId,
+                      openStorageKey,
+                      playerInventoryKey,
+                    ],
                   },
                 },
               },
-              {
-                value: {
-                  __typename: "MoveValue",
-                  json: {
-                    max_capacity: "20000000",
-                    used_capacity: "5200",
-                    items: {
-                      contents: [
-                        {
-                          key: "78437",
-                          value: {
-                            tenant: "utopia",
-                            type_id: "78437",
-                            item_id: "1000000078437",
-                            volume: "28",
-                            quantity: "12",
-                          },
-                        },
-                      ],
-                    },
-                  },
-                },
-              },
-            ],
+            },
           },
-        },
-      };
-    });
+        };
+      })
+      .mockImplementationOnce(async (_query: string, variables: Record<string, unknown>) => {
+        expect(variables).toEqual({
+          address: storageUnit.id,
+          keys: [
+            {
+              type: "0x2::object::ID",
+              bcs: bcs.Address.serialize(storageUnit.ownerCapId).toBase64(),
+            },
+            {
+              type: "0x2::object::ID",
+              bcs: bcs.Address.serialize(openStorageKey).toBase64(),
+            },
+            {
+              type: "0x2::object::ID",
+              bcs: bcs.Address.serialize(playerInventoryKey).toBase64(),
+            },
+          ],
+        });
+
+        return {
+          data: {
+            address: {
+              multiGetDynamicFields: [
+                {
+                  value: {
+                    __typename: "MoveValue",
+                    json: {
+                      max_capacity: "20000000",
+                      used_capacity: "195",
+                      items: {
+                        contents: [
+                          {
+                            key: "82134",
+                            value: {
+                              tenant: "utopia",
+                              type_id: "82134",
+                              item_id: "1000000019584",
+                              volume: "65",
+                              quantity: 3,
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+                {
+                  value: {
+                    __typename: "MoveValue",
+                    json: {
+                      max_capacity: "20000000",
+                      used_capacity: "5200",
+                      items: {
+                        contents: [
+                          {
+                            key: "78437",
+                            value: {
+                              tenant: "utopia",
+                              type_id: "78437",
+                              item_id: "1000000078437",
+                              volume: "28",
+                              quantity: "12",
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+                {
+                  value: {
+                    __typename: "MoveValue",
+                    json: {
+                      max_capacity: "20000000",
+                      used_capacity: "780",
+                      items: {
+                        contents: [
+                          {
+                            key: "89089",
+                            value: {
+                              tenant: "utopia",
+                              type_id: "89089",
+                              item_id: "1000000089089",
+                              volume: "390",
+                              quantity: "2",
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        };
+      });
 
     const modulePath = "./storageInventoryDiscovery";
     const loadedModule = await import(/* @vite-ignore */ modulePath).catch(() => ({
@@ -141,6 +195,25 @@ describe("discoverStorageInventories", () => {
           },
         ],
       },
+      playerOwnedInventories: [
+        {
+          ownerCapId: playerInventoryKey,
+          inventory: {
+            maxCapacity: 20_000_000,
+            usedCapacity: 780,
+            items: [
+              {
+                itemId: 1_000_000_089_089,
+                itemName: "Unknown item (type_id: 89089)",
+                iconUrl: null,
+                quantity: 2,
+                typeId: 89_089,
+                volume: 390,
+              },
+            ],
+          },
+        },
+      ],
     });
   });
 });

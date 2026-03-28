@@ -4,6 +4,7 @@ import { Box, Paper, Stack, Typography } from "@mui/material";
 import AssemblyDetailPage from "@/features/assemblies/AssemblyDetailPage";
 import { normalizeSuiAddress } from "@/lib/eve/address";
 import { eveEnv } from "@/lib/eve/env";
+import { discoverCharacterSummariesByOwnerCapIds } from "@/lib/eve/discovery/characterOwnerCapDiscovery";
 import { discoverCharacterSummaries } from "@/lib/eve/discovery/characterSummaryDiscovery";
 import { discoverGateActivity } from "@/lib/eve/discovery/gateActivityDiscovery";
 import {
@@ -101,6 +102,14 @@ export default async function DashboardAssemblyDetailPage({
     graphQl,
     worldTypes: worldTypeLookup,
   });
+  const playerInventoryCharacterSummaries = storageInventories
+    ? await discoverCharacterSummariesByOwnerCapIds({
+        ownerCapIds: storageInventories.playerOwnedInventories.map(
+          (entry) => entry.ownerCapId,
+        ),
+        rpc,
+      })
+    : new Map();
   const storageInventoryActivity = isStorageAssembly
     ? await discoverStorageInventoryActivity({
         storageUnitId: assembly.id,
@@ -207,7 +216,23 @@ export default async function DashboardAssemblyDetailPage({
       characterId={characterId}
       characterName={character?.character?.name ?? "Unknown character"}
       assembly={assemblyDetail}
-      storageInventories={storageInventories}
+      storageInventories={
+        storageInventories
+          ? {
+              ...storageInventories,
+              playerOwnedInventories: storageInventories.playerOwnedInventories.map((entry) => {
+                const summary = playerInventoryCharacterSummaries.get(entry.ownerCapId);
+
+                return {
+                  ...entry,
+                  characterId: summary?.characterId ?? null,
+                  characterName: summary?.name ?? null,
+                  characterWalletAddress: summary?.walletAddress ?? null,
+                };
+              }),
+            }
+          : null
+      }
     />
   );
 }
