@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { collectHydrationRecoverableErrors } from "@/test/hydration";
 import { renderWithProviders } from "@/test/renderWithProviders";
 import DashboardSearchForm from "./DashboardSearchForm";
 
@@ -17,14 +18,16 @@ describe("DashboardSearchForm", () => {
     setViewportWidth(1280);
   });
 
-  it("renders a centered compact search form that stays inline on mobile", () => {
+  it("renders a centered compact search form", () => {
     renderWithProviders(<DashboardSearchForm />);
 
     const textbox = screen.getByRole("textbox", {
       name: /inspect another address/i,
     });
     const form = textbox.closest("form");
-    const inspectButton = screen.getByRole("button", { name: /^inspect$/i });
+    const inspectButton = screen.getByRole("button", {
+      name: /inspect another address/i,
+    });
 
     expect(form).not.toBeNull();
     expect(form).toHaveStyle({
@@ -33,15 +36,12 @@ describe("DashboardSearchForm", () => {
       flexDirection: "row",
     });
     expect(textbox).toHaveClass("MuiInputBase-inputSizeSmall");
-    expect(inspectButton).toHaveClass("MuiButton-sizeMedium");
-    expect(inspectButton).toHaveStyle({
-      width: "auto",
-      minWidth: "96px",
-      flexShrink: "0",
-    });
+    expect(textbox).toHaveAttribute("placeholder", "0x...");
+    expect(inspectButton).toHaveClass("MuiButton-sizeSmall");
+    expect(inspectButton).toHaveTextContent(/inspect/i);
   });
 
-  it("uses a tighter mobile layout with a compact icon submit button", () => {
+  it("keeps the mobile form accessible while using the compact submit icon", () => {
     setViewportWidth(390);
 
     renderWithProviders(<DashboardSearchForm />);
@@ -51,20 +51,29 @@ describe("DashboardSearchForm", () => {
     });
     const form = textbox.closest("form");
     const inspectButton = screen.getByRole("button", {
-      name: /inspect address/i,
+      name: /inspect another address/i,
     });
 
     expect(form).not.toBeNull();
     expect(form).toHaveStyle({
       flexDirection: "row",
     });
-    expect(textbox).toHaveAttribute("placeholder", "Address");
-    expect(inspectButton).toHaveStyle({
-      minWidth: "40px",
-      paddingLeft: "0px",
-      paddingRight: "0px",
+    expect(textbox).toHaveAttribute("placeholder", "0x...");
+    expect(screen.getByTestId("SearchRoundedIcon")).toBeInTheDocument();
+  });
+
+  it("hydrates without recoverable errors on mobile", async () => {
+    const recoverableErrors = await collectHydrationRecoverableErrors({
+      ui: <DashboardSearchForm />,
+      beforeServerRender: () => {
+        Reflect.deleteProperty(window, "matchMedia");
+      },
+      beforeHydrate: () => {
+        setViewportWidth(390);
+      },
     });
-    expect(inspectButton).not.toHaveTextContent(/inspect/i);
+
+    expect(recoverableErrors).toEqual([]);
   });
 });
 

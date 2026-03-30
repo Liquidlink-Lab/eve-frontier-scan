@@ -4,7 +4,7 @@ import type { PropsWithChildren } from "react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
-import { Box, IconButton, useMediaQuery, useTheme } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { usePathname, useSearchParams } from "next/navigation";
 
 import { mapDiscoveryToCharacterSummaries } from "@/lib/eve/discovery/eveOwnershipMappers";
@@ -23,13 +23,9 @@ export default function DashboardShell({
   children,
   characterId,
 }: DashboardShellProps) {
-  const theme = useTheme();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const isDashboardRoute = pathname.startsWith("/dashboard/");
-  const isDesktopNavigation = useMediaQuery(theme.breakpoints.up("md"), {
-    noSsr: true,
-  });
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const access = parseWalletAccessSearchParams(searchParams);
 
@@ -60,7 +56,6 @@ export default function DashboardShell({
         access={access}
         characters={characters}
         currentCharacterId={characterId}
-        isDesktopNavigation={isDesktopNavigation}
         mobileOpen={mobileSidebarOpen}
         onClose={() => setMobileSidebarOpen(false)}
         pathname={pathname}
@@ -69,7 +64,7 @@ export default function DashboardShell({
         data-testid="dashboard-shell-content"
         sx={{
           minHeight: "100vh",
-          ml: isDesktopNavigation ? `${drawerWidth}px` : 0,
+          ml: { xs: 0, md: `${drawerWidth}px` },
         }}
       >
         <Box
@@ -89,19 +84,22 @@ export default function DashboardShell({
           >
             <Box
               data-testid="dashboard-header-bar"
-              style={!isDesktopNavigation ? { paddingRight: "64px" } : undefined}
               sx={{
                 paddingLeft: { xs: 1.5, sm: 3 },
-                paddingRight: { xs: "64px", md: 3 },
+                paddingRight: { xs: 1.5, sm: 3 },
                 paddingTop: { xs: 1, sm: 1.25 },
                 paddingBottom: { xs: 1, sm: 1.25 },
               }}
             >
               <Box
                 sx={{
-                  display: "flex",
+                  display: "grid",
                   alignItems: "center",
-                  gap: { xs: 1, sm: 1.5 },
+                  columnGap: { xs: 1, sm: 1.5 },
+                  gridTemplateColumns: {
+                    xs: "40px minmax(0, 1fr) 40px",
+                    md: "minmax(0, 1fr)",
+                  },
                 }}
               >
                 <IconButton
@@ -109,6 +107,7 @@ export default function DashboardShell({
                   onClick={() => setMobileSidebarOpen(true)}
                   size="small"
                   sx={{
+                    gridColumn: 1,
                     display: { xs: "inline-flex", md: "none" },
                     color: "text.primary",
                     flexShrink: 0,
@@ -120,14 +119,21 @@ export default function DashboardShell({
                 </IconButton>
                 <Box
                   sx={{
+                    gridColumn: { xs: 2, md: 1 },
                     display: "flex",
                     justifyContent: "center",
-                    flex: 1,
                     minWidth: 0,
                   }}
                 >
                   <DashboardSearchForm />
                 </Box>
+                <Box
+                  aria-hidden="true"
+                  sx={{
+                    gridColumn: 3,
+                    display: { xs: "block", md: "none" },
+                  }}
+                />
               </Box>
             </Box>
           </Box>

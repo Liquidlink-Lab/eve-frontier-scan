@@ -2,6 +2,9 @@
 
 import type { MouseEvent } from "react";
 import { useState } from "react";
+import AccountBalanceWalletRoundedIcon from "@mui/icons-material/AccountBalanceWalletRounded";
+import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import {
   Box,
   Button,
@@ -9,24 +12,15 @@ import {
   ListItemText,
   Menu,
   MenuItem,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
-import AccountBalanceWalletRoundedIcon from "@mui/icons-material/AccountBalanceWalletRounded";
-import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
-import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import { useRouter } from "next/navigation";
 
 import { useWalletSession } from "./useWalletSession";
 
 export default function WalletMenu() {
-  const theme = useTheme();
   const router = useRouter();
   const walletSession = useWalletSession();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const isCompactMobile = useMediaQuery(theme.breakpoints.down("md"), {
-    noSsr: true,
-  });
 
   function handleOpenMenu(event: MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
@@ -60,24 +54,24 @@ export default function WalletMenu() {
           <Button
             variant="outlined"
             onClick={handleOpenMenu}
-            size={isCompactMobile ? "small" : "medium"}
-            aria-label={
-              isCompactMobile
-                ? `Open wallet menu for ${walletSession.shortAddress}`
-                : undefined
-            }
+            size="small"
+            aria-label={`Open wallet menu for ${walletSession.shortAddress}`}
             sx={{
-              minWidth: isCompactMobile ? 40 : undefined,
-              width: isCompactMobile ? 40 : "auto",
-              px: isCompactMobile ? 0 : undefined,
-              borderRadius: isCompactMobile ? "12px" : undefined,
+              minWidth: { xs: 40, md: "auto" },
+              width: { xs: 40, md: "auto" },
+              px: { xs: 0, md: 1.5 },
+              borderRadius: { xs: "12px", md: undefined },
             }}
           >
-            {isCompactMobile ? (
+            <Box
+              component="span"
+              sx={{ display: { xs: "inline-flex", md: "none" }, alignItems: "center" }}
+            >
               <AccountBalanceWalletRoundedIcon fontSize="small" />
-            ) : (
-              walletSession.shortAddress
-            )}
+            </Box>
+            <Box component="span" sx={{ display: { xs: "none", md: "inline" } }}>
+              {walletSession.shortAddress}
+            </Box>
           </Button>
           <Menu
             anchorEl={anchorEl}
@@ -103,20 +97,24 @@ export default function WalletMenu() {
           variant="outlined"
           onClick={walletSession.connect}
           disabled={!walletSession.hasEveVault}
-          size={isCompactMobile ? "small" : "medium"}
-          aria-label={isCompactMobile ? "Connect EVE Vault" : undefined}
+          size="small"
+          aria-label="Connect EVE Vault"
           sx={{
-            minWidth: isCompactMobile ? 40 : undefined,
-            width: isCompactMobile ? 40 : "auto",
-            px: isCompactMobile ? 0 : undefined,
-            borderRadius: isCompactMobile ? "12px" : undefined,
+            minWidth: { xs: 40, md: "auto" },
+            width: { xs: 40, md: "auto" },
+            px: { xs: 0, md: 1.5 },
+            borderRadius: { xs: "12px", md: undefined },
           }}
         >
-          {isCompactMobile ? (
+          <Box
+            component="span"
+            sx={{ display: { xs: "inline-flex", md: "none" }, alignItems: "center" }}
+          >
             <AccountBalanceWalletRoundedIcon fontSize="small" />
-          ) : (
-            "Connect EVE Vault"
-          )}
+          </Box>
+          <Box component="span" sx={{ display: { xs: "none", md: "inline" } }}>
+            Connect EVE Vault
+          </Box>
         </Button>
       )}
     </Box>

@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react";
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import {
@@ -376,10 +376,18 @@ describe("AssemblyDetailPage", () => {
 
     expect(screen.getByText("Description")).toBeInTheDocument();
     expect(screen.getByText("Permit-managed border gate.")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "https://example.com/transit-authority" })).toHaveAttribute(
+    const referenceUrlLink = screen.getByRole("link", {
+      name: "https://example.com/transit-authority",
+    });
+    expect(referenceUrlLink).toHaveAttribute(
       "href",
       "https://example.com/transit-authority",
     );
+    expect(referenceUrlLink).toHaveAttribute("target", "_blank");
+    expect(referenceUrlLink).toHaveAttribute("rel", "noreferrer");
+    expect(
+      within(referenceUrlLink).getByTestId("reference-url-external-icon"),
+    ).toBeInTheDocument();
     expect(screen.queryByText("Tenant item ID")).not.toBeInTheDocument();
     expect(screen.queryByText("Tenant")).not.toBeInTheDocument();
     expect(screen.queryByText("Owner Cap")).not.toBeInTheDocument();
@@ -395,7 +403,10 @@ describe("AssemblyDetailPage", () => {
     );
     expect(screen.getByText("Extension")).toBeInTheDocument();
     expect(screen.getByText("Custom extension")).toBeInTheDocument();
-    expect(screen.getByText("0xextension::gate_rules::GateAuth")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "0xextension::gate_rules::GateAuth" })).toHaveAttribute(
+      "href",
+      "https://suiscan.xyz/testnet/object/0xextension",
+    );
     expect(screen.getByText("Extension frozen")).toBeInTheDocument();
     expect(screen.getByText("Yes")).toBeInTheDocument();
     expect(screen.getByText("Access mode")).toBeInTheDocument();
@@ -445,6 +456,23 @@ describe("AssemblyDetailPage", () => {
     expect(screen.getByRole("link", { name: /view permit event on suiscan/i })).toHaveAttribute(
       "href",
       "https://suiscan.xyz/testnet/tx/tx-permit-1",
+    );
+  });
+
+  it("normalizes scheme-less reference urls so they always open externally", () => {
+    renderWithProviders(
+      <AssemblyDetailPage
+        characterName="Rhea Ancru"
+        assembly={{
+          ...assembly,
+          url: "example.com/reference",
+        }}
+      />,
+    );
+
+    expect(screen.getByRole("link", { name: "example.com/reference" })).toHaveAttribute(
+      "href",
+      "https://example.com/reference",
     );
   });
 

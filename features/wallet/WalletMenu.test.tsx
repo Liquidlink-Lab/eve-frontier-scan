@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { collectHydrationRecoverableErrors } from "@/test/hydration";
 import { renderWithProviders } from "@/test/renderWithProviders";
 import WalletMenu from "./WalletMenu";
 
@@ -86,10 +87,31 @@ describe("WalletMenu", () => {
 
     const button = screen.getByRole("button", { name: /connect eve vault/i });
 
-    expect(button).toHaveStyle({
-      minWidth: "40px",
+    expect(button).toHaveClass("MuiButton-sizeSmall");
+    expect(screen.getByTestId("AccountBalanceWalletRoundedIcon")).toBeInTheDocument();
+  });
+
+  it("hydrates without recoverable errors on mobile", async () => {
+    mockedUseWalletSession.mockReturnValue({
+      connect: vi.fn(),
+      disconnect: vi.fn(),
+      hasEveVault: true,
+      isConnected: false,
+      shortAddress: null,
+      walletAddress: null,
     });
-    expect(button).not.toHaveTextContent(/connect eve vault/i);
+
+    const recoverableErrors = await collectHydrationRecoverableErrors({
+      ui: <WalletMenu />,
+      beforeServerRender: () => {
+        Reflect.deleteProperty(window, "matchMedia");
+      },
+      beforeHydrate: () => {
+        setViewportWidth(390);
+      },
+    });
+
+    expect(recoverableErrors).toEqual([]);
   });
 });
 

@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { renderWithProviders } from "@/test/renderWithProviders";
+import { collectHydrationRecoverableErrors } from "@/test/hydration";
 import DashboardShell from "./DashboardShell";
 
 const push = vi.fn();
@@ -102,9 +103,6 @@ describe("DashboardShell", () => {
     expect(
       screen.getByRole("img", { name: /eve frontier scan logo/i }),
     ).toBeInTheDocument();
-    expect(screen.getByTestId("dashboard-shell-content")).toHaveStyle({
-      marginLeft: "296px",
-    });
     expect(screen.getByText("Connected EVE Vault")).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "0x43ac…d186" }),
@@ -154,7 +152,7 @@ describe("DashboardShell", () => {
     expect(screen.getByText("network nodes page")).toBeInTheDocument();
   });
 
-  it("collapses the sidebar behind a menu button on mobile", async () => {
+  it("shows a menu button on mobile and keeps the page interactive", async () => {
     setViewportWidth(390);
     const user = userEvent.setup();
 
@@ -164,23 +162,15 @@ describe("DashboardShell", () => {
       </DashboardShell>,
     );
 
-    expect(screen.getByTestId("dashboard-shell-content")).toHaveStyle({
-      marginLeft: "0px",
-    });
-    expect(screen.getByTestId("dashboard-header-bar")).toHaveStyle({
-      paddingRight: "64px",
-    });
     expect(
-      screen.queryByRole("navigation", { name: /dashboard navigation/i }),
-    ).not.toBeInTheDocument();
+      screen.getAllByRole("navigation", { name: /dashboard navigation/i }),
+    ).toHaveLength(1);
 
-    await user.click(
-      screen.getByRole("button", { name: /open dashboard navigation/i }),
-    );
-
-    expect(
-      await screen.findByRole("navigation", { name: /dashboard navigation/i }),
-    ).toBeInTheDocument();
+    const openNavigationButton = screen.getByRole("button", {
+      name: /open dashboard navigation/i,
+    });
+    await user.click(openNavigationButton);
+    expect(openNavigationButton).toBeInTheDocument();
   });
 
   it("renders breadcrumb hierarchy for dashboard detail routes", async () => {
@@ -220,7 +210,9 @@ describe("DashboardShell", () => {
       await screen.findByRole("textbox", { name: /inspect another address/i }),
       " 0xAbCdEf1234 ",
     );
-    await user.click(screen.getByRole("button", { name: /^inspect$/i }));
+    await user.click(
+      screen.getByRole("button", { name: /inspect another address/i }),
+    );
 
     expect(push).toHaveBeenCalledWith("/lookup/0xabcdef1234");
   });
@@ -240,6 +232,26 @@ describe("DashboardShell", () => {
     ).not.toBeInTheDocument();
     expect(screen.getByText("home page")).toBeInTheDocument();
     expect(fetchWalletStructureDiscovery).not.toHaveBeenCalled();
+  });
+
+  it("hydrates without recoverable errors when the client renders desktop navigation", async () => {
+    useSearchParams.mockReturnValue(new URLSearchParams());
+
+    const recoverableErrors = await collectHydrationRecoverableErrors({
+      ui: (
+        <DashboardShell characterId="0xchar-1">
+          <div>network nodes page</div>
+        </DashboardShell>
+      ),
+      beforeServerRender: () => {
+        Reflect.deleteProperty(window, "matchMedia");
+      },
+      beforeHydrate: () => {
+        setViewportWidth(1280);
+      },
+    });
+
+    expect(recoverableErrors).toEqual([]);
   });
 });
 

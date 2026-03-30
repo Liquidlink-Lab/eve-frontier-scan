@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import {
   Button,
   Chip,
@@ -57,6 +58,8 @@ export default function AssemblyDetailPage({
   const storageCapacityPercent = storageInventory
     ? calculatePercentage(storageInventory.usedCapacity, storageInventory.maxCapacity)
     : null;
+  const extensionHref = getExtensionHref(assembly.extensionType);
+  const referenceUrlHref = getExternalHref(assembly.url);
   const energySourceHref =
     access && characterId && assembly.energySourceId
       ? buildDashboardNetworkNodeDetailHref(
@@ -137,8 +140,31 @@ export default function AssemblyDetailPage({
             ) : null}
             {assembly.url ? (
               <DetailField label="Reference URL" alignTop>
-                <MuiLink href={assembly.url} underline="hover" target="_blank" rel="noreferrer">
-                  {assembly.url}
+                <MuiLink
+                  href={referenceUrlHref ?? assembly.url}
+                  underline="hover"
+                  target="_blank"
+                  rel="noreferrer"
+                  sx={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 0.5,
+                    flexWrap: "wrap",
+                    justifyContent: { xs: "flex-start", sm: "flex-end" },
+                  }}
+                >
+                  <Typography
+                    component="span"
+                    sx={{ overflowWrap: "anywhere" }}
+                  >
+                    {assembly.url}
+                  </Typography>
+                  <OpenInNewRoundedIcon
+                    data-testid="reference-url-external-icon"
+                    fontSize="inherit"
+                    aria-hidden="true"
+                    sx={{ fontSize: "1rem", flexShrink: 0 }}
+                  />
                 </MuiLink>
               </DetailField>
             ) : null}
@@ -163,13 +189,27 @@ export default function AssemblyDetailPage({
                 >
                   <Typography>{assembly.extensionLabel}</Typography>
                   {assembly.extensionType ? (
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ fontFamily: "monospace" }}
-                    >
-                      {assembly.extensionType}
-                    </Typography>
+                    extensionHref ? (
+                      <MuiLink
+                        href={extensionHref}
+                        underline="hover"
+                        target="_blank"
+                        rel="noreferrer"
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ fontFamily: "monospace" }}
+                      >
+                        {assembly.extensionType}
+                      </MuiLink>
+                    ) : (
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ fontFamily: "monospace" }}
+                      >
+                        {assembly.extensionType}
+                      </Typography>
+                    )
                   ) : null}
                 </Stack>
               </DetailField>
@@ -719,6 +759,42 @@ function AssemblyRouteLink({
 
 function formatPilotLabel(characterId: string | null) {
   return `Pilot ${characterId ? formatShortAddress(characterId) : "Unavailable"}`;
+}
+
+function getExtensionHref(extensionType: string | null) {
+  if (!extensionType) {
+    return null;
+  }
+
+  const separatorIndex = extensionType.indexOf("::");
+
+  if (separatorIndex <= 0) {
+    return null;
+  }
+
+  return getSuiscanObjectUrl(extensionType.slice(0, separatorIndex));
+}
+
+function getExternalHref(url: string | null) {
+  if (!url) {
+    return null;
+  }
+
+  const trimmedUrl = url.trim();
+
+  if (!trimmedUrl) {
+    return null;
+  }
+
+  if (/^[a-z][a-z\d+\-.]*:/i.test(trimmedUrl)) {
+    return trimmedUrl;
+  }
+
+  if (trimmedUrl.startsWith("//")) {
+    return `https:${trimmedUrl}`;
+  }
+
+  return `https://${trimmedUrl.replace(/^\/+/, "")}`;
 }
 
 function getPlayerInventoryHeading(

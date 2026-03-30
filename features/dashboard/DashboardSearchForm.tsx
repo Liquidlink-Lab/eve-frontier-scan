@@ -3,18 +3,14 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import { Button, Stack, TextField, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, Stack, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 import { normalizeSuiAddress } from "@/lib/eve/address";
 
 export default function DashboardSearchForm() {
-  const theme = useTheme();
   const router = useRouter();
   const [address, setAddress] = useState("");
-  const isCompactMobile = useMediaQuery(theme.breakpoints.down("md"), {
-    noSsr: true,
-  });
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,10 +34,9 @@ export default function DashboardSearchForm() {
       sx={{ width: "100%", maxWidth: 720, mx: "auto" }}
     >
       <TextField
-        hiddenLabel={isCompactMobile}
-        label={isCompactMobile ? undefined : "Inspect another address"}
+        label="Inspect another address"
         name="dashboard-address"
-        placeholder={isCompactMobile ? "Address" : "0x..."}
+        placeholder="0x..."
         inputProps={{
           "aria-label": "Inspect another address",
         }}
@@ -52,25 +47,36 @@ export default function DashboardSearchForm() {
         sx={{
           minWidth: 0,
           flex: 1,
+          "& .MuiInputLabel-root": {
+            display: { xs: "none", md: "block" },
+          },
           "& .MuiOutlinedInput-root": {
-            minHeight: isCompactMobile ? 40 : 44,
+            minHeight: { xs: 40, md: 44 },
           },
         }}
       />
       <Button
         type="submit"
         variant="contained"
-        size={isCompactMobile ? "small" : "medium"}
-        aria-label={isCompactMobile ? "Inspect address" : undefined}
+        size="small"
+        aria-label="Inspect another address"
         sx={{
-          width: isCompactMobile ? 40 : "auto",
-          minWidth: isCompactMobile ? 40 : 96,
-          height: isCompactMobile ? 40 : undefined,
+          width: { xs: 40, md: "auto" },
+          minWidth: { xs: 40, md: 96 },
+          height: 40,
           flexShrink: 0,
-          px: isCompactMobile ? 0 : { xs: 2, sm: 2.5 },
+          px: { xs: 0, md: 2.5 },
         }}
       >
-        {isCompactMobile ? <SearchRoundedIcon fontSize="small" /> : "Inspect"}
+        <Box
+          component="span"
+          sx={{ display: { xs: "inline-flex", md: "none" }, alignItems: "center" }}
+        >
+          <SearchRoundedIcon fontSize="small" />
+        </Box>
+        <Box component="span" sx={{ display: { xs: "none", md: "inline" } }}>
+          Inspect
+        </Box>
       </Button>
     </Stack>
   );
