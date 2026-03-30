@@ -36,6 +36,18 @@ interface CollectHydrationRecoverableErrorsOptions {
   beforeHydrate?: () => void;
 }
 
+function getRecoverableErrorMessage(error: unknown) {
+  if (typeof error === "object" && error && "message" in error) {
+    const { message } = error as { message?: unknown };
+
+    if (typeof message === "string") {
+      return message;
+    }
+  }
+
+  return String(error);
+}
+
 export async function collectHydrationRecoverableErrors({
   ui,
   beforeServerRender,
@@ -53,7 +65,7 @@ export async function collectHydrationRecoverableErrors({
   const recoverableErrors: string[] = [];
   const root = hydrateRoot(container, wrapWithProviders(ui), {
     onRecoverableError(error) {
-      recoverableErrors.push(error.message);
+      recoverableErrors.push(getRecoverableErrorMessage(error));
     },
   });
 
