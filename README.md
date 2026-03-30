@@ -1,13 +1,32 @@
 # EVE Frontier Scan
 
-Public wallet lookup and character-scoped operations interface for EVE Frontier on Sui.
+EVE Frontier Scan is a web interface for inspecting wallet-linked activity and infrastructure in EVE Frontier on Sui.
 
-The app supports two entry modes:
+It is designed as a fast operational entry point:
 
-- `Wallet lookup`: paste a Sui address and inspect the linked EVE Frontier characters and structures.
-- `My dashboard`: connect EVE Vault, then resolve your own linked characters without replacing any public lookup page you are already viewing.
+- Look up any public Sui wallet and resolve the linked EVE Frontier characters.
+- Open a character-scoped dashboard for network nodes, assemblies, ships, and gates.
+- Connect EVE Vault and jump into your own dashboard flow without losing the current public lookup context.
 
-## Stack
+## Entry Modes
+
+### Wallet lookup
+
+Paste a Sui address to inspect the characters and structures linked to that wallet.
+
+### My dashboard
+
+Connect EVE Vault to resolve your own characters and enter the dashboard flow directly.
+
+## What the App Focuses On
+
+- Wallet lookup
+- Character dashboard
+- Structure tracing
+
+## Development
+
+### Stack
 
 - Next.js App Router
 - React 19
@@ -16,7 +35,7 @@ The app supports two entry modes:
 - TanStack Query
 - Vitest + Testing Library
 
-## Setup
+### Setup
 
 1. Install dependencies:
 
@@ -24,7 +43,7 @@ The app supports two entry modes:
 bun install
 ```
 
-2. Copy the sample environment file values into your local environment as needed:
+2. Copy the sample environment file into your local environment as needed:
 
 ```bash
 cp .envsample .env.local
@@ -36,15 +55,15 @@ cp .envsample .env.local
 bun dev
 ```
 
-## Environment Variables
+### Environment Variables
 
-Defined in [.envsample](/home/astu9702/projects/eve-frontier-scan/.envsample):
+Defined in [`.envsample`](/home/leon/eve-frontier-scan/.envsample):
 
 - `NEXT_PUBLIC_WORLD_API_URL`
 - `NEXT_PUBLIC_EVE_WORLD_PACKAGE_ID`
 - `NEXT_PUBLIC_SUI_GRAPHQL_ENDPOINT`
 
-## Routes
+### Routes
 
 Public entry routes:
 
@@ -67,17 +86,17 @@ Dashboard routes require wallet access context in the query string:
 - `wallet=<normalized-sui-address>`
 - `source=sui-address | eve-vault`
 
-## Lookup Flow
+### Lookup Flow
 
 Both wallet lookup and `My dashboard` use the same routing rules:
 
 - `0` characters: render the empty state
-- `1` character: redirect directly to `Network Nodes`
+- `1` character: redirect directly to the default dashboard view
 - `>1` characters: render the character selection page
 
 The dashboard sidebar only appears inside `/dashboard/[characterId]/*`.
 
-## Commands
+### Commands
 
 ```bash
 bun run test
