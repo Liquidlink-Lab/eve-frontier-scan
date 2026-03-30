@@ -40,7 +40,18 @@ describe("HomePage", () => {
   it("renders a lookup-first homepage without dashboard navigation or marketing copy", () => {
     renderWithProviders(<HomePage />);
 
+    expect(
+      screen.getByRole("img", { name: /eve frontier scan logo/i }),
+    ).toBeInTheDocument();
     expect(screen.getByText("EVE Frontier Scan")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Inspect SUI wallet ownership, characters, network nodes, assemblies, and gates from a single entry point.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Wallet lookup")).toBeInTheDocument();
+    expect(screen.getByText("Character dashboard")).toBeInTheDocument();
+    expect(screen.getByText("Structure tracing")).toBeInTheDocument();
     expect(
       screen.getByRole("textbox", { name: /sui address/i }),
     ).toBeInTheDocument();

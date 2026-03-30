@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import BrandLogo from "@/features/brand/BrandLogo";
 import CharacterSwitcher from "./CharacterSwitcher";
 import { formatShortAddress } from "@/lib/eve/address";
 import {
@@ -79,6 +80,24 @@ export default function Sidebar({
       }}
     >
       <Stack spacing={2.5} sx={{ height: "100%" }}>
+        <Stack direction="row" spacing={1.5} alignItems="center">
+          <BrandLogo size={44} />
+          <div>
+            <Typography
+              component="p"
+              sx={{
+                fontSize: "0.72rem",
+                letterSpacing: "0.24em",
+                textTransform: "uppercase",
+                color: "text.secondary",
+              }}
+            >
+              EVE Frontier
+            </Typography>
+            <Typography variant="h6">Scan</Typography>
+          </div>
+        </Stack>
+
         <div>
           <Typography
             component="p"

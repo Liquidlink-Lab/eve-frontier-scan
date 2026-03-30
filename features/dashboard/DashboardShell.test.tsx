@@ -99,6 +99,9 @@ describe("DashboardShell", () => {
     expect(
       await screen.findByRole("navigation", { name: /dashboard navigation/i }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: /eve frontier scan logo/i }),
+    ).toBeInTheDocument();
     expect(screen.getByTestId("dashboard-shell-content")).toHaveStyle({
       marginLeft: "296px",
     });
