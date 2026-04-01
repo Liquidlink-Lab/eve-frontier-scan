@@ -1,106 +1,137 @@
-# How to Use EVE Frontier Scan to Inspect Wallet-Linked Characters and Structures
+# How to Use EVE Frontier Scan to Go from Wallet to Character Dashboard
 
-*A simple guide to looking up SUI wallets, resolving EVE Frontier characters, and moving into a clean character-scoped dashboard.*
+*EVE Frontier Scan is a fast way to move from a SUI wallet to the characters, network nodes, and assemblies tied to that wallet.*
 
-If you play EVE Frontier and have ever tried to trace activity from a wallet to the characters and structures linked to it, you already know the problem: the information exists, but the flow is rarely convenient.
-
-You start with a SUI wallet address, then you try to work out which characters are linked to it, and then you still need to make sense of the structures behind that context. It is possible, but it is not especially readable.
-
-That is where EVE Frontier Scan comes in.
-
-EVE Frontier Scan is a lightweight web tool designed to make that lookup flow much easier. Instead of treating wallet addresses, characters, and structures as separate steps you have to manually stitch together, it gives you a single entry point and a character-scoped dashboard.
-
-In practice, that means you can start from a public wallet, resolve the linked characters, and move directly into views for things like network nodes and assemblies.
+The value is simple: start from a public SUI wallet or your own EVE Vault session, resolve the linked pilots, and move through a character-scoped dashboard. The tool does not create new data. It makes existing ownership and structure data much easier to read.
 
 [Insert screenshot: homepage]
 
-## What EVE Frontier Scan is for
+## Start with one of two entry points
 
-The easiest way to think about EVE Frontier Scan is this:
+### 1. Paste a public SUI wallet
 
-It is an operational lookup tool for EVE Frontier on Sui.
+If you want to inspect another player's public wallet, paste the address into the homepage lookup field.
 
-It is not trying to be a huge analytics platform or a dense explorer replacement. Its strength is that it gives you a clean way to move from a wallet to the relevant in-game context.
+After that, the app resolves the EVE Frontier characters linked to the wallet and routes you based on what it finds:
 
-Right now, the most useful parts of the app are:
-
-- wallet lookup
-- character selection
-- network node inspection
-- assembly tracing
-
-So if your goal is to understand what sits behind a wallet-linked identity in EVE Frontier, this tool gives you a much more readable path.
-
-## Two ways to enter the app
-
-EVE Frontier Scan keeps the entry flow intentionally simple. There are only two main ways in:
-
-### 1. Look up any public SUI wallet
-
-If you want to inspect a public address, paste a SUI wallet into the homepage lookup field.
-
-From there, the app resolves the EVE Frontier characters linked to that wallet and routes you based on the result:
-
-- If no characters are found, you get a clear empty state
-- If exactly one character is found, you are taken directly to that character's dashboard
-- If multiple characters are found, you can choose which one to inspect
-
-This is the best option when you are investigating a public wallet or reviewing another player's linked structure context.
-
-[Insert screenshot: wallet lookup result]
+- no linked character: you see a clear empty state
+- one linked character: you go straight into that character's dashboard
+- multiple linked characters: you land on a character selection page first
 
 ### 2. Connect EVE Vault
 
-If you want to inspect your own setup, the faster path is to connect EVE Vault from the homepage.
+If you want to inspect your own account, connect EVE Vault from the homepage instead.
 
-Once connected, the app resolves your wallet context and sends you into the same dashboard flow without needing to paste an address manually. This makes it the most convenient option for routine personal use.
-
-If you are checking your own structures often, this is probably the mode you will use most.
+That skips manual address entry and sends you through the same resolution flow using your connected wallet context.
 
 [Insert screenshot: connected wallet state]
 
-## What happens after lookup
+## What you can see on each page
 
-Once a wallet is resolved, EVE Frontier Scan shifts from being a search tool into a dashboard.
+### Homepage
 
-That dashboard is character-scoped, which matters because it keeps the information tied to a clear identity rather than leaving you in a loose wallet-only view. If a wallet is linked to more than one character, you choose the relevant one first and then continue from there.
+The homepage gives you:
 
-This makes the experience much easier to follow. Instead of repeatedly asking, "Which character am I looking at now?" the app keeps that context visible as you move through the dashboard.
+- a wallet input for any public SUI address
+- a Connect EVE Vault button for your own account
+- a quick summary of the supported workflows: wallet lookup, character dashboard, and structure tracing
 
-## The most useful dashboard views today
+### Character selection page
 
-The strongest part of the current product is the Network Nodes flow.
+If one wallet resolves to multiple pilots, you will land on a character selection page before entering the dashboard.
 
-From the dashboard, you can open a structured list of network nodes associated with the selected character and then drill into node details. That gives you a much cleaner inspection flow than piecing everything together by hand.
+Each card shows:
 
-Assemblies are also part of the current experience, which makes it possible to trace additional infrastructure linked to the same wallet context.
+- character name
+- tribe
+- wallet source and shortened wallet address
+- number of linked network nodes
+- current ship name when available
 
-The dashboard already includes room for ships and gates as part of the broader direction of the tool, but today the most complete and useful flows are network nodes and assemblies. That is worth knowing before you jump in, especially if you are writing about the tool for new users.
+From there, `Open dashboard` takes you into that character's Network Nodes view.
+
+### Dashboard shell
+
+The shared dashboard frame includes:
+
+- a search bar at the top for inspecting another wallet without returning home
+- a sidebar that shows the wallet source and links the wallet address to SuiScan
+- a character switcher when the same wallet resolves to multiple pilots
+- breadcrumbs so you can always see which character and section you are viewing
+- navigation for `Network Nodes` and `Assemblies`
+
+You will also notice `Ships` and `Gates` in the navigation. Those are part of the broader product direction, but they are not full standalone MVP sections yet.
+
+### Network Nodes page
+
+The table shows, for each node:
+
+- status
+- node name and icon
+- solar system
+- fuel type
+- fuel percentage and progress bar
+- fuel ETA
+- connected assembly count
+
+Each row links to a detail page. Nodes with more connected assemblies rise to the top, and lower-fuel nodes are easier to spot quickly.
 
 [Insert screenshot: network nodes table]
 
-[Insert screenshot: network node detail or assemblies page]
+### Network Node detail page
 
-## Why this tool is useful
+On this page you can inspect:
 
-What EVE Frontier Scan does well is not that it invents new data. Its value is that it makes existing wallet-linked information easier to inspect.
+- solar system
+- coordinates
+- status
+- fuel type
+- fuel percentage
+- fuel quantity
+- fuel ETA
+- related assemblies grouped by structure type
 
-That sounds simple, but it matters.
+Each related assembly links directly to its own detail page.
 
-Without a tool like this, you often end up bouncing between raw wallet context, partial identity resolution, and separate structure views. The information is technically there, but the experience is fragmented.
+[Insert screenshot: network node detail]
 
-EVE Frontier Scan reduces that friction by keeping the journey connected:
+### Assemblies page
 
-one wallet entry point, one character selection flow, and one dashboard context.
+Open `Assemblies` when you want a broader structure overview. Instead of one flat list, the page groups assemblies by structure type. Inside each group you can see:
 
-That is what makes it practical.
+- status
+- structure name and icon
+- solar system
+- a link to the detail page
 
-## Final thoughts
+### Assembly detail page
 
-If you want the shortest possible summary, it is this:
+Assembly detail pages expose the most information. Shared fields can include:
 
-Use wallet lookup when you want to inspect a public SUI address. Use EVE Vault when you want to jump directly into your own dashboard.
+- type
+- solar system
+- coordinates
+- status
+- description
+- reference URL
+- upstream power source
+- extension label and extension type
+- extension frozen status
+- linked gate
+- gate access mode
 
-That is the core experience of EVE Frontier Scan, and it is already enough to make the tool genuinely useful for EVE Frontier players who care about wallet-linked character and structure visibility.
+The page expands further depending on the structure type:
 
-If you are exploring operational context in EVE Frontier and want a cleaner path from wallet to dashboard, this is a good place to start.
+- Gate assemblies show recent jumps and recent permits, with timestamps, route links, pilot context, and SuiScan transaction links.
+- Storage units show owner inventory, open storage, player-owned inventories, capacity usage, item tables, and recent inventory activity.
+- Turrets show the latest target priority snapshot, including health ratios, priority weight, behaviour change, and aggressor state.
+
+[Insert screenshot: assembly detail]
+
+## What is complete today
+
+If you are learning the app quickly, focus on wallet lookup, character selection, Network Nodes, Assemblies, and the node or assembly detail pages. `Ships` and the standalone `Gates` section are still placeholders in the current MVP. Gate-specific operational data already exists, but it appears inside individual gate assembly detail pages rather than in a separate dashboard index.
+
+## Final takeaway
+
+Use wallet lookup when you want to inspect any public SUI address. Use EVE Vault when you want to jump into your own account faster. After that, pick a character, use Network Nodes for fast operational triage, and use Assemblies to drill into the linked infrastructure behind that character.
