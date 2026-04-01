@@ -7,8 +7,16 @@ import { Box, Button, Stack, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 import { normalizeSuiAddress } from "@/lib/eve/address";
+import type { EveWorld } from "@/lib/eve/env";
+import { buildLookupHref } from "@/lib/eve/routes";
 
-export default function DashboardSearchForm() {
+interface DashboardSearchFormProps {
+  world: EveWorld;
+}
+
+export default function DashboardSearchForm({
+  world,
+}: DashboardSearchFormProps) {
   const router = useRouter();
   const [address, setAddress] = useState("");
 
@@ -21,7 +29,7 @@ export default function DashboardSearchForm() {
       return;
     }
 
-    router.push(`/lookup/${normalizedAddress}`);
+    router.push(buildLookupHref(normalizedAddress, world));
   }
 
   return (

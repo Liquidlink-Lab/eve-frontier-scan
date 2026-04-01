@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { collectHydrationRecoverableErrors } from "@/test/hydration";
@@ -19,7 +20,7 @@ describe("DashboardSearchForm", () => {
   });
 
   it("renders a centered compact search form", () => {
-    renderWithProviders(<DashboardSearchForm />);
+    renderWithProviders(<DashboardSearchForm world="utopia" />);
 
     const textbox = screen.getByRole("textbox", {
       name: /inspect another address/i,
@@ -44,15 +45,12 @@ describe("DashboardSearchForm", () => {
   it("keeps the mobile form accessible while using the compact submit icon", () => {
     setViewportWidth(390);
 
-    renderWithProviders(<DashboardSearchForm />);
+    renderWithProviders(<DashboardSearchForm world="utopia" />);
 
     const textbox = screen.getByRole("textbox", {
       name: /inspect another address/i,
     });
     const form = textbox.closest("form");
-    const inspectButton = screen.getByRole("button", {
-      name: /inspect another address/i,
-    });
 
     expect(form).not.toBeNull();
     expect(form).toHaveStyle({
@@ -64,7 +62,7 @@ describe("DashboardSearchForm", () => {
 
   it("hydrates without recoverable errors on mobile", async () => {
     const recoverableErrors = await collectHydrationRecoverableErrors({
-      ui: <DashboardSearchForm />,
+      ui: <DashboardSearchForm world="utopia" />,
       beforeServerRender: () => {
         Reflect.deleteProperty(window, "matchMedia");
       },
@@ -74,6 +72,20 @@ describe("DashboardSearchForm", () => {
     });
 
     expect(recoverableErrors).toEqual([]);
+  });
+
+  it("preserves the selected world when routing to a new lookup", async () => {
+    const user = userEvent.setup();
+
+    renderWithProviders(<DashboardSearchForm world="stillness" />);
+
+    await user.type(
+      screen.getByRole("textbox", { name: /inspect another address/i }),
+      " 0xAbCdEf1234 ",
+    );
+    await user.click(screen.getByRole("button", { name: /inspect another address/i }));
+
+    expect(push).toHaveBeenCalledWith("/lookup/0xabcdef1234?world=stillness");
   });
 });
 

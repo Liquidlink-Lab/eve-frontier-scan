@@ -10,6 +10,7 @@ import {
 } from "@/lib/eve/discovery/eveOwnershipMappers";
 import { eveLabelLookups } from "@/lib/eve/lookups";
 import {
+  buildDashboardDefaultHref,
   buildDashboardAssembliesHref,
   buildDashboardNetworkNodesHref,
 } from "@/lib/eve/routes";
@@ -119,6 +120,14 @@ function buildBreadcrumbItems({
   const detailId = segments[3] ?? null;
   const currentCharacter =
     characters.find((character) => character.id === characterId) ?? null;
+  const currentCharacterHref =
+    access && currentCharacter
+      ? buildDashboardDefaultHref(
+          characterId,
+          access,
+          currentCharacter.defaultDashboardSection,
+        )
+      : undefined;
   const networkNodesHref = access
     ? buildDashboardNetworkNodesHref(characterId, access)
     : undefined;
@@ -129,7 +138,7 @@ function buildBreadcrumbItems({
 
   const items: BreadcrumbItem[] = [
     {
-      href: networkNodesHref,
+      href: currentCharacterHref,
       label: currentCharacter.name,
     },
   ];

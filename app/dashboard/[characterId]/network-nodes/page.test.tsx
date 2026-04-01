@@ -72,6 +72,7 @@ describe("DashboardNetworkNodesPage", () => {
       searchParams: Promise.resolve({
         wallet: "0xwallet-1",
         source: "sui-address",
+        world: "stillness",
       }),
     });
 
@@ -79,5 +80,9 @@ describe("DashboardNetworkNodesPage", () => {
 
     expect(screen.getByRole("heading", { name: /network nodes/i })).toBeInTheDocument();
     expect(screen.getByText("Power Spine")).toBeInTheDocument();
+    expect(fetchWalletStructureDiscovery).toHaveBeenCalledWith(
+      "0xwallet-1",
+      "stillness",
+    );
   });
 });

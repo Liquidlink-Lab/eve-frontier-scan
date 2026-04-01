@@ -1,10 +1,10 @@
-import { eveEnv } from "../env";
+import { defaultEveWorld, getEveWorldConfig, type EveWorld } from "../env";
 import { discoverOwnedStructures } from "./assemblyDiscovery";
 
 export async function requestOwnershipGraphQl(
   query: string,
   variables: Record<string, unknown>,
-  endpoint = eveEnv.suiGraphQlEndpoint,
+  endpoint = getEveWorldConfig(defaultEveWorld).suiGraphQlEndpoint,
 ) {
   const response = await fetch(endpoint, {
     method: "POST",
@@ -25,15 +25,22 @@ export async function requestOwnershipGraphQl(
   return response.json() as Promise<unknown>;
 }
 
-export function createOwnershipGraphQlClient(endpoint = eveEnv.suiGraphQlEndpoint) {
+export function createOwnershipGraphQlClient(
+  endpoint = getEveWorldConfig(defaultEveWorld).suiGraphQlEndpoint,
+) {
   return (query: string, variables: Record<string, unknown>) =>
     requestOwnershipGraphQl(query, variables, endpoint);
 }
 
-export async function fetchWalletStructureDiscovery(walletAddress: string) {
+export async function fetchWalletStructureDiscovery(
+  walletAddress: string,
+  world = defaultEveWorld as EveWorld,
+) {
+  const eveEnv = getEveWorldConfig(world);
+
   return discoverOwnedStructures({
     walletAddress,
     packageId: eveEnv.eveWorldPackageId,
-    graphQl: createOwnershipGraphQlClient(),
+    graphQl: createOwnershipGraphQlClient(eveEnv.suiGraphQlEndpoint),
   });
 }

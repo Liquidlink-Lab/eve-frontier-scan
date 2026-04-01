@@ -37,8 +37,12 @@ describe("HomePage", () => {
     });
   });
 
-  it("renders a lookup-first homepage without dashboard navigation or marketing copy", () => {
-    renderWithProviders(<HomePage />);
+  it("renders a lookup-first homepage without dashboard navigation or marketing copy", async () => {
+    const page = await HomePage({
+      searchParams: Promise.resolve({}),
+    });
+
+    renderWithProviders(page);
 
     expect(
       screen.getByRole("img", { name: /eve frontier scan logo/i }),
@@ -52,6 +56,9 @@ describe("HomePage", () => {
     expect(screen.getByText("Wallet lookup")).toBeInTheDocument();
     expect(screen.getByText("Character dashboard")).toBeInTheDocument();
     expect(screen.getByText("Structure tracing")).toBeInTheDocument();
+    expect(screen.getByText("Server")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /utopia/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /stillness/i })).toBeInTheDocument();
     expect(
       screen.getByRole("textbox", { name: /sui address/i }),
     ).toBeInTheDocument();
@@ -68,7 +75,11 @@ describe("HomePage", () => {
   it("normalizes the entered address and routes to lookup on submit", async () => {
     const user = userEvent.setup();
 
-    renderWithProviders(<HomePage />);
+    const page = await HomePage({
+      searchParams: Promise.resolve({}),
+    });
+
+    renderWithProviders(page);
 
     await user.type(
       screen.getByRole("textbox", { name: /sui address/i }),
@@ -89,7 +100,11 @@ describe("HomePage", () => {
       walletAddress: "0x43acdc9cb9e379d5fab90effbaaa08896d943d9958a96d9df6f07c39025cd186",
     });
 
-    renderWithProviders(<HomePage />);
+    const page = await HomePage({
+      searchParams: Promise.resolve({}),
+    });
+
+    renderWithProviders(page);
 
     await waitFor(() => {
       expect(redirect).toHaveBeenCalledWith("/me");

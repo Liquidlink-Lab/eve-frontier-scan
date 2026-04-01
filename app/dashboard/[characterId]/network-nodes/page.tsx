@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Box, Paper, Stack, Typography } from "@mui/material";
 
 import { formatShortAddress, normalizeSuiAddress } from "@/lib/eve/address";
+import { parseEveWorld } from "@/lib/eve/env";
 import {
   mapDiscoveryToNetworkNodes,
 } from "@/lib/eve/discovery/eveOwnershipMappers";
@@ -25,6 +26,7 @@ interface DashboardNetworkNodesPageProps {
   searchParams: Promise<{
     wallet?: string;
     source?: string;
+    world?: string;
   }>;
 }
 
@@ -33,7 +35,8 @@ export default async function DashboardNetworkNodesPage({
   searchParams,
 }: DashboardNetworkNodesPageProps) {
   const { characterId } = await params;
-  const { wallet, source } = await searchParams;
+  const { wallet, source, world } = await searchParams;
+  const eveWorld = parseEveWorld(world);
   const normalizedWalletAddress = normalizeSuiAddress(wallet ?? "");
   const accessSource = isWalletSource(source) ? source : null;
 
@@ -53,7 +56,10 @@ export default async function DashboardNetworkNodesPage({
     );
   }
 
-  const discovery = await fetchWalletStructureDiscovery(normalizedWalletAddress);
+  const discovery = await fetchWalletStructureDiscovery(
+    normalizedWalletAddress,
+    eveWorld,
+  );
   const character = discovery.characters.find((entry) => entry.characterId === characterId);
   const networkNodes = mapDiscoveryToNetworkNodes(
     discovery,
@@ -66,6 +72,7 @@ export default async function DashboardNetworkNodesPage({
       access={{
         walletAddress: normalizedWalletAddress,
         source: accessSource,
+        world: eveWorld,
       }}
       characterId={characterId}
       characterName={

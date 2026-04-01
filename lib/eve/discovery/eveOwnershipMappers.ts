@@ -28,18 +28,26 @@ export function mapDiscoveryToCharacterSummaries(
       continue;
     }
 
+    const networkNodeCount = entry.ownedStructures.filter((structure) =>
+      isNetworkNodeType(structure.typeRepr),
+    ).length;
+    const ownedStructureCount = entry.ownedStructures.length;
+
     summaries.push({
-        id: character.id,
-        name: character.name,
-        tribeName: getTribeName(character.tribeId, lookups),
-        walletAddress: access.walletAddress,
-        walletSource: access.source,
-        walletSourceLabel: getWalletSourceLabel(access.source),
-        networkNodeCount: entry.ownedStructures.filter((structure) =>
-          isNetworkNodeType(structure.typeRepr),
-        ).length,
-        currentShipName: null,
-      });
+      id: character.id,
+      name: character.name,
+      tribeName: getTribeName(character.tribeId, lookups),
+      walletAddress: access.walletAddress,
+      walletSource: access.source,
+      walletSourceLabel: getWalletSourceLabel(access.source),
+      networkNodeCount,
+      ownedStructureCount,
+      defaultDashboardSection:
+        networkNodeCount === 0 && ownedStructureCount > 0
+          ? "assemblies"
+          : "network-nodes",
+      currentShipName: null,
+    });
   }
 
   return summaries.sort((left, right) => left.name.localeCompare(right.name));

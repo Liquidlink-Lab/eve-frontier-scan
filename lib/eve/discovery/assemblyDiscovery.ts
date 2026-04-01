@@ -204,7 +204,9 @@ async function fetchRelatedStructures(
   const relatedStructureIds = Array.from(
     new Set(
       ownedStructures.flatMap((structure) =>
-        structure.connectedAssemblyIds.filter((connectedId) => !knownStructureIds.has(connectedId)),
+        getRelatedStructureIds(structure).filter(
+          (relatedId) => !knownStructureIds.has(relatedId),
+        ),
       ),
     ),
   );
@@ -228,6 +230,13 @@ async function fetchRelatedStructures(
   }
 
   return relatedStructures;
+}
+
+function getRelatedStructureIds(structure: DiscoveredStructure) {
+  return [
+    ...structure.connectedAssemblyIds,
+    ...(structure.energySourceId ? [structure.energySourceId] : []),
+  ];
 }
 
 function getCharacterStructures(character: CharacterStructureDiscovery) {

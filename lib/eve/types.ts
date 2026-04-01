@@ -1,8 +1,12 @@
+import type { EveWorld } from "./env";
+
 export type WalletSource = "eve-vault" | "sui-address";
+export type DashboardSection = "network-nodes" | "assemblies";
 
 export interface WalletAccessContext {
   source: WalletSource;
   walletAddress: string;
+  world?: EveWorld;
 }
 
 export type NetworkNodeStatus = "online" | "offline" | "unknown";
@@ -79,6 +83,8 @@ export interface CharacterSummary {
   walletSource: WalletSource;
   walletSourceLabel: string;
   networkNodeCount: number;
+  ownedStructureCount: number;
+  defaultDashboardSection: DashboardSection;
   currentShipName: string | null;
 }
 

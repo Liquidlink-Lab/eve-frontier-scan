@@ -3,7 +3,7 @@ import { Box, Paper, Stack, Typography } from "@mui/material";
 
 import AssemblyDetailPage from "@/features/assemblies/AssemblyDetailPage";
 import { normalizeSuiAddress } from "@/lib/eve/address";
-import { eveEnv } from "@/lib/eve/env";
+import { getEveWorldConfig, parseEveWorld } from "@/lib/eve/env";
 import { discoverCharacterSummariesByOwnerCapIds } from "@/lib/eve/discovery/characterOwnerCapDiscovery";
 import { discoverCharacterSummaries } from "@/lib/eve/discovery/characterSummaryDiscovery";
 import { discoverGateActivity } from "@/lib/eve/discovery/gateActivityDiscovery";
@@ -42,6 +42,7 @@ interface DashboardAssemblyDetailPageProps {
   searchParams: Promise<{
     wallet?: string;
     source?: string;
+    world?: string;
   }>;
 }
 
@@ -50,7 +51,9 @@ export default async function DashboardAssemblyDetailPage({
   searchParams,
 }: DashboardAssemblyDetailPageProps) {
   const { characterId, assemblyId } = await params;
-  const { wallet, source } = await searchParams;
+  const { wallet, source, world } = await searchParams;
+  const eveWorld = parseEveWorld(world);
+  const eveEnv = getEveWorldConfig(eveWorld);
   const normalizedWalletAddress = normalizeSuiAddress(wallet ?? "");
   const accessSource = isWalletSource(source) ? source : null;
 
@@ -63,7 +66,10 @@ export default async function DashboardAssemblyDetailPage({
     );
   }
 
-  const discovery = await fetchWalletStructureDiscovery(normalizedWalletAddress);
+  const discovery = await fetchWalletStructureDiscovery(
+    normalizedWalletAddress,
+    eveWorld,
+  );
   const character = discovery.characters.find((entry) => entry.characterId === characterId);
   const assemblyStructure = character
     ? [...character.ownedStructures, ...(character.relatedStructures ?? [])].find(
@@ -86,8 +92,8 @@ export default async function DashboardAssemblyDetailPage({
     );
   }
 
-  const graphQl = createOwnershipGraphQlClient();
-  const rpc = createSuiJsonRpcClient();
+  const graphQl = createOwnershipGraphQlClient(eveEnv.suiGraphQlEndpoint);
+  const rpc = createSuiJsonRpcClient(eveEnv.suiRpcEndpoint);
   const structureNamesById = character
     ? new Map(
         [...character.ownedStructures, ...(character.relatedStructures ?? [])].map((entry) => [
@@ -212,6 +218,7 @@ export default async function DashboardAssemblyDetailPage({
       access={{
         walletAddress: normalizedWalletAddress,
         source: accessSource,
+        world: eveWorld,
       }}
       characterId={characterId}
       characterName={character?.character?.name ?? "Unknown character"}

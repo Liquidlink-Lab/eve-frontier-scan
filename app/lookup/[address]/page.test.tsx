@@ -65,6 +65,7 @@ describe("LookupPage", () => {
 
     const page = await LookupPage({
       params: Promise.resolve({ address: "0xAbC" }),
+      searchParams: Promise.resolve({}),
     });
 
     renderWithProviders(page);
@@ -74,5 +75,26 @@ describe("LookupPage", () => {
     ).toBeInTheDocument();
     expect(screen.queryByTestId("character-selection")).not.toBeInTheDocument();
     expect(redirect).not.toHaveBeenCalled();
+  });
+
+  it("fetches stillness data and preserves the selected world in redirects", async () => {
+    resolveCharacterLookupState.mockReturnValue({
+      kind: "single",
+      characterId: "0xchar-1",
+      redirectTo:
+        "/dashboard/0xchar-1/network-nodes?wallet=0xabc&source=sui-address&world=stillness",
+    });
+
+    await LookupPage({
+      params: Promise.resolve({ address: "0xAbC" }),
+      searchParams: Promise.resolve({
+        world: "stillness",
+      }),
+    });
+
+    expect(fetchWalletStructureDiscovery).toHaveBeenCalledWith("0xabc", "stillness");
+    expect(redirect).toHaveBeenCalledWith(
+      "/dashboard/0xchar-1/network-nodes?wallet=0xabc&source=sui-address&world=stillness",
+    );
   });
 });

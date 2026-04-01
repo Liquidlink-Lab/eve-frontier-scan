@@ -3,12 +3,20 @@
 import { redirect } from "next/navigation";
 
 import { useWalletSession } from "@/features/wallet/useWalletSession";
+import type { EveWorld } from "@/lib/eve/env";
+import { buildMyDashboardHref } from "@/lib/eve/routes";
 
-export default function HomeWalletRedirect() {
+interface HomeWalletRedirectProps {
+  world: EveWorld;
+}
+
+export default function HomeWalletRedirect({
+  world,
+}: HomeWalletRedirectProps) {
   const walletSession = useWalletSession();
 
   if (walletSession.isConnected && walletSession.walletAddress) {
-    redirect("/me");
+    redirect(buildMyDashboardHref(world));
   }
 
   return null;

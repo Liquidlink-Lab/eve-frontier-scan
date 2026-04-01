@@ -4,6 +4,7 @@ import BrandLogo from "@/features/brand/BrandLogo";
 import ConnectWalletButton from "@/features/home/ConnectWalletButton";
 import HomeWalletRedirect from "@/features/home/HomeWalletRedirect";
 import LookupEntryForm from "@/features/home/LookupEntryForm";
+import { parseEveWorld } from "@/lib/eve/env";
 
 const homeCapabilityLabels = [
   "Wallet lookup",
@@ -11,7 +12,16 @@ const homeCapabilityLabels = [
   "Structure tracing",
 ];
 
-export default function HomePage() {
+interface HomePageProps {
+  searchParams: Promise<{
+    world?: string;
+  }>;
+}
+
+export default async function HomePage({ searchParams }: HomePageProps) {
+  const { world } = await searchParams;
+  const eveWorld = parseEveWorld(world);
+
   return (
     <Box
       component="main"
@@ -38,7 +48,7 @@ export default function HomePage() {
         },
       }}
     >
-      <HomeWalletRedirect />
+      <HomeWalletRedirect world={eveWorld} />
       <Paper
         elevation={0}
         sx={{
@@ -125,7 +135,7 @@ export default function HomePage() {
               ))}
             </Stack>
           </Stack>
-          <LookupEntryForm />
+          <LookupEntryForm key={eveWorld} defaultWorld={eveWorld} />
           <ConnectWalletButton />
         </Stack>
       </Paper>

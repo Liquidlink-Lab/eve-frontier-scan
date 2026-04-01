@@ -34,8 +34,12 @@ beforeEach(() => {
   });
 });
 
-it("renders a lookup-first homepage", () => {
-  renderWithProviders(<HomePage />);
+it("renders a lookup-first homepage", async () => {
+  const page = await HomePage({
+    searchParams: Promise.resolve({}),
+  });
+
+  renderWithProviders(page);
 
   expect(screen.getByRole("textbox")).toBeInTheDocument();
   expect(

@@ -4,7 +4,7 @@ import { ChangeEvent } from "react";
 import { FormControl, FormLabel, NativeSelect } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-import { buildDashboardNetworkNodesHref } from "@/lib/eve/routes";
+import { buildDashboardDefaultHref } from "@/lib/eve/routes";
 import type { CharacterSummary, WalletAccessContext } from "@/lib/eve/types";
 
 interface CharacterSwitcherProps {
@@ -38,8 +38,20 @@ export default function CharacterSwitcher({
       return;
     }
 
+    const nextCharacter = characters.find((character) => character.id === nextCharacterId);
+
+    if (!nextCharacter) {
+      return;
+    }
+
     onNavigate?.();
-    router.push(buildDashboardNetworkNodesHref(nextCharacterId, access));
+    router.push(
+      buildDashboardDefaultHref(
+        nextCharacterId,
+        access,
+        nextCharacter.defaultDashboardSection,
+      ),
+    );
   }
 
   return (

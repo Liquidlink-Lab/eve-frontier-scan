@@ -9,6 +9,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 import { mapDiscoveryToCharacterSummaries } from "@/lib/eve/discovery/eveOwnershipMappers";
 import { fetchWalletStructureDiscovery } from "@/lib/eve/discovery/eveOwnershipClient";
+import { parseEveWorld } from "@/lib/eve/env";
 import { eveLabelLookups } from "@/lib/eve/lookups";
 import { parseWalletAccessSearchParams } from "@/lib/eve/routes";
 import DashboardBreadcrumbs from "./DashboardBreadcrumbs";
@@ -27,11 +28,18 @@ export default function DashboardShell({
   const searchParams = useSearchParams();
   const isDashboardRoute = pathname.startsWith("/dashboard/");
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const world = parseEveWorld(searchParams.get("world"));
   const access = parseWalletAccessSearchParams(searchParams);
 
   const discoveryQuery = useQuery({
-    queryKey: ["dashboard-shell-discovery", access?.source, access?.walletAddress],
-    queryFn: () => fetchWalletStructureDiscovery(access!.walletAddress),
+    queryKey: [
+      "dashboard-shell-discovery",
+      access?.source,
+      access?.walletAddress,
+      access?.world ?? world,
+    ],
+    queryFn: () =>
+      fetchWalletStructureDiscovery(access!.walletAddress, access!.world ?? world),
     enabled: isDashboardRoute && access !== null,
     staleTime: 30_000,
   });
@@ -125,7 +133,7 @@ export default function DashboardShell({
                     minWidth: 0,
                   }}
                 >
-                  <DashboardSearchForm />
+                  <DashboardSearchForm world={world} />
                 </Box>
                 <Box
                   aria-hidden="true"

@@ -432,4 +432,204 @@ describe("discoverOwnedStructures", () => {
 
     vi.useRealTimers();
   });
+
+  it("fetches network nodes referenced by owned assembly energy sources", async () => {
+    const externalNetworkNodeId =
+      "0x00000000000000000000000000000000000000000000000000000000000000aa";
+    const ownedAssemblyId =
+      "0x00000000000000000000000000000000000000000000000000000000000000bb";
+
+    const graphQl = vi.fn(
+      async (_query: string, variables: Record<string, unknown>) => {
+        if (variables.owner === "0xwallet") {
+          return {
+            data: {
+              objects: {
+                nodes: [
+                  {
+                    address: "0xprofile-1",
+                    asMoveObject: {
+                      contents: {
+                        type: {
+                          repr: `${pkg}::character::PlayerProfile`,
+                        },
+                        json: {
+                          id: "0xprofile-1",
+                          character_id: "0xcharacter-1",
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          };
+        }
+
+        if (variables.owner === "0xcharacter-1") {
+          return {
+            data: {
+              objects: {
+                nodes: [
+                  {
+                    address: "0xassembly-cap",
+                    asMoveObject: {
+                      contents: {
+                        type: {
+                          repr: `${pkg}::access::OwnerCap<${pkg}::assembly::Assembly>`,
+                        },
+                        json: {
+                          id: "0xassembly-cap",
+                          authorized_object_id: ownedAssemblyId,
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          };
+        }
+
+        if (variables.address === "0xcharacter-1") {
+          return {
+            data: {
+              object: {
+                address: "0xcharacter-1",
+                asMoveObject: {
+                  contents: {
+                    type: {
+                      repr: `${pkg}::character::Character`,
+                    },
+                    json: {
+                      id: "0xcharacter-1",
+                      owner_cap_id: "0xcharacter-cap",
+                      tribe_id: 3,
+                      metadata: {
+                        name: "Rhea Ancru",
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          };
+        }
+
+        if (variables.address === ownedAssemblyId) {
+          return {
+            data: {
+              object: {
+                address: ownedAssemblyId,
+                asMoveObject: {
+                  contents: {
+                    type: {
+                      repr: `${pkg}::assembly::Assembly`,
+                    },
+                    json: {
+                      id: ownedAssemblyId,
+                      key: {
+                        item_id: "1000000099991",
+                        tenant: "stillness",
+                      },
+                      type_id: "88064",
+                      owner_cap_id: "0xassembly-cap",
+                      energy_source_id: externalNetworkNodeId,
+                      metadata: {
+                        name: "Remote Refinery",
+                      },
+                      status: {
+                        status: {
+                          "@variant": "OFFLINE",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          };
+        }
+
+        if (variables.address === externalNetworkNodeId) {
+          return {
+            data: {
+              object: {
+                address: externalNetworkNodeId,
+                asMoveObject: {
+                  contents: {
+                    type: {
+                      repr: `${pkg}::network_node::NetworkNode`,
+                    },
+                    json: {
+                      id: externalNetworkNodeId,
+                      key: {
+                        item_id: "1000000099992",
+                        tenant: "stillness",
+                      },
+                      type_id: "88092",
+                      owner_cap_id: "0xforeign-node-cap",
+                      metadata: {
+                        name: "Foreign Power Spine",
+                      },
+                      status: {
+                        status: {
+                          "@variant": "ONLINE",
+                        },
+                      },
+                      fuel: {
+                        burn_rate_in_ms: "3600000",
+                        burn_start_time: "1774656000000",
+                        is_burning: true,
+                        max_capacity: "100",
+                        previous_cycle_elapsed_time: "0",
+                        quantity: "1",
+                        type_id: "78437",
+                        unit_volume: "30",
+                      },
+                      connected_assembly_ids: [ownedAssemblyId],
+                    },
+                  },
+                },
+              },
+            },
+          };
+        }
+
+        if (variables.type === `${pkg}::location::LocationRegistry`) {
+          return {
+            data: {
+              objects: {
+                nodes: [],
+              },
+            },
+          };
+        }
+
+        throw new Error(`Unexpected GraphQL variables: ${JSON.stringify(variables)}`);
+      },
+    );
+
+    const modulePath = "./assemblyDiscovery";
+    const loadedModule = await import(/* @vite-ignore */ modulePath).catch(() => ({
+      discoverOwnedStructures: undefined,
+    }));
+
+    expect(typeof loadedModule.discoverOwnedStructures).toBe("function");
+
+    const result = await loadedModule.discoverOwnedStructures?.({
+      walletAddress: "0xwallet",
+      packageId: pkg,
+      graphQl,
+    });
+
+    expect(result?.characters[0]?.relatedStructures).toEqual([
+      expect.objectContaining({
+        id: externalNetworkNodeId,
+        typeRepr: `${pkg}::network_node::NetworkNode`,
+        name: "Foreign Power Spine",
+        connectedAssemblyIds: [ownedAssemblyId],
+      }),
+    ]);
+  });
 });

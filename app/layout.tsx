@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v16-appRouter";
 import "./globals.css";
@@ -19,7 +20,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <AppRouterCacheProvider>
           <Providers>
-            <WalletMenu />
+            <Suspense fallback={null}>
+              <WalletMenu />
+            </Suspense>
             {children}
           </Providers>
         </AppRouterCacheProvider>

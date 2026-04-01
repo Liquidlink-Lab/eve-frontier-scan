@@ -77,6 +77,45 @@ describe("resolveCharacterLookupState", () => {
     });
   });
 
+  it("defaults to the assemblies dashboard when a character has owned structures but no network nodes", () => {
+    const state = resolveCharacterLookupState(
+      createDiscovery([
+        {
+          characterId: "0xchar-2",
+          character: {
+            id: "0xchar-2",
+            name: "NbulaComplx",
+            tribeId: 3,
+            ownerCapId: "0xcap-2",
+          },
+          playerProfileIds: ["0xprofile-2"],
+          ownedStructures: [
+            {
+              id: "0xassembly-1",
+              typeId: 87119,
+              typeLabel: "Assembly",
+              typeRepr: "0xpkg::assembly::Assembly",
+              name: "Assembly Prime",
+              ownerCapId: "0xcap-2",
+              status: "online",
+              fuelPercent: null,
+              fuelQuantity: null,
+              connectedAssemblyIds: [],
+            },
+          ],
+        },
+      ]),
+      access,
+      lookups,
+    );
+
+    expect(state).toEqual({
+      kind: "single",
+      characterId: "0xchar-2",
+      redirectTo: "/dashboard/0xchar-2/assemblies?wallet=0xwallet-1&source=sui-address",
+    });
+  });
+
   it("renders a selection page when the wallet resolves to multiple characters", () => {
     const state = resolveCharacterLookupState(
       createDiscovery([
@@ -108,12 +147,25 @@ describe("resolveCharacterLookupState", () => {
           characterId: "0xchar-2",
           character: {
             id: "0xchar-2",
-            name: "Tara Voss",
-            tribeId: 4,
+            name: "Rhea Ancru",
+            tribeId: 3,
             ownerCapId: "0xcap-2",
           },
           playerProfileIds: ["0xprofile-2"],
-          ownedStructures: [],
+          ownedStructures: [
+            {
+              id: "0xassembly-2",
+              typeId: 87119,
+              typeLabel: "Assembly",
+              typeRepr: "0xpkg::assembly::Assembly",
+              name: "Assembly Beta",
+              ownerCapId: "0xcap-2",
+              status: "online",
+              fuelPercent: null,
+              fuelQuantity: null,
+              connectedAssemblyIds: [],
+            },
+          ],
         },
       ]),
       access,
@@ -127,19 +179,28 @@ describe("resolveCharacterLookupState", () => {
     }
 
     renderWithProviders(
-      <CharacterSelectionPage address="0xwallet-1" characters={state.characters} />,
+      <CharacterSelectionPage
+        access={access}
+        address="0xwallet-1"
+        characters={state.characters}
+      />,
     );
 
-    expect(screen.getByText("Rhea Ancru")).toBeInTheDocument();
-    expect(screen.getByText("Tara Voss")).toBeInTheDocument();
-    expect(screen.getByText("Caldari")).toBeInTheDocument();
-    expect(screen.getByText("Minmatar")).toBeInTheDocument();
+    expect(screen.getAllByText("Rhea Ancru")).toHaveLength(2);
+    expect(screen.getAllByText("Caldari")).toHaveLength(2);
     expect(screen.getAllByText(/sui address/i)).toHaveLength(2);
     expect(screen.getByText("1 Network Node")).toBeInTheDocument();
+    expect(screen.getAllByText("1 Owned Structure")).toHaveLength(2);
+    expect(screen.getByText("Character ID 0xchar-1")).toBeInTheDocument();
+    expect(screen.getByText("Character ID 0xchar-2")).toBeInTheDocument();
     expect(screen.getAllByText("Ship data unavailable")).toHaveLength(2);
     expect(screen.getAllByRole("link", { name: /open dashboard/i })[0]).toHaveAttribute(
       "href",
       "/dashboard/0xchar-1/network-nodes?wallet=0xwallet-1&source=sui-address",
+    );
+    expect(screen.getAllByRole("link", { name: /open dashboard/i })[1]).toHaveAttribute(
+      "href",
+      "/dashboard/0xchar-2/assemblies?wallet=0xwallet-1&source=sui-address",
     );
   });
 });

@@ -1,4 +1,4 @@
-import { eveEnv } from "../env";
+import { defaultEveWorld, getEveWorldConfig } from "../env";
 
 export type SuiJsonRpcClient = (method: string, params: unknown[]) => Promise<unknown>;
 
@@ -9,7 +9,7 @@ interface RequestSuiJsonRpcParams {
 }
 
 export async function requestSuiJsonRpc<T = unknown>({
-  endpoint = eveEnv.suiRpcEndpoint,
+  endpoint = getEveWorldConfig(defaultEveWorld).suiRpcEndpoint,
   method,
   params,
 }: RequestSuiJsonRpcParams): Promise<T> {
@@ -34,7 +34,9 @@ export async function requestSuiJsonRpc<T = unknown>({
   return response.json() as Promise<T>;
 }
 
-export function createSuiJsonRpcClient(endpoint = eveEnv.suiRpcEndpoint): SuiJsonRpcClient {
+export function createSuiJsonRpcClient(
+  endpoint = getEveWorldConfig(defaultEveWorld).suiRpcEndpoint,
+): SuiJsonRpcClient {
   return (method, params) =>
     requestSuiJsonRpc({
       endpoint,

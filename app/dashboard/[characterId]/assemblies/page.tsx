@@ -5,6 +5,7 @@ import AssembliesPage from "@/features/assemblies/AssembliesPage";
 import { normalizeSuiAddress } from "@/lib/eve/address";
 import { mapDiscoveryToAssembliesByType } from "@/lib/eve/discovery/eveOwnershipMappers";
 import { fetchWalletStructureDiscovery } from "@/lib/eve/discovery/eveOwnershipClient";
+import { parseEveWorld } from "@/lib/eve/env";
 import { createLabelLookupsWithWorldTypes } from "@/lib/eve/lookups";
 import type { WalletSource } from "@/lib/eve/types";
 import { getWorldTypeLookup } from "@/lib/eve/worldTypes";
@@ -23,6 +24,7 @@ interface DashboardAssembliesPageProps {
   searchParams: Promise<{
     wallet?: string;
     source?: string;
+    world?: string;
   }>;
 }
 
@@ -31,7 +33,8 @@ export default async function DashboardAssembliesPage({
   searchParams,
 }: DashboardAssembliesPageProps) {
   const { characterId } = await params;
-  const { wallet, source } = await searchParams;
+  const { wallet, source, world } = await searchParams;
+  const eveWorld = parseEveWorld(world);
   const normalizedWalletAddress = normalizeSuiAddress(wallet ?? "");
   const accessSource = isWalletSource(source) ? source : null;
 
@@ -44,7 +47,10 @@ export default async function DashboardAssembliesPage({
     );
   }
 
-  const discovery = await fetchWalletStructureDiscovery(normalizedWalletAddress);
+  const discovery = await fetchWalletStructureDiscovery(
+    normalizedWalletAddress,
+    eveWorld,
+  );
   const character = discovery.characters.find((entry) => entry.characterId === characterId);
   const groups = mapDiscoveryToAssembliesByType(
     discovery,
@@ -57,6 +63,7 @@ export default async function DashboardAssembliesPage({
       access={{
         walletAddress: normalizedWalletAddress,
         source: accessSource,
+        world: eveWorld,
       }}
       characterId={characterId}
       characterName={character?.character?.name ?? "Unknown character"}

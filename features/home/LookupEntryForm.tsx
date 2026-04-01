@@ -6,10 +6,20 @@ import { Button, Stack, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 import { normalizeSuiAddress } from "@/lib/eve/address";
+import type { EveWorld } from "@/lib/eve/env";
+import { buildLookupHref } from "@/lib/eve/routes";
+import WorldSwitcher from "@/features/world/WorldSwitcher";
 
-export default function LookupEntryForm() {
+interface LookupEntryFormProps {
+  defaultWorld: EveWorld;
+}
+
+export default function LookupEntryForm({
+  defaultWorld,
+}: LookupEntryFormProps) {
   const router = useRouter();
   const [address, setAddress] = useState("");
+  const [selectedWorld, setSelectedWorld] = useState(defaultWorld);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -20,11 +30,12 @@ export default function LookupEntryForm() {
       return;
     }
 
-    router.push(`/lookup/${normalizedAddress}`);
+    router.push(buildLookupHref(normalizedAddress, selectedWorld));
   }
 
   return (
     <Stack component="form" spacing={1.5} onSubmit={handleSubmit}>
+      <WorldSwitcher value={selectedWorld} onChange={setSelectedWorld} />
       <TextField
         label="SUI address"
         name="address"

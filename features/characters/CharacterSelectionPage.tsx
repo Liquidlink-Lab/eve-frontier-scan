@@ -7,7 +7,7 @@ import type {
   WalletStructureDiscovery,
 } from "@/lib/eve/types";
 import { mapDiscoveryToCharacterSummaries } from "@/lib/eve/discovery/eveOwnershipMappers";
-import { buildDashboardNetworkNodesHref } from "@/lib/eve/routes";
+import { buildDashboardDefaultHref } from "@/lib/eve/routes";
 import CharacterSelectionCard from "./CharacterSelectionCard";
 
 export type CharacterLookupState =
@@ -25,6 +25,7 @@ export type CharacterLookupState =
     };
 
 interface CharacterSelectionPageProps {
+  access: WalletAccessContext;
   address: string;
   characters: CharacterSummary[];
 }
@@ -46,7 +47,11 @@ export function resolveCharacterLookupState(
     return {
       kind: "single",
       characterId: characters[0].id,
-      redirectTo: buildDashboardNetworkNodesHref(characters[0].id, access),
+      redirectTo: buildDashboardDefaultHref(
+        characters[0].id,
+        access,
+        characters[0].defaultDashboardSection,
+      ),
     };
   }
 
@@ -57,6 +62,7 @@ export function resolveCharacterLookupState(
 }
 
 export default function CharacterSelectionPage({
+  access,
   address,
   characters,
 }: CharacterSelectionPageProps) {
@@ -78,7 +84,11 @@ export default function CharacterSelectionPage({
         </div>
         <Stack spacing={2}>
           {characters.map((character) => (
-            <CharacterSelectionCard key={character.id} character={character} />
+            <CharacterSelectionCard
+              key={character.id}
+              access={access}
+              character={character}
+            />
           ))}
         </Stack>
       </Stack>

@@ -2,10 +2,11 @@ import { Chip, Paper, Stack, Typography } from "@mui/material";
 
 import LinkButton from "@/features/navigation/LinkButton";
 import { formatShortAddress } from "@/lib/eve/address";
-import { buildDashboardNetworkNodesHref } from "@/lib/eve/routes";
-import type { CharacterSummary } from "@/lib/eve/types";
+import { buildDashboardDefaultHref } from "@/lib/eve/routes";
+import type { CharacterSummary, WalletAccessContext } from "@/lib/eve/types";
 
 interface CharacterSelectionCardProps {
+  access: WalletAccessContext;
   character: CharacterSummary;
 }
 
@@ -13,7 +14,12 @@ function formatNodeCount(count: number) {
   return count === 1 ? "1 Network Node" : `${count} Network Nodes`;
 }
 
+function formatOwnedStructureCount(count: number) {
+  return count === 1 ? "1 Owned Structure" : `${count} Owned Structures`;
+}
+
 export default function CharacterSelectionCard({
+  access,
   character,
 }: CharacterSelectionCardProps) {
   return (
@@ -44,13 +50,24 @@ export default function CharacterSelectionCard({
           {formatNodeCount(character.networkNodeCount)}
         </Typography>
         <Typography color="text.secondary">
+          {formatOwnedStructureCount(character.ownedStructureCount)}
+        </Typography>
+        <Typography color="text.secondary">
+          {`Character ID ${formatShortAddress(character.id)}`}
+        </Typography>
+        <Typography color="text.secondary">
           {character.currentShipName ?? "Ship data unavailable"}
         </Typography>
         <LinkButton
-          href={buildDashboardNetworkNodesHref(character.id, {
-            walletAddress: character.walletAddress,
-            source: character.walletSource,
-          })}
+          href={buildDashboardDefaultHref(
+            character.id,
+            {
+              walletAddress: character.walletAddress,
+              source: character.walletSource,
+              world: access.world,
+            },
+            character.defaultDashboardSection,
+          )}
           variant="contained"
         >
           Open dashboard

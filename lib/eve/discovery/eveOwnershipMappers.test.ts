@@ -171,6 +171,8 @@ describe("eve ownership domain helpers", () => {
         walletSource: "sui-address",
         walletSourceLabel: "SUI address",
         networkNodeCount: 1,
+        ownedStructureCount: 6,
+        defaultDashboardSection: "network-nodes",
         currentShipName: null,
       },
     ]);
